@@ -58,14 +58,14 @@
 	if($this->cart->total_items() > 0) {
 		//echo form_dropdown('cash_dropdown', array('cashier'=> 'Cash', 'credit'=> 'Credit' ));
 		echo form_submit('purchase_submit','Purchase'); 
+		echo anchor('cashier/do_credit', 'Credit ');
 	}
 echo form_close(); 
 
 //echo form_open('cashier/cancel_trans');
- 	if($this->cart->total_items() > 0) {
- 		echo anchor('cashier/do_credit', 'Credit ');
-		echo anchor('cashier/cancel_trans',' Cancel Transaction',array('onclick' => "return confirm ('Are you sure want to cancel this item?')")); 
-	}
+ 	
+	echo anchor('cashier/cancel_trans',' Cancel Transaction',array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")); 
+	
 //echo form_close();
  ?>	
 </div>

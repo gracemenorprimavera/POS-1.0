@@ -7,6 +7,7 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script language="javascript" type="text/javascript">
+
  $(document).ready(function() {
  
  /*
@@ -20,6 +21,7 @@
 					data: {supplier_name: $('#outgoing').val()},
 					type: "post",
 					success: function(data){
+
 					$('table#deliveryTable tr:last select.invoiceItem').html(data);
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
@@ -150,6 +152,7 @@
 		});
 
 	$(document).on('keyup','.tags',function(){
+		
 	var row = $(this).parent().parent();
 		$(this).autocomplete({
 			source: availableTags, 

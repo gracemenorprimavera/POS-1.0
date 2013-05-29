@@ -17,5 +17,8 @@
 </div>
 
 <div id="right_con">
-	<?php $this->load->view($subpage); ?>
+	<?php 
+		//if($subpage != 0)
+			$this->load->view($subpage); 
+	?>
 </div>

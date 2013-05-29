@@ -1,5 +1,4 @@
-PURCHASE
-<br>
+
 <?php echo $message; ?>
 <?php echo form_open('cashier/add_item') ?>	
 	<label> Bar Code </label> <input type="search" name="search_item">

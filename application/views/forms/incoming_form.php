@@ -35,13 +35,13 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		$options = array(
 			'' => 'Select one'
         );		
-		echo form_dropdown('invoiceItem',$options,'','class="invoiceItem" autocomplete="off" required');
+		echo form_dropdown('invoiceItem[]',$options,'','class="invoiceItem" autocomplete="off" required');
 		?>
 		</td>
 		<td>
 		<?php											//quantity
-		$data = array(
-				  'name'        => 'invoiceQty',
+			$data = array(
+				  'name'        => 'invoiceQty[]',
 				  'type'		=> 'number',
 				  'id'          => '',
 				  'class'		=> 'invoiceQty',
@@ -59,7 +59,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		<td>
 		<?php
 			$data = array(								//price
-				  'name'        => 'invoicePrice',
+				  'name'        => 'invoicePrice[]',
 				  'id'          => '',
 				  'class'		=> 'invoicePrice',
 				  'value'       => '',
@@ -77,7 +77,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		<td>
 		<?php
 			$data = array(								//amount = qty * price
-				  'name'        => 'invoiceAmt',
+				  'name'        => 'invoiceAmt[]',
 				  'id'          => '',
 				  'class'		=>	'invoiceAmt',
 				  'value'       => '',
@@ -98,7 +98,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 	</tr>
 	</table>
 	<?php
-			$data = array(
+		$data = array(
 			'name' => 'addDeliveryRow',
 			'id' => 'addDeliveryRow',
 			'value' => '',
@@ -113,3 +113,4 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 	<label for="totalPrice">Total: </label><input type="input" name="totalPrice" id='totalPrice' autocomplete="off" readonly/><br/>
 	<input type="submit" name="submit" value="Submit" />
 </form>
+<?php echo anchor('pos/cashier_home', 'Cancel Delivery', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>
