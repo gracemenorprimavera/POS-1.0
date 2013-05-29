@@ -2,19 +2,19 @@
 		echo '<h3> VIEW ITEMS </h3>';
 		echo 'View items by: ';
 		echo anchor('admin/goto_view_items',' ALL');
-		echo anchor('admin/view_item_byclass',' | Classification');
-		echo anchor('admin/view_item_bysupplier',' | Supplier');
-		echo anchor('admin/view_item_byOutofStock',' | Out of Stock by supplier');
-		echo anchor('admin/view_item_bybelowReorder',' | Below reorder point by supplier');
+		echo anchor('admin/get_item_byclass',' | Classification');
+		echo anchor('admin/get_item_bysupplier',' | Supplier');
+		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
+		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
 		if($message) {
-			echo $message;
+			echo '<br><br><br><center>'.$message.'</center>';
 		}
 		else {
 			echo '<h3> ITEMS by GROUP </h3>';
 			echo '<div id="view_item" class="view">';
-				foreach ($group as $r) {
+				foreach ($group as $row) {
 				echo '<br>';
-				echo '<H3>'.$r->group.'</h3>';
+				echo '<H3>'.$row->group.'</h3>';
 
 				echo '<table border="1px solid brown">
 				<tr>
@@ -36,7 +36,7 @@
 					<th> Reorder Point </th>
 					<th> Action </th>
 				</tr>';
-			$group=$r->group;
+			$group=$row->group;
 
 			$items = $this->pos_model->get_items_ingroup($group);
 			

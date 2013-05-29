@@ -2,19 +2,19 @@
 		echo '<h3> VIEW ITEMS </h3>';
 		echo 'View items by: ';
 		echo anchor('admin/get_item_bygroup',' Group');
+		echo anchor('admin/get_item_byclass',' | Classification');
 		echo anchor('admin/goto_view_items',' | ALL');
-		echo anchor('admin/get_item_bysupplier',' | Supplier');
 		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
 		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
 		if($message) {
 			echo '<br><br><br><center>'.$message.'</center>';
 		}
 		else {
-			echo '<h3> ITEMS by CLASSIFICATION </h3>';
+			echo '<h3> ITEMS by SUPPLIER </h3>';
 			echo '<div id="view_item" class="view">';
-				foreach ($class as $row) {
+				foreach ($supply as $row) {
 				echo '<br>';
-				echo '<H3>'.$row->class1.'</h3>';
+				echo '<H3>'.$row->supplier_code.'</h3>';
 
 				echo '<table border="1px solid brown">
 				<tr>
@@ -36,9 +36,9 @@
 					<th> Reorder Point </th>
 					<th> Action </th>
 				</tr>';
-			$class=$row->class1;
-
-			$items = $this->pos_model->get_items_inclass($class);
+			$supply=$row->supplier_code;
+			$ctr=0;
+			$items = $this->pos_model->get_items_insupply($supply,$ctr);
 			
 			foreach ($items as $r) {
 				echo '<tr>';

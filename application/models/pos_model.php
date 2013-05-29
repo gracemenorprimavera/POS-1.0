@@ -303,6 +303,47 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+
+
+	function get_supply($ctr) {
+
+		if($ctr==1) $this->db->where('quantity <= reorder_point');
+		if($ctr==2) $this->db->where('quantity < reorder_point');
+
+		$this->db->from('item');
+		$this->db->group_by('supplier_code');
+		$result=$this->db->get();
+
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_items_insupply($supply,$ctr) {
+
+		$this->db->where('supplier_code',$supply);
+		if($ctr==1) $this->db->where('quantity <= reorder_point');
+		if($ctr==2) $this->db->where('quantity < reorder_point');
+
+		$this->db->from('item');
+		$result=$this->db->get();
+
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
 	
 }
 ?>

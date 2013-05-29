@@ -8,7 +8,7 @@
 		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
 		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
 		if($message) {
-			echo $message;
+			echo '<br><br><br><center>'.$message.'</center>';
 		}
 		else {
 			echo '<h3> ALL ITEMS </h3>';
@@ -81,7 +81,6 @@
 					<th> Transaction ID</th>
 					<th> Transaction Date </th>
 					<th> Item Code </th>
-					<th> Action </th>
 				</tr>';
 
 			echo $message;
@@ -93,7 +92,6 @@
 				echo '<td>'.$r->trans_id.'</td>';
 				echo '<td>'.$r->trans_date.'</td>';
 				echo '<td>'.$r->item_code.'</td>';
-				echo '<td>'.anchor('','Pay').'</td>';
 				echo '</tr>';
 			}
 
