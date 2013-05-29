@@ -106,9 +106,15 @@ class Cashier extends CI_Controller {
 			/* get customer ID */
 		//$id = $this->pos_model->get_customerID($customer);
 		$id = 1;
-
+		$total = $this->cart->total();
 			/* insert transactions */
-		$this->db->insert('transactions', array('trans_id'=>NULL, 'customer_id'=>$id, 'trans_date'=>date('y-m-d')));
+		
+
+		$this->db->insert('transactions', array('trans_id'=>NULL, 
+			'customer_id'=>$id, 
+			'trans_date'=>date('y-m-d'),
+			'total_amount'=>$total
+			));
 		
 			/* get transaction id */
 		$trans_id = $this->db->insert_id();
@@ -190,7 +196,7 @@ class Cashier extends CI_Controller {
 			$item = $this->input->post('invoiceItem');
 			$qty = $this->input->post('invoiceQty');
 			$price = $this->input->post('invoicePrice');
-
+			$total = $this->input->post('totalPrice');
 				/* get supplier id */
 			$id = $this->pos_model->get_supplierID($supplier);
 			//echo $id;
@@ -199,7 +205,8 @@ class Cashier extends CI_Controller {
 			$this->db->insert('delivery', array('supplier_id'=>$id, 
 				'delivery_id'=>NULL, 
 				'date_delivered'=>date('y-m-d'),
-				'description'=>$desc
+				'description'=>$desc,
+				'total_amount'=>$total
 				));
 				
 				/* get delivery ID */
@@ -353,6 +360,46 @@ class Cashier extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 	
+	function pay_credit($customer_id) {
+		$payment = 2;
+		$this->pos_model->update_credit($customer_id, $payment);
+
+		$this->load->view('cashier/success');
+	}
+
+	function view_customerDetails($customer_id) {
+		if($this->pos_model->get_customerDetails($customer_id)) {
+			$data['customers'] = $this->pos_model->get_customerDetails($customer_id);
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Details Found';
+ 		
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'cashier_home';
+		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
+		$data['subpage'] = 'view_list';
+		
+		$this->load->view('template', $data);
+	}
+
+	function view_transDetails($trans_id) {
+		if($this->pos_model->get_transDetails($trans_id)) {
+			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Transactions Found';
+ 		
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'cashier_home';
+		$data['list_id'] = 5; // list id # 5 - list of transactions' details
+		$data['subpage'] = 'view_list';
+		
+		$this->load->view('template', $data);
+	}
 }
 
 /* End of file pos.php */

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2013 at 04:56 PM
+-- Generation Time: May 29, 2013 at 07:50 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('c9551005ff8beb31580deb6f1a5fe73f', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36', 1369838740, '');
+('94a43b7647e57cb4e4027b83e28fc564', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36', 1369847780, '');
 
 -- --------------------------------------------------------
 
@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS `customers` (
 --
 
 INSERT INTO `customers` (`customer_id`, `customer_name`, `balance`) VALUES
-(1, 'cashier', 0),
-(2, 'credit', 10);
+(1, 'cashier', -2),
+(2, 'credit', 6);
 
 -- --------------------------------------------------------
 
@@ -113,7 +113,8 @@ INSERT INTO `delivered_item` (`delivery_id`, `item_code`, `quantity`, `price`) V
 (14, 'CHA151', 1, 0),
 (15, 'CEN43', 2, 24.5),
 (16, 'CEN43', 2, 24.5),
-(17, 'CEN43', 5, 24.5);
+(17, 'CEN43', 5, 24.5),
+(18, 'CEN43', 2, 24.5);
 
 -- --------------------------------------------------------
 
@@ -126,32 +127,34 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `delivery_id` int(8) NOT NULL AUTO_INCREMENT,
   `date_delivered` date NOT NULL,
   `description` varchar(225) DEFAULT NULL,
+  `total_amount` float DEFAULT NULL,
   PRIMARY KEY (`delivery_id`),
   KEY `fk_delivery_supplier` (`supplier_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `delivery`
 --
 
-INSERT INTO `delivery` (`supplier_id`, `delivery_id`, `date_delivered`, `description`) VALUES
-(6, 1, '2013-05-29', ''),
-(7, 2, '2013-05-29', ''),
-(7, 3, '2013-05-29', ''),
-(7, 4, '2013-05-29', 'Hi'),
-(6, 5, '2013-05-29', ''),
-(6, 6, '2013-05-29', ''),
-(7, 7, '2013-05-29', ''),
-(7, 8, '2013-05-29', ''),
-(7, 9, '2013-05-29', ''),
-(7, 10, '2013-05-29', 'Trial'),
-(7, 11, '2013-05-29', 'Trial 2'),
-(7, 12, '2013-05-29', 'Trial 3'),
-(7, 13, '2013-05-29', 'T4'),
-(7, 14, '2013-05-29', ''),
-(7, 15, '2013-05-29', ''),
-(7, 16, '2013-05-29', ''),
-(7, 17, '2013-05-29', '');
+INSERT INTO `delivery` (`supplier_id`, `delivery_id`, `date_delivered`, `description`, `total_amount`) VALUES
+(6, 1, '2013-05-29', '', NULL),
+(7, 2, '2013-05-29', '', NULL),
+(7, 3, '2013-05-29', '', NULL),
+(7, 4, '2013-05-29', 'Hi', NULL),
+(6, 5, '2013-05-29', '', NULL),
+(6, 6, '2013-05-29', '', NULL),
+(7, 7, '2013-05-29', '', NULL),
+(7, 8, '2013-05-29', '', NULL),
+(7, 9, '2013-05-29', '', NULL),
+(7, 10, '2013-05-29', 'Trial', NULL),
+(7, 11, '2013-05-29', 'Trial 2', NULL),
+(7, 12, '2013-05-29', 'Trial 3', NULL),
+(7, 13, '2013-05-29', 'T4', NULL),
+(7, 14, '2013-05-29', '', NULL),
+(7, 15, '2013-05-29', '', NULL),
+(7, 16, '2013-05-29', '', NULL),
+(7, 17, '2013-05-29', '', NULL),
+(7, 18, '2013-05-29', '', 49);
 
 -- --------------------------------------------------------
 
@@ -270,63 +273,65 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `trans_id` int(8) NOT NULL AUTO_INCREMENT,
   `customer_id` int(8) NOT NULL,
   `trans_date` date NOT NULL,
+  `total_amount` float DEFAULT NULL,
   PRIMARY KEY (`trans_id`),
   KEY `fk_trans_customers` (`customer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `transactions`
 --
 
-INSERT INTO `transactions` (`trans_id`, `customer_id`, `trans_date`) VALUES
-(7, 1, '2013-05-28'),
-(8, 1, '2013-05-28'),
-(9, 1, '2013-05-29'),
-(10, 1, '2013-05-29'),
-(11, 1, '2013-05-29'),
-(12, 1, '2013-05-29'),
-(13, 1, '2013-05-29'),
-(14, 1, '2013-05-29'),
-(15, 1, '2013-05-29'),
-(16, 1, '2013-05-29'),
-(17, 1, '2013-05-29'),
-(18, 1, '2013-05-29'),
-(19, 1, '2013-05-29'),
-(20, 2, '2013-05-29'),
-(21, 2, '2013-05-29'),
-(22, 2, '2013-05-29'),
-(23, 2, '2013-05-29'),
-(24, 1, '2013-05-29'),
-(25, 1, '2013-05-29'),
-(26, 1, '2013-05-29'),
-(27, 1, '2013-05-29'),
-(28, 1, '2013-05-29'),
-(29, 1, '2013-05-29'),
-(30, 1, '2013-05-29'),
-(31, 1, '2013-05-29'),
-(32, 1, '2013-05-29'),
-(33, 1, '2013-05-29'),
-(34, 1, '2013-05-29'),
-(35, 1, '2013-05-29'),
-(36, 1, '2013-05-29'),
-(37, 1, '2013-05-29'),
-(38, 1, '2013-05-29'),
-(39, 2, '0000-00-00'),
-(40, 2, '2013-05-29'),
-(41, 2, '2013-05-29'),
-(42, 2, '2013-05-29'),
-(43, 1, '2013-05-29'),
-(44, 1, '2013-05-29'),
-(45, 1, '2013-05-29'),
-(46, 1, '2013-05-29'),
-(47, 1, '2013-05-29'),
-(48, 1, '2013-05-29'),
-(49, 1, '2013-05-29'),
-(50, 1, '2013-05-29'),
-(51, 1, '2013-05-29'),
-(52, 1, '2013-05-29'),
-(53, 1, '2013-05-29'),
-(54, 1, '2013-05-29');
+INSERT INTO `transactions` (`trans_id`, `customer_id`, `trans_date`, `total_amount`) VALUES
+(7, 1, '2013-05-28', NULL),
+(8, 1, '2013-05-28', NULL),
+(9, 1, '2013-05-29', NULL),
+(10, 1, '2013-05-29', NULL),
+(11, 1, '2013-05-29', NULL),
+(12, 1, '2013-05-29', NULL),
+(13, 1, '2013-05-29', NULL),
+(14, 1, '2013-05-29', NULL),
+(15, 1, '2013-05-29', NULL),
+(16, 1, '2013-05-29', NULL),
+(17, 1, '2013-05-29', NULL),
+(18, 1, '2013-05-29', NULL),
+(19, 1, '2013-05-29', NULL),
+(20, 2, '2013-05-29', NULL),
+(21, 2, '2013-05-29', NULL),
+(22, 2, '2013-05-29', NULL),
+(23, 2, '2013-05-29', NULL),
+(24, 1, '2013-05-29', NULL),
+(25, 1, '2013-05-29', NULL),
+(26, 1, '2013-05-29', NULL),
+(27, 1, '2013-05-29', NULL),
+(28, 1, '2013-05-29', NULL),
+(29, 1, '2013-05-29', NULL),
+(30, 1, '2013-05-29', NULL),
+(31, 1, '2013-05-29', NULL),
+(32, 1, '2013-05-29', NULL),
+(33, 1, '2013-05-29', NULL),
+(34, 1, '2013-05-29', NULL),
+(35, 1, '2013-05-29', NULL),
+(36, 1, '2013-05-29', NULL),
+(37, 1, '2013-05-29', NULL),
+(38, 1, '2013-05-29', NULL),
+(39, 2, '0000-00-00', NULL),
+(40, 2, '2013-05-29', NULL),
+(41, 2, '2013-05-29', NULL),
+(42, 2, '2013-05-29', NULL),
+(43, 1, '2013-05-29', NULL),
+(44, 1, '2013-05-29', NULL),
+(45, 1, '2013-05-29', NULL),
+(46, 1, '2013-05-29', NULL),
+(47, 1, '2013-05-29', NULL),
+(48, 1, '2013-05-29', NULL),
+(49, 1, '2013-05-29', NULL),
+(50, 1, '2013-05-29', NULL),
+(51, 1, '2013-05-29', NULL),
+(52, 1, '2013-05-29', NULL),
+(53, 1, '2013-05-29', NULL),
+(54, 1, '2013-05-29', NULL),
+(55, 1, '2013-05-29', 55);
 
 -- --------------------------------------------------------
 
@@ -378,7 +383,8 @@ INSERT INTO `trans_details` (`trans_id`, `item_code`, `quantity`, `price`) VALUE
 (48, 'CEN43', 2, 55),
 (50, 'CEN43', 2, 55),
 (53, 'CEN43', 2, 55),
-(54, 'CEN43', 2, 55);
+(54, 'CEN43', 2, 55),
+(55, 'CEN43', 2, 55);
 
 --
 -- Constraints for dumped tables

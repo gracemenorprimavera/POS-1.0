@@ -64,6 +64,58 @@ class Pos_model extends CI_Model {
 	}
 
 	function getAll_customers() {
+		$result = $this->db->get('customers');
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_customerDetails($customer_id) {
+		
+		$this->db->from('customers');
+		$this->db->where('customers.customer_id', $customer_id);
+		$this->db->join('transactions', 'customers.customer_id = transactions.customer_id');
+		//$this->db->join('trans_details', 'transactions.trans_id = trans_details.trans_id');
+		
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_transDetails($trans_id) {
+		
+		$this->db->from('customers');
+		
+		$this->db->join('transactions', 'customers.customer_id = transactions.customer_id');
+		$this->db->join('trans_details', 'transactions.trans_id = trans_details.trans_id');
+		$this->db->where('transactions.trans_id', $trans_id);
+		
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	/*function getAll_customers() {
 
 		$this->db->from('customers');
 		$this->db->join('transactions', 'customers.customer_id = transactions.customer_id');
@@ -79,7 +131,7 @@ class Pos_model extends CI_Model {
 		}
 		else 
 			return false;
-	}
+	}*/
 
 	function get_customerID($customer) {
 
@@ -304,8 +356,7 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
-
-	function get_supply($ctr) {
+		function get_supply($ctr) {
 
 		if($ctr==1) $this->db->where('quantity <= reorder_point');
 		if($ctr==2) $this->db->where('quantity < reorder_point');
@@ -343,6 +394,12 @@ class Pos_model extends CI_Model {
 		}
 		else 
 			return false;
+	}
+
+	function update_credit($customer_id, $payment) {
+
+		$query = "UPDATE customers set balance=balance-$payment WHERE customer_id='$customer_id'";
+		$this->db->query($query);	
 	}
 	
 }

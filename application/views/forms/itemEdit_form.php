@@ -21,8 +21,8 @@
 		Model Quantity: <input type="text" name="m_quantity" value="'.$r->model_quantity.'"><br>
 		Supplier Code: <input type="text" name="supplier_code" value="'.$r->supplier_code.'"required><br>
 		Manufacturer: <input type="text" name="manufacturer" value="'.$r->manufacturer.'" required><br>
-		Quantity:  <input type="number" name="quantity" value="'.$r->quantity.'" required><br>
-		Reorder Point: <input type="number" name="reorder_point" value="'.$r->reorder_point.'" required><br>';
+		Quantity:  <input type="number" name="quantity" value="'.$r->quantity.'" min="0" required><br>
+		Reorder Point: <input type="number" name="reorder_point" value="'.$r->reorder_point.'" min="0" required><br>';
 
 
 	echo form_submit('edit_submit', 'Edit Item');

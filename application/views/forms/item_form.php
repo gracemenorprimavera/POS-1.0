@@ -16,8 +16,8 @@
 		Model Quantity: <input type="text" name="m_quantity"><br>
 		Supplier Code: <input type="text" name="supplier_code" required><br>
 		Manufacturer: <input type="text" name="manufacturer" required><br>
-		Quantity:  <input type="number" name="quantity" required><br>
-		Reorder Point: <input type="number" name="reorder_point" required><br>
+		Quantity:  <input type="number" name="quantity" min="0" required><br>
+		Reorder Point: <input type="number" name="reorder_point" min="0" required><br>
 
 	<?php echo form_submit('add_submit', 'Add Item'); ?>
 	<?php echo form_close(); ?>
