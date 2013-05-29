@@ -131,6 +131,74 @@ class Pos_model extends CI_Model {
 			$this->db->update('item',$data);
 							
 	}
+	
+	function get_group() {
+
+		$this->db->from('item');
+		$this->db->group_by('group');
+		$result=$this->db->get();
+
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_items_ingroup($group) {
+
+		$this->db->where('group',$group);
+		$this->db->from('item');
+		$result=$this->db->get();
+
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_class() {
+
+		$this->db->from('item');
+		$this->db->group_by('class1');
+		$result=$this->db->get();
+
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_items_inclass($class) {
+
+		$this->db->where('class1',$class);
+		$this->db->from('item');
+		$result=$this->db->get();
+
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
 
 	function get_item_byCode($item_code){
 		$this->db->select('*');

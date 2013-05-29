@@ -260,7 +260,7 @@ class Cashier extends CI_Controller {
 		$data['page'] = 'cashier_home';
 		$data['subpage'] = 'cashier/search_main';
 
-		$this->form_validation->set_rules('search','search item','alpha|required|xss_clean');
+		$this->form_validation->set_rules('search','search item','');
 
 		$search = $this->input->post('search');
 
@@ -278,9 +278,7 @@ class Cashier extends CI_Controller {
 				$data['results'] = $this->pos_model->get_search($search);
 
 				$this->load->view('template', $data);
-			}
-
-		
+			}		
 	}
 
 	function inventory() {

@@ -1,4 +1,6 @@
 <div id="item_form" class="forms">
+		<h3>ADD NEW ITEM</h3>
+	Fill in required fields marked with *<br><br>
 	<?php echo form_open('admin/add_item'); ?>
 		Bar Code: <input type="text" name="barcode" required><br>
 		Item Code: <input type="text" name="itemcode" required><br>

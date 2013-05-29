@@ -189,6 +189,41 @@ class Admin extends CI_Controller {
 
 		$this->load->view('template', $data);
 	}
+	
+	
+	function get_item_bygroup() {
+
+		if($this->pos_model->getAll_items()) {
+			$data['group'] = $this->pos_model->get_group();
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Items Found';
+ 		
+		$data['header'] = 'Administrator';
+		
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_bygroup';
+
+		$this->load->view('template', $data);
+	}
+
+	function get_item_byclass() {
+
+		if($this->pos_model->getAll_items()) {
+			$data['class'] = $this->pos_model->get_class();
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Items Found';
+ 		
+		$data['header'] = 'Administrator';
+		
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_byclass';
+
+		$this->load->view('template', $data);
+	}
 
 		//get item by supplier
 	function goto_view_items_supplier() {

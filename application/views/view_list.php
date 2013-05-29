@@ -1,10 +1,17 @@
 <?php 
 	if($list_id==1) { 	// items list
 		echo '<h3> VIEW ITEMS </h3>';
+		echo 'View items by: ';
+		echo anchor('admin/get_item_bygroup',' Group');
+		echo anchor('admin/get_item_byclass',' | Classification');
+		echo anchor('admin/get_item_bysupplier',' | Supplier');
+		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
+		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
 		if($message) {
 			echo $message;
 		}
 		else {
+			echo '<h3> ALL ITEMS </h3>';
 			echo '<div id="view_item" class="view">';
 
 				echo '<table border="1px solid brown">
@@ -47,8 +54,9 @@
 				echo '<td>'.$r->manufacturer.'</td>';
 				echo '<td>'.$r->quantity.'</td>';
 				echo '<td>'.$r->reorder_point.'</td>';
-				echo '<td>'.anchor('admin/delete_item/'.$r->item_code,'Delete',array('onclick' => "return confirm ('Are you sure want to remove this item?')"));
-				echo ' '.anchor('admin/goto_edit_item/'.$r->item_code, 'Edit').'</td>';
+				$edit = $r->item_code;
+				echo '<td>'.anchor('admin/delete_item/'.$edit,'Delete');
+				echo ' '.anchor('admin/goto_edit_item/'.$edit, 'Edit').'</td>';
 				echo '</tr>';
 			}
 			echo '</table></div>';

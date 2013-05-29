@@ -1,7 +1,8 @@
 <div id="item_form" class="forms">
 	<?php echo form_open('admin/edit_item');
-	//$edit=$edit;
-	//echo $edit;
+	
+	echo '<h3>EDIT ITEM</h3>
+		 Fill in required fields marked with *<br><br>';
 	$myitem = $this->pos_model->get_edit_item($edit);
 
 	foreach ($myitem as $r) {
