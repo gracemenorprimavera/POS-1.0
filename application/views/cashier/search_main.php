@@ -1,4 +1,4 @@
-<h3>SEARCH ITEM</h3>
+SEARCH
 
 <?php echo form_open('cashier/search'); ?>
 	<input type="search" id="search" name="search" placeholder="Enter one word">

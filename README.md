@@ -1,4 +1,0 @@
-POS
-===
-
-Point of Sale

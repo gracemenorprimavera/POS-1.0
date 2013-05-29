@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2013 at 10:46 AM
+-- Generation Time: May 29, 2013 at 04:56 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('bb594da666a3a160924ef7283335f6ac', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36', 1369817172, 'a:1:{s:13:"cart_contents";a:3:{s:32:"4de3714cec3e124b85c329fb792371f9";a:6:{s:5:"rowid";s:32:"4de3714cec3e124b85c329fb792371f9";s:2:"id";s:6:"CHA151";s:3:"qty";s:1:"1";s:5:"price";s:4:"9.65";s:4:"name";s:8:"Champion";s:8:"subtotal";d:9.6500000000000003552713678800500929355621337890625;}s:11:"total_items";i:1;s:10:"cart_total";d:9.6500000000000003552713678800500929355621337890625;}}');
+('c9551005ff8beb31580deb6f1a5fe73f', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36', 1369838740, '');
 
 -- --------------------------------------------------------
 
@@ -100,6 +100,21 @@ CREATE TABLE IF NOT EXISTS `delivered_item` (
   KEY `fk_delivered_item` (`item_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `delivered_item`
+--
+
+INSERT INTO `delivered_item` (`delivery_id`, `item_code`, `quantity`, `price`) VALUES
+(12, 'CEN43', 2, 8),
+(12, 'CHA151', 2, 0),
+(13, 'CEN43', 1, 8),
+(13, 'CHA151', 1, 0),
+(14, 'CEN43', 1, 8),
+(14, 'CHA151', 1, 0),
+(15, 'CEN43', 2, 24.5),
+(16, 'CEN43', 2, 24.5),
+(17, 'CEN43', 5, 24.5);
+
 -- --------------------------------------------------------
 
 --
@@ -110,8 +125,46 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `supplier_id` int(8) NOT NULL,
   `delivery_id` int(8) NOT NULL AUTO_INCREMENT,
   `date_delivered` date NOT NULL,
+  `description` varchar(225) DEFAULT NULL,
   PRIMARY KEY (`delivery_id`),
   KEY `fk_delivery_supplier` (`supplier_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`supplier_id`, `delivery_id`, `date_delivered`, `description`) VALUES
+(6, 1, '2013-05-29', ''),
+(7, 2, '2013-05-29', ''),
+(7, 3, '2013-05-29', ''),
+(7, 4, '2013-05-29', 'Hi'),
+(6, 5, '2013-05-29', ''),
+(6, 6, '2013-05-29', ''),
+(7, 7, '2013-05-29', ''),
+(7, 8, '2013-05-29', ''),
+(7, 9, '2013-05-29', ''),
+(7, 10, '2013-05-29', 'Trial'),
+(7, 11, '2013-05-29', 'Trial 2'),
+(7, 12, '2013-05-29', 'Trial 3'),
+(7, 13, '2013-05-29', 'T4'),
+(7, 14, '2013-05-29', ''),
+(7, 15, '2013-05-29', ''),
+(7, 16, '2013-05-29', ''),
+(7, 17, '2013-05-29', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expenses`
+--
+
+CREATE TABLE IF NOT EXISTS `expenses` (
+  `expense_id` int(8) NOT NULL AUTO_INCREMENT,
+  `date_expense` date NOT NULL,
+  `amount` float NOT NULL,
+  `description` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`expense_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -145,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `item` (
 --
 
 INSERT INTO `item` (`item_code`, `bar_code`, `desc1`, `desc2`, `desc3`, `desc4`, `group`, `class1`, `class2`, `cost`, `retail_price`, `model_quantity`, `supplier_code`, `manufacturer`, `quantity`, `reorder_point`) VALUES
-('CEN43', '748485100418', 'Century ', 'Tuna Flakes ', 'Hot and Spicy ', '155g', 'Food', 'Sea Foods- Tuna', '', 24.5, 27.5, '', 'Suy Sing', 'Century Pacific Group', 255, 55),
+('CEN43', '748485100418', 'Century ', 'Tuna Flakes ', 'Hot and Spicy ', '155g', 'Food', 'Sea Foods- Tuna', '', 24.5, 27.5, '', 'Suy Sing', 'Century Pacific Group', 260, 55),
 ('CHA151', '4806501705422', 'Champion', 'Detergent Powder ', 'Infinity ', '70g', 'Non-Food', 'Laundry Products- Detergent Powder', '', 8.51, 9.65, '', 'Suy Sing', 'Peerless Products Manufacturing Corp.', 255, 55),
 ('DEL216', '4800024562739', 'Del Monte', 'Pineapple Juice ', 'w/ ACE', '1.36L', 'Food', 'RTD- Juices', '', 55.99, 63.75, '', 'World Power Zone', 'Del Monte Phils. Inc.', 255, 5),
 ('IC1', '48037105', 'Fortune ', 'Cigarette', 'Red Soft Pack', '20''s', 'Non-Food', 'Cigarettes', '', 24.5, 26.5, '', 'PMFTC Inc.', 'PMFTC Inc.', 255, 55),
@@ -155,6 +208,34 @@ INSERT INTO `item` (`item_code`, `bar_code`, `desc1`, `desc2`, `desc3`, `desc4`,
 ('IC5', '4801668601228', 'UFC Golden Fiesta', 'Corn Oil ', '', '1L', 'Food', 'Cooking Oil', '', 150.43, 171, '', 'Triple J', 'NutriAsia', 255, 55),
 ('IC6', '4800016653094', 'Jack ''n Jill Mr. Chips', 'Nacho ', 'Cheese 100g', '100g', 'Food', 'Snacks', '', 17.13, 21, '', 'PGG', 'URC', 255, 55),
 ('IC7', '4800092113444', 'Rebisco Super Thin ', 'Crackers', 'Cheese', '30g', 'Food', 'Biscuits, Cookies and Cakes', '', 4.32, 5, '', 'RZM', 'Republic Biscuit Corp.', 255, 55);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `outgoing`
+--
+
+CREATE TABLE IF NOT EXISTS `outgoing` (
+  `outgoing_id` int(8) NOT NULL AUTO_INCREMENT,
+  `date_out` date NOT NULL,
+  `description` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`outgoing_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `out_item`
+--
+
+CREATE TABLE IF NOT EXISTS `out_item` (
+  `outgoing_id` int(8) NOT NULL,
+  `item_code` varchar(125) NOT NULL,
+  `quantity` int(8) NOT NULL,
+  `price` float NOT NULL,
+  KEY `fk_outitem_outgoing` (`outgoing_id`),
+  KEY `fk_out_item` (`item_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -191,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `trans_date` date NOT NULL,
   PRIMARY KEY (`trans_id`),
   KEY `fk_trans_customers` (`customer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=45 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
 
 --
 -- Dumping data for table `transactions`
@@ -235,7 +316,17 @@ INSERT INTO `transactions` (`trans_id`, `customer_id`, `trans_date`) VALUES
 (41, 2, '2013-05-29'),
 (42, 2, '2013-05-29'),
 (43, 1, '2013-05-29'),
-(44, 1, '2013-05-29');
+(44, 1, '2013-05-29'),
+(45, 1, '2013-05-29'),
+(46, 1, '2013-05-29'),
+(47, 1, '2013-05-29'),
+(48, 1, '2013-05-29'),
+(49, 1, '2013-05-29'),
+(50, 1, '2013-05-29'),
+(51, 1, '2013-05-29'),
+(52, 1, '2013-05-29'),
+(53, 1, '2013-05-29'),
+(54, 1, '2013-05-29');
 
 -- --------------------------------------------------------
 
@@ -281,7 +372,13 @@ INSERT INTO `trans_details` (`trans_id`, `item_code`, `quantity`, `price`) VALUE
 (43, 'IC7', 1, 5),
 (43, 'IC5', 1, 171),
 (43, 'IC4', 1, 43.5),
-(43, 'DEL216', 1, 63.75);
+(43, 'DEL216', 1, 63.75),
+(46, 'CEN43', 2, 55),
+(47, 'CEN43', 2, 55),
+(48, 'CEN43', 2, 55),
+(50, 'CEN43', 2, 55),
+(53, 'CEN43', 2, 55),
+(54, 'CEN43', 2, 55);
 
 --
 -- Constraints for dumped tables
@@ -299,6 +396,18 @@ ALTER TABLE `delivered_item`
 --
 ALTER TABLE `delivery`
   ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`supplier_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `outgoing`
+--
+ALTER TABLE `outgoing`
+  ADD CONSTRAINT `outgoing_ibfk_1` FOREIGN KEY (`outgoing_id`) REFERENCES `out_item` (`outgoing_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `out_item`
+--
+ALTER TABLE `out_item`
+  ADD CONSTRAINT `out_item_ibfk_1` FOREIGN KEY (`item_code`) REFERENCES `item` (`item_code`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `transactions`

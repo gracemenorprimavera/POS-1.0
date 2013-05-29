@@ -81,6 +81,7 @@
 					<th> Transaction ID</th>
 					<th> Transaction Date </th>
 					<th> Item Code </th>
+					<th> Action </th>
 				</tr>';
 
 			echo $message;
@@ -92,6 +93,7 @@
 				echo '<td>'.$r->trans_id.'</td>';
 				echo '<td>'.$r->trans_date.'</td>';
 				echo '<td>'.$r->item_code.'</td>';
+				echo '<td>'.anchor('','Pay').'</td>';
 				echo '</tr>';
 			}
 
