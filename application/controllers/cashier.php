@@ -103,39 +103,27 @@ class Cashier extends CI_Controller {
 
 		//$customer = $this->input->post('cash_dropdown');
 
-			/* get customer ID */
+		// get customer ID
 		//$id = $this->pos_model->get_customerID($customer);
 		$id = 1;
-		$total = $this->cart->total();
-			/* insert transactions */
-		
 
-		$this->db->insert('transactions', array('trans_id'=>NULL, 
-			'customer_id'=>$id, 
-			'trans_date'=>date('y-m-d'),
-			'total_amount'=>$total
-			));
+		// insert transactions
+		$this->db->insert('transactions', array('trans_id'=>NULL, 'customer_id'=>$id, 'trans_date'=>date('y-m-d')));
 		
-			/* get transaction id */
+		// get transaction id
 		$trans_id = $this->db->insert_id();
 
-			/* insert trans_details */
+		// insert trans_details
 		$i = 1;
 
 		foreach ($this->cart->contents() as $items):
-			$this->pos_model->store_transDetails($trans_id, $items['id'], $items['qty'], $items['subtotal']);
-			/*$this->db->insert('trans_details', array('trans_id'=> $trans_id,
+			$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 				'item_code'=>$items['id'],
 				'quantity'=>$items['qty'],
 				'price'=>$items['subtotal']
-				));*/
-				/* decrease item in the stocks */
-			$this->pos_model->subtract_item($items['id'], $items['qty']);
+				));
 			$i++;
 		endforeach;
-
-			
-
 
 		$this->cart->destroy();
 
@@ -155,14 +143,13 @@ class Cashier extends CI_Controller {
 	function cancel_trans() {
 		$this->cart->destroy();
 
-		/*$data['message'] = "";
+		$data['message'] = "";
 		$data['header'] = 'Cashier';
 		
 		$data['page'] = 'cashier_home';
 		$data['subpage'] = 'cashier/purchase_main';
 
-		$this->load->view('template', $data);*/
-		redirect('pos/cashier_home');
+		$this->load->view('template', $data);
 
 	}
 
@@ -174,13 +161,13 @@ class Cashier extends CI_Controller {
 		$data['header'] = 'Cashier';
 		
 		$this->form_validation->set_rules('invoiceDate', 'Delivery date', 'required');				//require date
-		$this->form_validation->set_rules('outgoing' ,'Supplier name', 'required|callback_supplier_check');					//require supplier
-		//$this->form_validation->set_rules('outgoing','Supplier name', 'callback_supplier_check');	//check if supplier is not ''
+		$this->form_validation->set_rules('outgoing' ,'Supplier name', 'required');					//require supplier
+		$this->form_validation->set_rules('outgoing','Supplier name', 'callback_supplier_check');	//check if supplier is not ''
 		$this->form_validation->set_rules('invoiceItem', 'Item code' , 'required');					//require item code
 		$this->form_validation->set_rules('invoiceQty', 'Item quantity' , 'required');				//require item quantity
 		$this->form_validation->set_rules('invoicePrice', 'Item price' , 'required');				//require	item price
 		$this->form_validation->set_rules('invoiceAmt', 'Item amount' , 'required');				//require item amount
-
+		
 		if ($this->form_validation->run() === FALSE)
 		{
 			$data['header'] = 'Cashier';
@@ -190,45 +177,10 @@ class Cashier extends CI_Controller {
 			$this->load->view('template', $data);
 		}
 		else
-		{	
-			$supplier = $this->input->post('outgoing');
-			$desc = $this->input->post('in_desc');
-			$item = $this->input->post('invoiceItem');
-			$qty = $this->input->post('invoiceQty');
-			$price = $this->input->post('invoicePrice');
-			$total = $this->input->post('totalPrice');
-				/* get supplier id */
-			$id = $this->pos_model->get_supplierID($supplier);
-			//echo $id;
-
-				/* create delivery */
-			$this->db->insert('delivery', array('supplier_id'=>$id, 
-				'delivery_id'=>NULL, 
-				'date_delivered'=>date('y-m-d'),
-				'description'=>$desc,
-				'total_amount'=>$total
-				));
-				
-				/* get delivery ID */
-			$delivery_id = $this->db->insert_id();
-			//echo $delivery_id;
-
-				/* insert delivered_items */
-			$i = 0;
-			foreach($item as $d): 
-				//echo $item[$i].'<br>'.$qty[$i].'<br>'.$price[$i].'<br>';
-				$this->pos_model->store_deliveredItem($delivery_id, $item[$i], $qty[$i], $price[$i]);
-				/*$this->db->insert('delivered_item', array('delivery_id'=>$delivery_id,
-					'item_code'=>$item[$i],
-					'quantity'=>$qty[$i],
-					'price'=>$price[$i]
-					));*/
-				$this->pos_model->add_item($item[$i], $qty[$i]);
-				$i++;
-
-			endforeach;
-
-			redirect('cashier/incoming');
+		{
+			//$this->news_model->set_news();
+			//$this->load->view('cashier/success');
+			//print_r($this->input->post('invoiceQty'));
 		}
 	}
 	
@@ -238,6 +190,51 @@ class Cashier extends CI_Controller {
 		if ($str == "")
 		{
 			$this->form_validation->set_message('supplier_check', 'The %s field can not be empty.');
+			return FALSE;
+		}
+		else
+		{
+			return TRUE;
+		}
+	}
+	
+	function createOutgoing(){
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$data['title'] = 'Create an outgoing slip';
+		$data['header'] = 'Cashier';
+		
+		$this->form_validation->set_rules('outgoingDate', 'Delivery date', 'required');				//require date
+		$this->form_validation->set_rules('outgoing' ,'Outgoing information', 'required');					//require supplier
+		$this->form_validation->set_rules('outgoing','Outgoing information', 'callback_outgoing_check');	//check if supplier is not ''
+		$this->form_validation->set_rules('outgoingItem', 'Item code' , 'required');					//require item code
+		$this->form_validation->set_rules('outgoingQty', 'Item quantity' , 'required');				//require item quantity
+		$this->form_validation->set_rules('outgoingPrice', 'Item price' , 'required');				//require	item price
+		$this->form_validation->set_rules('outgoingAmt', 'Item amount' , 'required');				//require item amount
+		
+		if ($this->form_validation->run() === FALSE)
+		{
+			$data['header'] = 'Cashier';
+		
+			$data['page'] = 'cashier_home';
+			$data['subpage'] = 'cashier/outgoing_main';
+
+			$this->load->view('template', $data);
+		}
+		else
+		{
+			//$this->news_model->set_news();
+			//$this->load->view('cashier/success');
+			//print_r($this->input->post('outgoingQty'));
+		}
+	}
+	
+	public function outgoing_check($str)
+	{
+		if ($str == "")
+		{
+			$this->form_validation->set_message('outgoing_check', 'The %s field can not be empty.');
 			return FALSE;
 		}
 		else
@@ -309,7 +306,7 @@ class Cashier extends CI_Controller {
 		$data['page'] = 'cashier_home';
 		$data['subpage'] = 'cashier/search_main';
 
-		$this->form_validation->set_rules('search','search item','');
+		$this->form_validation->set_rules('search','search item','alpha|required|xss_clean');
 
 		$search = $this->input->post('search');
 
@@ -327,7 +324,9 @@ class Cashier extends CI_Controller {
 				$data['results'] = $this->pos_model->get_search($search);
 
 				$this->load->view('template', $data);
-		}		
+			}
+
+		
 	}
 
 	function inventory() {
@@ -360,46 +359,6 @@ class Cashier extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 	
-	function pay_credit($customer_id) {
-		$payment = 2;
-		$this->pos_model->update_credit($customer_id, $payment);
-
-		$this->load->view('cashier/success');
-	}
-
-	function view_customerDetails($customer_id) {
-		if($this->pos_model->get_customerDetails($customer_id)) {
-			$data['customers'] = $this->pos_model->get_customerDetails($customer_id);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Details Found';
- 		
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
-		$data['subpage'] = 'view_list';
-		
-		$this->load->view('template', $data);
-	}
-
-	function view_transDetails($trans_id) {
-		if($this->pos_model->get_transDetails($trans_id)) {
-			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Transactions Found';
- 		
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['list_id'] = 5; // list id # 5 - list of transactions' details
-		$data['subpage'] = 'view_list';
-		
-		$this->load->view('template', $data);
-	}
 }
 
 /* End of file pos.php */

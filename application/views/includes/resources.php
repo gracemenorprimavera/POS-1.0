@@ -3,6 +3,8 @@
 <link rel="stylesheet" href="<?php echo base_url();?>css/style.css" type="text/css"/>
 <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script language="javascript" type="text/javascript">
  $(document).ready(function() {
@@ -11,7 +13,7 @@
 	Add new row to delivery table on button click
  */
    $("#addDeliveryRow").click(function () {
-			var newRow = '<tr><td><select name="invoiceItem[]" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty[]" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoicePrice" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="text" name="invoiceAmt" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
+			var newRow = '<tr><td><select name="invoiceItem" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoicePrice" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="text" name="invoiceAmt" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
 			$('table#deliveryTable').append(newRow);
 			$.ajax({
 					url: '<?php echo base_url().'index.php/admin/goto_view_items_supplier';?>',
@@ -24,6 +26,14 @@
 
 					}
 			});
+   });
+   
+  /*
+	Add new row to outgoing table on button click
+ */
+   $("#addOutgoingRow").click(function () {
+			var newRow = '<tr><td><input name="outgoingItem" id="tags" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  />		</td><td><input type="text" name="outgoingPrice" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
+			$('table#outgoingTable').append(newRow);
    });
    
  /*
@@ -66,6 +76,7 @@
       }
 	});
   });
+  
  
 /*
 	udpate amount value when quantity price changes
@@ -84,7 +95,21 @@
 		$('#totalPrice').val(total);
   });
   
+  $(document).on('keyup mouseup','.outgoingQty',function(){
+		var row = $(this).parent().parent();
+		var price = $("td:nth-child(3) input.outgoingPrice", row).val();
+		var total = 0;
+		if(!isNaN(price) && price!="")$("td:nth-child(4) input.outgoingAmt", row).val($(this).val() * price);
+		
+		$('table#outgoingTable tr').each(function(){
+			var s = $(this).find('input.outgoingAmt').val();
+        //do your stuff, you can use $(this) to get current cell
+			if(!isNaN(s) && s!="") total = total + parseFloat(s);
+		});
+		$('#outTotalPrice').val(total);
+  });
   
+
   //end of document ready
 });  
 
@@ -97,6 +122,63 @@
 			 p.parentNode.removeChild(p);
 		}
 	}
+	
+	function DeleteRowFunction2(o) {
+	
+	var count = $('#outgoingTable tr').length;
+		if(count>2){
+			 var p=o.parentNode.parentNode;
+			 p.parentNode.removeChild(p);
+		}
+	}
+
+	$(function() {
+	
+		var availableTags = [];	
+
+		 $.ajax({
+			url: '<?php echo base_url().'index.php/admin/get_all_items';?>',
+			type: "post",
+			async: false,
+			success: function(data){
+			var temp = JSON.parse(data);
+				for (var i = 0; i < temp.length; i++)
+				availableTags.push(temp[i]);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			}
+		});
+
+	$(document).on('keyup','.tags',function(){
+	var row = $(this).parent().parent();
+		$(this).autocomplete({
+			source: availableTags, 
+			select: function(event, ui){
+			row.id = ui.item.item_code;	
+		
+		$.ajax({
+			url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
+			data: {item_code: row.id},
+			type: "post",
+			success: function(data){
+			var temp = JSON.parse(data);
+			$("td:nth-child(3) input.outgoingPrice", row).val(temp['cost']);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+
+			}
+		});
+			},
+			minLength:3
+		});		
+	});
+
+	//start
+	
+	
+	//end
+	});
+	
   
 </script>
 	

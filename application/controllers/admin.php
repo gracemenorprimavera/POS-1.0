@@ -189,6 +189,16 @@ class Admin extends CI_Controller {
 
 		$this->load->view('template', $data);
 	}
+	
+	function get_all_items() {
+		
+		if($this->pos_model->getAll_items2()) {
+			$data = $this->pos_model->getAll_items2();
+		}
+		echo json_encode($data);
+	}
+	
+	
 
 		//get item by supplier
 	function goto_view_items_supplier() {
@@ -302,94 +312,6 @@ class Admin extends CI_Controller {
 		
 		$data['page'] = 'forms/login_form';
 		
-		$this->load->view('template', $data);
-	}
-
-	function get_item_bygroup() {
-
-		if($this->pos_model->getAll_items()) {
-			$data['group'] = $this->pos_model->get_group();
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Items Found';
- 		
-		$data['header'] = 'Administrator';
-		
-		$data['page'] = 'admin_home';
-		$data['subpage'] = 'view_item_bygroup';
-
-		$this->load->view('template', $data);
-	}
-
-	function get_item_byclass() {
-
-		if($this->pos_model->getAll_items()) {
-			$data['class'] = $this->pos_model->get_class();
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Items Found';
- 		
-		$data['header'] = 'Administrator';
-		
-		$data['page'] = 'admin_home';
-		$data['subpage'] = 'view_item_byclass';
-
-		$this->load->view('template', $data);
-	}
-
-	function get_item_bysupplier() {
-		$ctr=0;
-
-		if($this->pos_model->getAll_items()) {
-			$data['supply'] = $this->pos_model->get_supply($ctr);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Items Found';
- 		
-		$data['header'] = 'Administrator';
-		
-		$data['page'] = 'admin_home';
-		$data['subpage'] = 'view_item_bysupplier';
-
-		$this->load->view('template', $data);
-	}
-
-	function get_item_byOutofStock() {
-		$ctr = 1;
-
-		if($this->pos_model->get_supply($ctr)) {
-			$data['stock'] = $this->pos_model->get_supply($ctr);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Items Found';
- 		
-		$data['header'] = 'Administrator';
-		
-		$data['page'] = 'admin_home';
-		$data['subpage'] = 'view_item_byOutofStock';
-
-		$this->load->view('template', $data);
-	}
-
-	function get_item_bybelowReorder() {
-		$ctr = 2;
-
-		if($this->pos_model->get_supply($ctr)) {
-			$data['reorder'] = $this->pos_model->get_supply($ctr);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Items Found';
- 		
-		$data['header'] = 'Administrator';
-		
-		$data['page'] = 'admin_home';
-		$data['subpage'] = 'view_item_bybelowReorder';
-
 		$this->load->view('template', $data);
 	}
 

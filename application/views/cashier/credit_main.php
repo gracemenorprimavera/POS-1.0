@@ -18,7 +18,6 @@ CREDIT <br>
 		<th> Balance </th>
 		<th> Products Credited</th>
 		<th> Pay </th>
-		<th> Action </th>
 	</tr>	
 
 	<tr>
@@ -26,7 +25,6 @@ CREDIT <br>
 		<td> P 250</td>
 		<td> <?php echo anchor('', 'View Details'); ?> </td>
 		<td> <?php echo anchor('', 'Pay'); ?> </td>
-		
 	</tr>
 </table>
 
