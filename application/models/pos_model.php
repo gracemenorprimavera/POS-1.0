@@ -75,6 +75,21 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+	
+	function getAll_customers2() {
+	
+		$this->db->select('customer_name as label,customer_id as customer_id');
+		$this->db->from('customers');
+		$result = $this->db->get();
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
 
 	function get_customerDetails($customer_id) {
 		
@@ -405,6 +420,21 @@ class Pos_model extends CI_Model {
 	function getAll_items2() {
 
 		$this->db->select('desc1 as label,item_code as item_code');
+		$this->db->from('item');
+		$result = $this->db->get();
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+	
+	function getAll_items3() {
+
+		$this->db->select("CONCAT(item.bar_code,' ',item.desc1) as label,item.bar_code as value",false);
 		$this->db->from('item');
 		$result = $this->db->get();
 		if($result->num_rows() > 0) {

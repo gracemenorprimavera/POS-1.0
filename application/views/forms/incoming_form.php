@@ -60,6 +60,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		<?php
 			$data = array(								//price
 				  'name'        => 'invoicePrice[]',
+				  'type'		=> 'number',
 				  'id'          => '',
 				  'class'		=> 'invoicePrice',
 				  'value'       => '',
@@ -68,7 +69,6 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 				  'style'       => '',
 				  'autocomplete' => 'off',
 				  'required'	=> 'required',
-				  'readonly'	=> 'readonly'
 		);
 
 		echo form_input($data);

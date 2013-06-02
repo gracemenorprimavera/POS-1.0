@@ -266,6 +266,14 @@ class Admin extends CI_Controller {
 		
 		$this->load->view('template', $data);
 	}
+	
+	function customers2() {
+		
+		if($this->pos_model->getAll_customers2()) {
+			$data = $this->pos_model->getAll_customers2();
+		}
+		echo json_encode($data);
+	}
 
 	function delivery() {
 
@@ -398,6 +406,14 @@ class Admin extends CI_Controller {
 		
 		if($this->pos_model->getAll_items2()) {
 			$data = $this->pos_model->getAll_items2();
+		}
+		echo json_encode($data);
+	}
+	
+	function get_all_items2() {
+		
+		if($this->pos_model->getAll_items3()) {
+			$data = $this->pos_model->getAll_items3();
 		}
 		echo json_encode($data);
 	}

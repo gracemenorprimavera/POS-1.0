@@ -14,7 +14,7 @@
 	Add new row to delivery table on button click
  */
    $("#addDeliveryRow").click(function () {
-			var newRow = '<tr><td><select name="invoiceItem" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoicePrice" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="text" name="invoiceAmt" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
+			var newRow = '<tr><td><select name="invoiceItem" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="number" name="invoicePrice" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoiceAmt" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
 			$('table#deliveryTable').append(newRow);
 			$.ajax({
 					url: '<?php echo base_url().'index.php/admin/goto_view_items_supplier';?>',
@@ -81,36 +81,70 @@
   
  
 /*
-	udpate amount value when quantity price changes
+	udpate amount value when quantity changes, also update the total
 */ 
    $(document).on('keyup mouseup','.invoiceQty',function(){
 		var row = $(this).parent().parent();
 		var price = $("td:nth-child(3) input.invoicePrice", row).val();
+		var qty = $(this).val();
 		var total = 0;
-		if(!isNaN(price) && price!="")$("td:nth-child(4) input.invoiceAmt", row).val($(this).val() * price);
-		
-		$('table#deliveryTable tr').each(function(){
-			var s = $(this).find('input.invoiceAmt').val();
-        //do your stuff, you can use $(this) to get current cell
-			if(!isNaN(s) && s!="") total = total + parseFloat(s);
-		});
+		if(!isNaN(price) && price!="" && !isNaN(qty) && qty!=""){
+			$("td:nth-child(4) input.invoiceAmt", row).val(qty * price);
+			$('table#deliveryTable tr').each(function(){
+				var s = $(this).find('input.invoiceAmt').val();
+				if(!isNaN(s) && s!="") total = total + parseFloat(s);
+			});
+		}
+		else $("td:nth-child(4) input.invoiceAmt", row).val('');
 		$('#totalPrice').val(total);
   });
   
+/*
+	udpate amount value and total when price changes
+*/ 
+   $(document).on('keyup mouseup','.invoicePrice',function(){
+		var row = $(this).parent().parent();
+		var qty = $("td:nth-child(2) input.invoiceQty", row).val();
+		var price = $(this).val();
+		var total = 0;
+		if(!isNaN(qty) && qty!="" && !isNaN(price) && price!=""){
+			$("td:nth-child(4) input.invoiceAmt", row).val(price * qty);
+			$('table#deliveryTable tr').each(function(){
+			var s = $(this).find('input.invoiceAmt').val();
+			if(!isNaN(s) && s!="") total = total + parseFloat(s);
+			});
+		}
+		else $("td:nth-child(4) input.invoiceAmt", row).val('');
+		$('#totalPrice').val(total);
+  });
+ 
+
+/*
+	update total amount when quantity changes
+*/ 
   $(document).on('keyup mouseup','.outgoingQty',function(){
 		var row = $(this).parent().parent();
 		var price = $("td:nth-child(3) input.outgoingPrice", row).val();
 		var total = 0;
-		if(!isNaN(price) && price!="")$("td:nth-child(4) input.outgoingAmt", row).val($(this).val() * price);
-		
-		$('table#outgoingTable tr').each(function(){
+		if(!isNaN(price) && price!=""){
+			$("td:nth-child(4) input.outgoingAmt", row).val($(this).val() * price);
+			$('table#outgoingTable tr').each(function(){
 			var s = $(this).find('input.outgoingAmt').val();
-        //do your stuff, you can use $(this) to get current cell
 			if(!isNaN(s) && s!="") total = total + parseFloat(s);
-		});
+			});
+		}
+		else $("td:nth-child(4) input.outgoingAmt", row).val('');
 		$('#outTotalPrice').val(total);
   });
-  
+
+
+/*
+	add customer name field when credit button is clicked upon purchase
+*/  
+	$(document).on('click', '#creditButton', function(){
+		var div = "<div id='customerInfo'><input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags2' autocomplete='off' required/></div>";
+		$(this).after(div);
+	});
 
   //end of document ready
 });  
@@ -133,7 +167,7 @@
 			 p.parentNode.removeChild(p);
 		}
 	}
-
+//autocomplete for item code
 	$(function() {
 	
 		var availableTags = [];	
@@ -151,37 +185,88 @@
 			}
 		});
 
-	$(document).on('keyup','.tags',function(){
-		
-	var row = $(this).parent().parent();
-		$(this).autocomplete({
-			source: availableTags, 
-			select: function(event, ui){
-			row.id = ui.item.item_code;	
-		
-		$.ajax({
-			url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
-			data: {item_code: row.id},
+		$(document).on('keyup','.tags',function(){
+		var row = $(this).parent().parent();
+			$(this).autocomplete({
+				source: availableTags, 
+				select: function(event, ui){
+				row.id = ui.item.item_code;	
+			
+			$.ajax({
+				url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
+				data: {item_code: row.id},
+				type: "post",
+				success: function(data){
+				var temp = JSON.parse(data);
+				$("td:nth-child(3) input.outgoingPrice", row).val(temp['retail_price']);
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+
+				}
+			});
+				},
+				minLength:3
+			});		
+		});
+	});
+	
+ //autocomplete for customer name
+	$(function() {
+		var availableTags2 = [];	
+
+		 $.ajax({
+			url: '<?php echo base_url().'index.php/admin/customers2';?>',
 			type: "post",
+			async: false,
 			success: function(data){
 			var temp = JSON.parse(data);
-			$("td:nth-child(3) input.outgoingPrice", row).val(temp['cost']);
+				for (var i = 0; i < temp.length; i++)
+				availableTags2.push(temp[i]);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-
 			}
 		});
-			},
-			minLength:3
-		});		
-	});
 
-	//start
-	
-	
-	//end
+		$(document).on('keyup','.tags2',function(){
+			
+		var row = $(this).parent().parent();
+			$(this).autocomplete({
+				source: availableTags2, 
+				select: function(event, ui){
+				$('#hCustomerName').val(ui.item.customer_id);			
+				},
+				minLength:1
+			});		
+		});
 	});
 	
-  
+	
+	
+//autocomplete for bar code
+	$(function() {
+	
+	var availableTags3 = [];	
+
+		 $.ajax({
+			url: '<?php echo base_url().'index.php/admin/get_all_items2';?>',
+			type: "post",
+			async: false,
+			success: function(data){
+			var temp = JSON.parse(data);
+				for (var i = 0; i < temp.length; i++)
+				availableTags3.push(temp[i]);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			}
+		});
+		
+		$(document).on('keyup','#search_item',function(){
+		var row = $(this).parent().parent();
+			$(this).autocomplete({
+				source: availableTags3, 
+				minLength:3
+			});
+		});
+	});	
 </script>
 	

@@ -58,7 +58,16 @@
 	if($this->cart->total_items() > 0) {
 		//echo form_dropdown('cash_dropdown', array('cashier'=> 'Cash', 'credit'=> 'Credit' ));
 		echo form_submit('purchase_submit','Purchase'); 
-		echo anchor('cashier/do_credit', 'Credit ');
+		
+	//credit button
+		$data = array(
+			'name' => 'creditButton',
+			'id' => 'creditButton',
+			'value' => 'true',
+			'content' => 'Credit'
+		);
+
+		echo form_button($data);
 	}
 echo form_close(); 
 
