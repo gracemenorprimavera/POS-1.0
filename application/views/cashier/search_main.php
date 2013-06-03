@@ -1,7 +1,7 @@
 SEARCH
 
 <?php echo form_open('cashier/search'); ?>
-	<input type="search" id="search" name="search" placeholder="Enter one word">
+	<input type="search" id="search" name="search" placeholder="Enter Item">
 	
 	<?php form_submit('search_item', 'Search'); ?>
 <?php echo form_close(); ?>
