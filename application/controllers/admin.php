@@ -187,7 +187,8 @@ class Admin extends CI_Controller {
 		$data['subpage'] = 'view_list';
 		$data['list_id'] = 1; // list id # 1 - list of items
 
-		$this->load->view('template', $data);
+		//$this->load->view('template', $data);
+		$this->load->view('view_list', $data);
 	}
 
 		//get item by supplier
@@ -266,14 +267,6 @@ class Admin extends CI_Controller {
 		
 		$this->load->view('template', $data);
 	}
-	
-	function customers2() {
-		
-		if($this->pos_model->getAll_customers2()) {
-			$data = $this->pos_model->getAll_customers2();
-		}
-		echo json_encode($data);
-	}
 
 	function delivery() {
 
@@ -327,7 +320,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'admin_home';
 		$data['subpage'] = 'view_item_bygroup';
 
-		$this->load->view('template', $data);
+		//$this->load->view('template', $data);
+		$this->load->view('view_item_bygroup', $data);
 	}
 
 	function get_item_byclass() {
@@ -344,7 +338,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'admin_home';
 		$data['subpage'] = 'view_item_byclass';
 
-		$this->load->view('template', $data);
+		//$this->load->view('template', $data);
+		$this->load->view('view_item_byclass', $data);
 	}
 
 	function get_item_bysupplier() {
@@ -362,7 +357,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'admin_home';
 		$data['subpage'] = 'view_item_bysupplier';
 
-		$this->load->view('template', $data);
+		//$this->load->view('template', $data);
+		$this->load->view('view_item_bysupplier', $data);
 	}
 
 	function get_item_byOutofStock() {
@@ -380,7 +376,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'admin_home';
 		$data['subpage'] = 'view_item_byOutofStock';
 
-		$this->load->view('template', $data);
+		//$this->load->view('template', $data);
+		$this->load->view('view_item_byOutofStock', $data);
 	}
 
 	function get_item_bybelowReorder() {
@@ -398,7 +395,8 @@ class Admin extends CI_Controller {
 		$data['page'] = 'admin_home';
 		$data['subpage'] = 'view_item_bybelowReorder';
 
-		$this->load->view('template', $data);
+		//$this->load->view('template', $data);
+		$this->load->view('view_item_bybelowReorder', $data);
 	}
 	
 
@@ -409,7 +407,49 @@ class Admin extends CI_Controller {
 		}
 		echo json_encode($data);
 	}
-	
+
+	function view_customerDetails($customer_id) {
+		if($this->pos_model->get_customerDetails($customer_id)) {
+			$data['customers'] = $this->pos_model->get_customerDetails($customer_id);
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Details Found';
+ 		
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'cashier_home';
+		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
+		$data['subpage'] = 'view_list';
+		
+		$this->load->view('template', $data);
+	}
+
+	function view_transDetails($trans_id) {
+		if($this->pos_model->get_transDetails($trans_id)) {
+			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Transactions Found';
+ 		
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'cashier_home';
+		$data['list_id'] = 5; // list id # 5 - list of transactions' details
+		$data['subpage'] = 'view_list';
+		
+		$this->load->view('template', $data);
+	}
+
+	function customers2() {
+		
+		if($this->pos_model->getAll_customers2()) {
+			$data = $this->pos_model->getAll_customers2();
+		}
+		echo json_encode($data);
+	}
+
 	function get_all_items2() {
 		
 		if($this->pos_model->getAll_items3()) {

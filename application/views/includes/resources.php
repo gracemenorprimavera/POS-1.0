@@ -1,10 +1,10 @@
 
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/style.css" type="text/css"/>
-<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="<?php echo base_url();?>js/jquery-1.10.0.min.js"></script>
+<script src="<?php echo base_url();?>js/jquery-migrate-1.2.1.min.js"></script>
+<script src="<?php echo base_url();?>js/jquery-1.9.1.js"></script>
+<script src="<?php echo base_url();?>js/jquery-ui.js"></script>
 
 <script language="javascript" type="text/javascript">
 
