@@ -34,7 +34,7 @@
 	Add new row to outgoing table on button click
  */
    $("#addOutgoingRow").click(function () {
-			var newRow = '<tr><td><input name="outgoingItem" id="tags" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  />		</td><td><input type="text" name="outgoingPrice" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
+			var newRow = '<tr><td><input name="outgoingItem" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  />		</td><td><input type="text" name="outgoingPrice" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
 			$('table#outgoingTable').append(newRow);
    });
    
@@ -142,8 +142,65 @@
 	add customer name field when credit button is clicked upon purchase
 */  
 	$(document).on('click', '#creditButton', function(){
-		var div = "<div id='customerInfo'><input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags2' autocomplete='off' required/></div>";
+		var div = "<div id='customerInfo'><input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required/></div>";
 		$(this).after(div);
+	});
+	
+	
+	$(document).on('keyup', '.tags', function(){
+		var url = '';
+		var source_id = $(this).attr('id');
+		if(source_id == 'outgoingItem') url =  "<?php echo base_url().'index.php/admin/get_all_items';?>";
+		else if(source_id == 'customerName') url = "<?php echo base_url().'index.php/admin/customers2';?>";
+		else if(source_id == 'search_item') url = "<?php echo base_url().'index.php/admin/get_all_items2';?>";
+		
+		var availableTags = [];	
+//fetch data in array
+		 $.ajax({
+			url: url,
+			type: "post",
+			async: false,
+			success: function(data){
+			var temp = JSON.parse(data);
+				for (var i = 0; i < temp.length; i++)
+				availableTags.push(temp[i]);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			}
+		});
+		
+//use autocomplete
+			var row = $(this).parent().parent();
+			$(this).autocomplete({
+				source: availableTags, 
+				select: function(event, ui){
+				//if outgoing, update the price input field
+					if(source_id == 'outgoingItem'){
+						row.id = ui.item.item_code;
+						$.ajax({
+							url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
+							data: {item_code: row.id},
+							type: "post",
+							success: function(data){
+								var temp = JSON.parse(data);
+								$("td:nth-child(3) input.outgoingPrice", row).val(temp['retail_price']);
+							},
+							error: function (xhr, ajaxOptions, thrownError) {
+							}
+						});
+					}
+				//else if customer name, update the hidden field and put the customer id
+					else if(source_id == 'customerName'){
+						$('#hCustomerName').val(ui.item.customer_id);	
+					}
+				//else if search item, do nothing
+					else if(source_id == 'search_item'){
+					
+					}
+			},
+				minLength:1
+			});
+		
 	});
 
   //end of document ready
@@ -167,6 +224,12 @@
 			 p.parentNode.removeChild(p);
 		}
 	}
+	
+	$(function(){
+		
+	});
+	
+/*	
 //autocomplete for item code
 	$(function() {
 	
@@ -268,5 +331,7 @@
 			});
 		});
 	});	
+	
+*/
 </script>
 	
