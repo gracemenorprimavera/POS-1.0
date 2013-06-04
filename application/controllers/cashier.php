@@ -46,11 +46,9 @@ class Cashier extends CI_Controller {
 			$data['message'] = 'All fields are required!';
 
 			$data['header'] = 'Cashier';
-		
-			//$data['page'] = 'cashier_home';
-			//$data['subpage'] = 'cashier/purchase_main';
-			$data['page'] = 'cashier/purchase_main';
-			$data['subpage'] = 0;
+			
+			$data['page'] = 'cashier_home';
+			$data['subpage'] = 'cashier/purchase_main';
 
 			$this->load->view('template', $data);
 		}
@@ -77,11 +75,9 @@ class Cashier extends CI_Controller {
 		    }
 		   
 				$data['header'] = 'Cashier';
-		
-				//$data['page'] = 'cashier_home';
-				//$data['subpage'] = 'cashier/purchase_main';
-				$data['page'] = 'cashier/purchase_main';
-				$data['subpage'] = 0;
+				
+				$data['page'] = 'cashier_home';
+				$data['subpage'] = 'cashier/purchase_main';
 
 				$this->load->view('template', $data);		
 		}
@@ -99,12 +95,9 @@ class Cashier extends CI_Controller {
 		    
 		   
 		$data['header'] = 'Cashier';
-		
-		//$data['page'] = 'cashier_home';
-		//$data['subpage'] = 'cashier/purchase_main';
-		$data['page'] = 'cashier/purchase_main';
-		$data['subpage'] = 0;
-
+			
+		$data['page'] = 'cashier_home';
+		$data['subpage'] = 'cashier/purchase_main';
 		$this->load->view('template', $data);	
 	}
 
@@ -148,7 +141,13 @@ class Cashier extends CI_Controller {
 
 		$this->cart->destroy();
 
-		redirect('pos/cashier_home');
+		$data['message'] = "";
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'cashier_home';
+		$data['subpage'] = 'cashier/purchase_main';
+
+		$this->load->view('template', $data);
 	}
 
 	function do_credit() {

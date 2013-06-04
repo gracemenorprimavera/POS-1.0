@@ -50,14 +50,14 @@
 <tr>
   <td colspan="2"></td>
   <td class="right"><strong>Total</strong></td>
-  <td class="right">P<?php echo $this->cart->format_number($this->cart->total()); ?></td>
+  <td class="right" id="totalPurchase">P<?php echo $this->cart->format_number($this->cart->total()); ?></td>
 </tr>
 
 </table>
 <?php 
 	if($this->cart->total_items() > 0) {
 		//echo form_dropdown('cash_dropdown', array('cashier'=> 'Cash', 'credit'=> 'Credit' ));
-		echo form_submit('purchase_submit','Purchase'); 
+		/*echo form_submit('purchase_submit','Purchase'); 
 		
 	//credit button
 		$data = array(
@@ -68,6 +68,33 @@
 		);
 
 		echo form_button($data);
+		*/
+		
+		$data = array(
+			'name'        => 'paymentChoice',
+			'id'          => 'cashChoice',
+			'value'       => 'cash',
+			'checked'     => FALSE,
+			'autocomplete' => 'off',
+			'type'			=> 'radio'
+		);
+
+		echo form_checkbox($data);
+		echo '<span>Cash</span>';
+		
+		$data = array(
+			'name'        => 'paymentChoice',
+			'id'          => 'creditChoice',
+			'value'       => 'credit',
+			'checked'     => FALSE,
+			'autocomplete' => 'off',
+			'type'			=> 'radio'
+		);
+
+		echo form_checkbox($data);
+		echo '<span>Credit</span>';
+		
+		echo '<div id="paymentDetails"></div>';
 	}
 echo form_close(); 
 

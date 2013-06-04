@@ -6,7 +6,7 @@
 		echo '<li>'.anchor('admin/goto_view_items', ' View Items ').'</li>';
 			echo '<ul>';
 				echo '<li>'.anchor('admin/goto_add_item', ' Add Item ').'</li>';
-				echo '<li>'.anchor('admin/goto_view_items', ' View Items ', array('target'=>'a_blank')).'</li>';
+				echo '<li>'.anchor('admin/goto_view_items', ' View Items ').'</li>';
 			echo '</ul>';
 		echo '<li>'.anchor('admin/reports', ' Reports ').'</li>';
 		echo '<li>'.anchor('admin/inventory', ' Inventory ').'</li>';

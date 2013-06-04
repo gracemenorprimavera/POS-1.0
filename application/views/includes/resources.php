@@ -1,10 +1,10 @@
 
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/style.css" type="text/css"/>
-<script src="<?php echo base_url();?>js/jquery-1.10.0.min.js"></script>
-<script src="<?php echo base_url();?>js/jquery-migrate-1.2.1.min.js"></script>
-<script src="<?php echo base_url();?>js/jquery-1.9.1.js"></script>
-<script src="<?php echo base_url();?>js/jquery-ui.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script language="javascript" type="text/javascript">
 
@@ -140,10 +140,22 @@
 
 /*
 	add customer name field when credit button is clicked upon purchase
-*/  
+
 	$(document).on('click', '#creditButton', function(){
 		var div = "<div id='customerInfo'><input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required/></div>";
 		$(this).after(div);
+	});
+*/
+
+	$('#purchase_list input[type=radio]').click(function(){
+		if($(this).attr('id') == 'cashChoice'){
+			var div = "Customer Cash: <input type='number' name='customerCash' id='customerCash'/><button onclick='alertChange(); return false;'>PAY</button>";
+			$('#paymentDetails').html(div);
+		}
+		else if($(this).attr('id') == 'creditChoice'){
+			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required/><button>RECORD</button>";
+			$('#paymentDetails').html(div);
+		}
 	});
 	
 	
@@ -203,8 +215,34 @@
 		
 	});
 
+	
+	//automatic computation of opening and closing bills
+	$('#openingBills input[type=number], #closingBills input[type=number]').keyup(function(){
+	
+	var total = 0;
+	var val = '';
+	var par = $(this).parent().attr('id');
+			//loop through the form and add the sum
+			$('#' + par + ' input[type=number]').each(function(){
+				val = $(this).val();
+				if(!isNaN(val) && val != '') total = total + (val*$(this).attr('name'));
+			});
+			
+			$('#' + par + ' input.totalBills').val(total);
+	});
+	
   //end of document ready
 });  
+
+
+	function alertChange()
+	{
+	var cash = $('#customerCash').val();
+	var purchase = $('#totalPurchase').html().substring(1);
+	var change = cash - purchase;
+	if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
+	else alert("Invalid change.");
+	}
 
 	//delete a table row
 	function DeleteRowFunction(o) {

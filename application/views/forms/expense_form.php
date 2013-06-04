@@ -1,6 +1,6 @@
 <div id="expense_form" class="forms">
 	<?php 
-		echo form_open('cashier');
+		echo form_open('cashier')
 		$options = array(
 				'empty' => ' ',
 				'salary' => "Employee's Salary",
