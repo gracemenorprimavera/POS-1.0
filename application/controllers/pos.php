@@ -56,6 +56,9 @@ class Pos extends CI_Controller {
 			else if($account=='admin') {
 				redirect('pos/admin_home');
 			}
+			else if($account=='manager'){
+				redirect('pos/manager_home');
+			}
 			else {
 				$data['message'] = "* Invalid password";
 				$data['header'] = 'POS';
@@ -103,6 +106,15 @@ class Pos extends CI_Controller {
 
 		$this->load->view('template', $data);
 	}	
+	
+	public function manager_home(){
+		$data['header'] = 'Manager';
+		
+		$data['page'] = 'manager_home';
+		$data['subpage'] = 'dummy';
+		
+		$this->load->view('template', $data);
+	}
 }
 
 /* End of file pos.php */

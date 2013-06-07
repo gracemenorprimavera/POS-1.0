@@ -274,6 +274,16 @@ class Admin extends CI_Controller {
 		}
 		echo json_encode($data);
 	}
+	
+	function goto_add_customers() {
+
+		$data['header'] = 'Administrator';
+		
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'forms/customer_form';
+
+		$this->load->view('template', $data);
+	}
 
 	function delivery() {
 

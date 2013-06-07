@@ -192,7 +192,7 @@ class Cashier extends CI_Controller {
 			$this->load->view('template', $data);
 		}
 		else
-		{	
+		{
 			$supplier = $this->input->post('outgoing');
 			$desc = $this->input->post('in_desc');
 			$item = $this->input->post('invoiceItem');

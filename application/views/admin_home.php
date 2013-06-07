@@ -11,6 +11,10 @@
 		echo '<li>'.anchor('admin/reports', ' Reports ').'</li>';
 		echo '<li>'.anchor('admin/inventory', ' Inventory ').'</li>';
 		echo '<li>'.anchor('admin/customers', ' Customers ').'</li>';
+		echo '<ul>';
+				echo '<li>'.anchor('admin/customers', ' View Customers ').'</li>';
+				echo '<li>'.anchor('admin/goto_add_customers', ' Add Customers ').'</li>';
+			echo '</ul>';
 		echo '<li>'.anchor('admin/delivery', ' Delivery ').'</li>';
 		echo '<li>'.anchor('admin/logout', ' Log out ').'</li>';
 	?>

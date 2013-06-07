@@ -14,7 +14,7 @@
 	Add new row to delivery table on button click
  */
    $("#addDeliveryRow").click(function () {
-			var newRow = '<tr><td><select name="invoiceItem" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="number" name="invoicePrice" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoiceAmt" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
+			var newRow = '<tr><td><select name="invoiceItem[]" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="number" name="invoicePrice" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoiceAmt" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
 			$('table#deliveryTable').append(newRow);
 			$.ajax({
 					url: '<?php echo base_url().'index.php/admin/goto_view_items_supplier';?>',
@@ -34,7 +34,7 @@
 	Add new row to outgoing table on button click
  */
    $("#addOutgoingRow").click(function () {
-			var newRow = '<tr><td><input name="outgoingItem" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  />		</td><td><input type="text" name="outgoingPrice" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
+			var newRow = '<tr><td><input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  />		</td><td><input type="text" name="outgoingPrice" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
 			$('table#outgoingTable').append(newRow);
    });
    
