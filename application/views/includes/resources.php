@@ -148,11 +148,11 @@
 
 	$('#purchase_list input[type=radio]').click(function(){
 		if($(this).attr('id') == 'cashChoice'){
-			var div = "Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange(); '>PAY</button>";
+			var div = "Customer Cash: <input type='text' name='customerCash' id='customerCash'/><button onclick='alertChange(); return false;'>PAY</button>";
 			$('#paymentDetails').html(div);
 		}
 		else if($(this).attr('id') == 'creditChoice'){
-			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required /><button>RECORD</button>";
+			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required/><button>RECORD</button>";
 			$('#paymentDetails').html(div);
 		}
 	});
@@ -241,12 +241,8 @@
 	var cash = $('#customerCash').val();
 	var purchase = $('#totalPurchase').html().substring(1);
 	var change = cash - purchase;
-	if(cash==NULL || cash='')
-		return;
-	else {
-		if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
-		else alert("Invalid change.");
-	}
+	if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
+	else alert("Invalid change.");
 	}
 
 	//delete a table row

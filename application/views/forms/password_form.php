@@ -7,7 +7,7 @@
 			echo '<br>Old Password: '.form_password('old_password', '').'<br>';
 			echo 'New Password: '.form_password('new_password', '').'<br>';
 			echo 'Confirm Password: '.form_password('conf_password', '').'<br>';
-			echo form_submit(array('id'=>'change_pwd', 'name'=>'submit'), 'Change Password');
+			echo form_submit(array('class'=>'button','id'=>'change_pwd', 'name'=>'submit'), 'Change Password');
 		echo form_close();
 	?>
 </div>

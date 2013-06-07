@@ -22,11 +22,12 @@ class Admin extends CI_Controller {
 	function password() {
 		$data['message'] = " ";
 		$data['header'] = 'Change Password';
+		$data['flag']=1;
 		
 		$data['page'] = 'forms/password_form';
 		//$data['subpage'] = 'forms/password_form';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function change_password() {
@@ -44,11 +45,12 @@ class Admin extends CI_Controller {
 		if($this->form_validation->run() == FALSE) {
 			$data['message'] = "";
 			$data['header'] = 'Change Password';
+			$data['flag']=1;
 			
 			$data['page'] = 'forms/password_form';
 			//$data['subpage'] = 'forms/password_form';
 
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 		}
 		else {
 
@@ -58,12 +60,13 @@ class Admin extends CI_Controller {
 				$data['message'] = "Wrong combination of role and password.";
 			
 			$data['header'] = 'Change Password';
+			$data['flag']=1;
 			
 			$data['page'] = 'forms/password_form';
 			//$data['subpage'] = 'forms/password_form';
 
 
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 		}
 
 
@@ -73,21 +76,33 @@ class Admin extends CI_Controller {
 	function items() {
 
 		$data['header'] = 'Item';
+		$data['flag']=1;
 		
 		$data['page'] = 'admin/item_form';
 		//$data['subpage'] = 'admin/item_form';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
+	}
+
+	function goto_items() {
+
+		$data['header'] = 'Administrator';
+		$data['flag']=1;
+		//$data['page'] = 'admin_home';
+		$data['page'] = 'admin/items';
+
+		$this->load->view('template2', $data);
 	}
 
 	function goto_add_item() {
 
 		$data['header'] = 'Add Item';
+		$data['flag']=1;
 		
 		$data['page'] = 'forms/item_form';
 		//$data['subpage'] = 'forms/item_form';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function add_item() {
@@ -121,12 +136,12 @@ class Admin extends CI_Controller {
 	function goto_edit_item($edit) {
 
 		$data['header'] = 'Edit Item';
-		
+		$data['flag']=1;
 		$data['page'] = 'forms/itemEdit_form';
 		//$data['subpage'] = 'forms/itemEdit_form';
 		$data['edit'] = $edit;
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function edit_item() {
@@ -156,13 +171,13 @@ class Admin extends CI_Controller {
 			
 		$data['success'] = $this->pos_model->update_item($data,$edit);
 		$data['edit']=$edit;
-
+		$data['flag']=1;
 		$data['header'] = 'Edit Item';
 		
 		$data['page'] = 'admin/successEdit';
 		//$data['subpage'] = 'admin/successEdit';
 											
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 
 	}
 
@@ -183,13 +198,14 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Items Found';
  		
 		$data['header'] = 'Item List';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'view_list';
 		//$data['subpage'] = 'view_list';
 		$data['list_id'] = 1; // list id # 1 - list of items
 
 		//$this->load->view('template', $data);
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 		//get item by supplier
@@ -224,31 +240,34 @@ class Admin extends CI_Controller {
 	function reports() {
 
 		$data['header'] = 'Report';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'admin/reports_main';
 		//$data['subpage'] = 'admin/reports_main';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function inventory() {
 
 		$data['header'] = 'Inventory';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'inventory_main';
 		//$data['subpage'] = 'inventory_main';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function customers1() {
 
 		$data['header'] = 'Administrator';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'admin_home';
 		$data['subpage'] = 'admin/customers_main';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function customers() {
@@ -261,22 +280,24 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Customers Found';
  		
 		$data['header'] = 'Customers';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'view_list';
 		$data['list_id'] = 2; // list id # 2 - list of customers
 		//$data['subpage'] = 'view_list';
 		
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function delivery() {
 
 		$data['header'] = 'Delivery';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'admin/delivery_main';
 		//$data['subpage'] = 'admin/delivery_main';
 
-		$this->load->view('template', $data);		
+		$this->load->view('template2', $data);		
 	}
 
 	function goto_view_delivery() {
@@ -289,18 +310,20 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Delivery Found';
  		
 		$data['header'] = 'Delivery';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'view_list';
 		$data['list_id'] = 3; // list id # 3 - list of customers
 		//$data['subpage'] = 'view_list';
 		
-		$this->load->view('template', $data);	
+		$this->load->view('template2', $data);	
 	}
 
 	function logout() {
 
 		$data['message'] = " ";
-		$data['header'] = 'POS';
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
 		
 		$data['page'] = 'forms/login_form';
 		
@@ -317,11 +340,12 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Items Found';
  		
 		$data['header'] = 'Administrator';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'view_item_bygroup';
 		//$data['subpage'] = 'view_item_bygroup';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 		//$this->load->view('view_item_bygroup', $data);
 	}
 
@@ -335,11 +359,12 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Items Found';
  		
 		$data['header'] = 'Administrator';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'view_item_byclass';
 		//$data['subpage'] = 'view_item_byclass';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 		//$this->load->view('view_item_byclass', $data);
 	}
 
@@ -354,11 +379,12 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Items Found';
  		
 		$data['header'] = 'Administrator';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'view_item_bysupplier';
 		//$data['subpage'] = 'view_item_bysupplier';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 		//$this->load->view('view_item_bysupplier', $data);
 	}
 
@@ -373,11 +399,12 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Items Found';
  		
 		$data['header'] = 'Administrator';
-		
+		$data['flag']=1;
+
 		//$data['page'] = 'admin_home';
 		$data['page'] = 'view_item_byOutofStock';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 		//$this->load->view('view_item_byOutofStock', $data);
 	}
 
@@ -392,11 +419,12 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Items Found';
  		
 		$data['header'] = 'Administrator';
-		
+		$data['flag']=1;
+
 		//$data['page'] = 'admin_home';
 		$data['page'] = 'view_item_bybelowReorder';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 		//$this->load->view('view_item_bybelowReorder', $data);
 	}
 	
@@ -418,7 +446,8 @@ class Admin extends CI_Controller {
 			$data['message'] = 'No Details Found';
  		
 		$data['header'] = 'Cashier';
-		
+		$data['flag']=1;
+
 		$data['page'] = 'cashier_home';
 		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
 		$data['subpage'] = 'view_list';
@@ -457,31 +486,6 @@ class Admin extends CI_Controller {
 			$data = $this->pos_model->getAll_items3();
 		}
 		echo json_encode($data);
-	}
-
-	function goto_add_customers() {
-
-		$data['header'] = 'Administrator';
-		
-		//$data['page'] = 'admin_home';
-		$data['page'] = 'forms/customer_form';
-
-		$this->load->view('template', $data);
-	}
-
-	function add_customer() {
-
-		$name = $this->input->post('customerName');
-		$contact = $this->input->post('customerNum');
-		$add = $this->input->post('customerAdd');
-
-		$this->db->insert('customers', array('customer_id'=>NULL,
-				'customer_name'=>$name,
-				'contact_number'=>$contact,
-				'address'=>$add,
-				'balance'=>0
-			));
-		redirect('pos/admin_home');
 	}
 
 }

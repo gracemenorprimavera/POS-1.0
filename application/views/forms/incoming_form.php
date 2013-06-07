@@ -94,7 +94,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		?>
 		</td>
 		<td>
-			<input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" />
+			<input class="button" style="margin-bottom:23px;" type="button" value="Delete Row" onclick="DeleteRowFunction(this)" />
 		</td>
 	</tr>
 	</table>
@@ -112,6 +112,6 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 	?>
 	<br/><br/>
 	<label for="totalPrice">Total: </label><input type="input" name="totalPrice" id='totalPrice' autocomplete="off" readonly/>
-	<input type="submit" name="submit" value="Submit" />
+	<input class="button" type="submit" name="submit" value="Submit" />
 </form>
 <?php echo anchor('pos/cashier_home', 'Cancel Delivery', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

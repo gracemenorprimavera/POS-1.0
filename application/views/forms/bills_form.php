@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">Total: <input type="text" name="total" class="totalBills" min="0" readonly /></td>
-		<td><?php echo form_submit(array('id'=>'amount_submit', 'name'=>'register_bills'), 'Register Amount'); ?></td>
+		<td><?php echo form_submit(array('class'=>'button','id'=>'amount_submit', 'name'=>'register_bills'), 'Register Amount'); ?></td>
 	</tr>
 		
 	</table>

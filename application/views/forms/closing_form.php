@@ -14,7 +14,7 @@
 	P1 <input type="number" name="one" min="0">
 	P5 <input type="number" name="five" min="0">
 	P10 <input type="number" name="ten" min="0"><br>
-	<?php echo form_submit('register_bills', 'Register Closing Amount'); ?>
+	<?php echo form_submit(array('class'=>'button','style'=>'width:220px;', 'name'=>'register_bills'), 'Register Closing Amount'); ?>
 	<?php echo form_close(); ?>
 
 	<br><br>

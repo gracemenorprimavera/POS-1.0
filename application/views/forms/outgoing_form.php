@@ -95,7 +95,7 @@
 		?>
 		</td>
 		<td>
-			<input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" />
+			<input class="button" style="margin-bottom:23px;" type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" />
 		</td>
 	</tr>
 	</table>
@@ -113,7 +113,7 @@
 	?>
 	<br/><br/>
 	<label for="totalPrice">Total: </label><input type="input" name="outTotalPrice" id='outTotalPrice' autocomplete="off" readonly/> 
-	<input type="submit" name="submit" value="Submit" />	
+	<input class="button" type="submit" name="submit" value="Submit" />	
 	
 </form>
 <?php echo anchor('pos/cashier_home', 'Cancel Outgoing', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

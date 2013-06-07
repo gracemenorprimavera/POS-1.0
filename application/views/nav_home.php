@@ -10,6 +10,9 @@
 
 <body>
 
+<div id="nav_home"><?php $this->load->view($page);?></div>
+	<div id="mainpage">
+
 	<?php $this->load->view('includes/header'); ?>
 	
 	<!-- <div id="main_con">	
@@ -28,6 +31,6 @@
 	<?php $this->load->view('includes/footer'); ?>
 
 	<?php //$this->load->view('includes/about'); ?> 
-	
+	</div>
 </body>
 </html>

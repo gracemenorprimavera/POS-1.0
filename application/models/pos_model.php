@@ -257,13 +257,9 @@ class Pos_model extends CI_Model {
 	function store_transDetails($trans_id, $item_code, $qty, $subtotal) {
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 			'item_code'=>$item_code,
-			'division'=>NULL,
 			'quantity'=>$qty,
 			'price'=>$subtotal
 			));
-		$query_str = "UPDATE  trans_details set division=(select division from item where item_code='$item_code')";
-		$this->db->query($query_str);
-
 	}
 
 	function store_deliveredItem($delivery_id, $item_code, $qty, $price ) {
