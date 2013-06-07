@@ -21,12 +21,7 @@
 					<th> Bar Code </th>
 					<th> Item Code</th>
 					<th> Description 1 </th>
-					<th> Description 2 </th>
-					<th> Description 3 </th>
-					<th> Description 4 </th>
-					<th> Group </th>
-					<th> Classification 1 </th>
-					<th> Classification 2 </th>
+					
 					<th> Cost </th>
 					<th> Retail Price </th>
 					<th> Model Quantity </th>
@@ -45,12 +40,7 @@
 				echo '<td>'.$r->bar_code.'</td>';
 				echo '<td>'.$r->item_code.'</td>';
 				echo '<td>'.$r->desc1.'</td>';
-				echo '<td>'.$r->desc2.'</td>';
-				echo '<td>'.$r->desc3.'</td>';
-				echo '<td>'.$r->desc4.'</td>';
-				echo '<td>'.$r->group.'</td>';
-				echo '<td>'.$r->class1.'</td>';
-				echo '<td>'.$r->class2.'</td>';
+				
 				echo '<td>'.$r->cost.'</td>';
 				echo '<td>'.$r->retail_price.'</td>';
 				echo '<td>'.$r->model_quantity.'</td>';

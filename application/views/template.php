@@ -12,6 +12,9 @@
 
 	<?php $this->load->view('includes/header'); ?>
 	
+	<!-- <div id="main_con">	
+		<?php $this->load->view($page); ?>
+	</div> -->
 	<?php if($header=='POS') {
 		echo '<div id="login_con">';
 			 $this->load->view($page);
@@ -21,11 +24,10 @@
 			 $this->load->view($page);
 		echo '</div>';
 	} ?>
-	
 
 	<?php $this->load->view('includes/footer'); ?>
 
-	<?php $this->load->view('includes/about'); ?> 
+	<?php //$this->load->view('includes/about'); ?> 
 	
 </body>
 </html>

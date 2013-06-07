@@ -75,21 +75,6 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
-	
-	function getAll_customers2() {
-	
-		$this->db->select('customer_name as label,customer_id as customer_id');
-		$this->db->from('customers');
-		$result = $this->db->get();
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-	}
 
 	function get_customerDetails($customer_id) {
 		
@@ -272,9 +257,13 @@ class Pos_model extends CI_Model {
 	function store_transDetails($trans_id, $item_code, $qty, $subtotal) {
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 			'item_code'=>$item_code,
+			'division'=>NULL,
 			'quantity'=>$qty,
 			'price'=>$subtotal
 			));
+		$query_str = "UPDATE  trans_details set division=(select division from item where item_code='$item_code')";
+		$this->db->query($query_str);
+
 	}
 
 	function store_deliveredItem($delivery_id, $item_code, $qty, $price ) {
@@ -283,6 +272,24 @@ class Pos_model extends CI_Model {
 			'quantity'=>$qty,
 			'price'=>$price
 			));
+	}
+
+	function store_outItem($outgoing_id, $item_code, $qty, $price ) {
+		$this->db->insert('out_item', array('outgoing_id'=>$outgoing_id,
+			'item_code'=>$item_code,
+			'quantity'=>$qty,
+			'price'=>$price
+			));
+	}
+
+	function store_expenses($status, $date, $desc, $amount) {
+		$this->db->insert('expenses', array('expense_id'=>NULL,
+			'date_expense'=>date('y-m-d'),
+			'amount' =>$amount,
+			'description'=>$desc,
+			'status'=>$status
+			));
+
 	}
 
 	function subtract_item($item_code, $qty) {
@@ -431,7 +438,22 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+
+	function getAll_customers2() {
 	
+		$this->db->select('customer_name as label,customer_id as customer_id');
+		$this->db->from('customers');
+		$result = $this->db->get();
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
 	function getAll_items3() {
 
 		$this->db->select("CONCAT(item.bar_code,' ',item.desc1) as label,item.bar_code as value",false);
@@ -445,6 +467,17 @@ class Pos_model extends CI_Model {
 		}
 		else 
 			return false;
+	}
+
+	function register_amount($amount) {
+		$this->db->insert('amount', array('date'=>date('y-m-d'),
+				'opening_bills'=>$amount,
+				'opening_coins'=>$amount,
+				'opening_total'=>$amount+$amount,
+				'closing_bills'=>$amount,
+				'closing_coins'=>$amount,
+				'closing_total'=>$amount+$amount
+			));
 	}
 	
 }

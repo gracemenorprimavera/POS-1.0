@@ -74,7 +74,7 @@ class Pos extends CI_Controller {
 		$data['header'] = 'Cashier';
 		
 		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'dummy';
+		//$data['subpage'] = 'dummy';
 
 		$this->load->view('template', $data);
 	}
@@ -102,11 +102,21 @@ class Pos extends CI_Controller {
 		$data['header'] = 'Administrator';
 		
 		$data['page'] = 'admin_home';
-		$data['subpage'] = 'dummy';
+		//$data['subpage'] = 'dummy';
 
 		$this->load->view('template', $data);
 	}	
+
+	function register_amount() {
+
+		$amount = $this->input->post('total');
+
+		$this->pos_model->register_amount($amount);
+
+		redirect('pos/cashier_home');
 	
+	}
+
 	public function manager_home(){
 		$data['header'] = 'Manager';
 		

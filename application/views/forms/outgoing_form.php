@@ -3,7 +3,7 @@
 		echo validation_errors();
 		echo form_open('cashier/createOutgoing');	//Controller -> Delivery, Action -> Create	
 
-		echo '<label for="outgoingDate">Outgoing date: </label>';	//delivery date
+			//delivery date
 		$data = array(
               'name'        => 'outgoingDate',
               'id'          => '',
@@ -14,8 +14,6 @@
 			  'required'	=> 'required',
 			  'readonly'	=> 'readonly'
 		);
-
-		echo form_input($data).'<br/>';
 		
 		$options = array(
 				'' => 'Please Select',
@@ -26,22 +24,26 @@
 				'other' => 'Others'
 		);
 
-		echo 'Outgoing: '.form_dropdown('outgoing', $options, '', 'autocomplete="off" required').'<br>';
-		echo 'Outgoing Description <br>'.form_textarea(array('rows' => '5', 'cols'=>'20', 'name' => 'out_desc'));
+		echo '<table  cellpadding="10px"><tr>';
+		echo '<th>Outgoing<br>'.form_dropdown('outgoing', $options, '', 'autocomplete="off" required').'</th>';
+		echo '<th>Description <br>'.form_textarea(array('rows' => '3', 'cols'=>'20', 'name' => 'out_desc')).'</th>';
+		echo '<th><label for="outgoingDate">Date </label><br>';
+		echo form_input($data).'<th/>';
+		echo '</tr></table>';
 ?>
 <table id="outgoingTable">
 	<tr><th>Item</th><th>Quantity</th><th>Price</th><th>Amount</th><th>Action</th></tr>
 	<tr>
 		<td>											
 	<?php
-		echo '<input name="outgoingItem" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/>';
+		echo '<input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/>';
 			
 	?>
 		</td>
 		<td>
 		<?php											//quantity
 			$data = array(
-				  'name'        => 'outgoingQty',
+				  'name'        => 'outgoingQty[]',
 				  'type'		=> 'number',
 				  'id'          => '',
 				  'class'		=> 'outgoingQty',
@@ -59,7 +61,7 @@
 		<td>
 		<?php
 			$data = array(								//price
-				  'name'        => 'outgoingPrice',
+				  'name'        => 'outgoingPrice[]',
 				  'id'          => '',
 				  'class'		=> 'outgoingPrice',
 				  'value'       => '',
@@ -77,7 +79,7 @@
 		<td>
 		<?php
 			$data = array(								//amount = qty * price
-				  'name'        => 'outgoingAmt',
+				  'name'        => 'outgoingAmt[]',
 				  'id'          => '',
 				  'class'		=>	'outgoingAmt',
 				  'value'       => '',
@@ -109,8 +111,9 @@
 		echo form_button($data);
 	
 	?>
-	<br/>
-	<label for="totalPrice">Total: </label><input type="input" name="outTotalPrice" id='outTotalPrice' autocomplete="off" readonly/><br/>
+	<br/><br/>
+	<label for="totalPrice">Total: </label><input type="input" name="outTotalPrice" id='outTotalPrice' autocomplete="off" readonly/> 
 	<input type="submit" name="submit" value="Submit" />	
 	
 </form>
+<?php echo anchor('pos/cashier_home', 'Cancel Outgoing', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

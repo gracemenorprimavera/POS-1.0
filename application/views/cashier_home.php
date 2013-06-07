@@ -1,24 +1,28 @@
 
 <div id="left_con">
-	<ul>
-	<?php
-		echo '<li>'.anchor('cashier/purchase', ' Purchase ').'</li>';
-		echo '<li>'.anchor('cashier/credit', ' Credit ').'</li>';
-		echo '<li>'.anchor('cashier/outgoing', ' Outgoing ').'</li>';
-		echo '<li>'.anchor('cashier/incoming', ' Incoming ').'</li>';
-		echo '<li>'.anchor('cashier/expenses', ' Expenses ').'</li>';
-		echo '<li>'.anchor('cashier/search', ' Search ').'</li>';
-		echo '<li>'.anchor('cashier/inventory', ' Inventory ').'</li>';
-		echo '<li>'.anchor('', 'Reports').'</li>';
-		echo '<li>'.anchor('cashier/close', ' Close Store ').'</li>';
-		echo '<li>'.anchor('cashier/logout', ' Log out ').'</li>';
-	?>
-	</ul>
+	<table cellpadding="30" text-align="center">
+		<tr>
+			<td> <?php echo anchor('cashier/purchase', ' Purchase '); ?> </td>
+			<td> <?php echo anchor('cashier/credit', ' Credit '); ?> </td>
+			<td> <?php echo anchor('cashier/reports', ' Reports '); ?> </td>
+
+			
+		</tr>
+		<tr>
+			<td> <?php echo anchor('cashier/expenses', ' Expenses '); ?> </td>
+			<td> <?php echo anchor('cashier/search', ' Search '); ?> </td>
+			<td> <?php echo anchor('cashier/inventory', ' Inventory '); ?> </td>
+			
+			
+		</tr>
+		<tr>
+			
+			<td> <?php echo anchor('cashier/amount', 'Register Bills and Coins'); ?> </td>
+			<td> <?php echo anchor('cashier/close_store', ' Close Store '); ?> </td>
+			<td> <?php echo anchor('cashier/logout', ' Log out '); ?> </td>
+			
+			
+		</tr>
+	</table>
 </div>
 
-<div id="right_con">
-	<?php 
-		//if($subpage != 0)
-			$this->load->view($subpage); 
-	?>
-</div>

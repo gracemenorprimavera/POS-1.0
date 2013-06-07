@@ -3,8 +3,8 @@
 echo validation_errors();
 echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Create	
 
-	echo '<label for="invoiceDate">Delivery date: </label>';	//delivery date
-	$data = array(
+	
+	$data1 = array(
               'name'        => 'invoiceDate',
               'id'          => '',
               'value'       => date('m/d/Y'),
@@ -15,17 +15,18 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 			  'readonly'	=> 'readonly'
     );
 
-	echo form_input($data).'<br/>';
-	
 	$data = array();
 	$data[''] = 'Please Select';
 	foreach($supplier as $row){
 		$data[$row->supplier_name] = $row->supplier_name;
 	}
-	
-	echo 'Incoming from: '.form_dropdown('outgoing', $data,'','id="outgoing" autocomplete="off" required').'<br>'; 		//incoming from
-	echo 'Incoming Description <br>'.form_textarea(array('rows' => '5', 'cols'=>'20', 'name' => 'in_desc', 'autocomplete' => 'off')).'<br>';		//comments
-		
+
+	echo '<table  cellpadding="10px"><tr>';	
+	echo '<th>Incoming from <br>(Supplier) <br>'.form_dropdown('outgoing', $data,'','id="outgoing" autocomplete="off" required').'</th>'; 		//incoming from
+	echo '<th>Incoming Description <br>'.form_textarea(array('rows' => '3', 'cols'=>'20', 'name' => 'in_desc', 'autocomplete' => 'off')).'</th>';		//comments
+	echo '<th><label for="invoiceDate">Delivery date </label><br>';	//delivery date
+	echo form_input($data1).'</th>';
+	echo '</tr></table>';		
 ?>
 	<table id="deliveryTable">
 	<tr><th>Item</th><th>Quantity</th><th>Price</th><th>Amount</th><th>Action</th></tr>
@@ -60,7 +61,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		<?php
 			$data = array(								//price
 				  'name'        => 'invoicePrice[]',
-				  'type'		=> 'number',
+				  'type'		=> 'text',
 				  'id'          => '',
 				  'class'		=> 'invoicePrice',
 				  'value'       => '',
@@ -109,8 +110,8 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		echo form_button($data);
 	
 	?>
-	<br/>
-	<label for="totalPrice">Total: </label><input type="input" name="totalPrice" id='totalPrice' autocomplete="off" readonly/><br/>
+	<br/><br/>
+	<label for="totalPrice">Total: </label><input type="input" name="totalPrice" id='totalPrice' autocomplete="off" readonly/>
 	<input type="submit" name="submit" value="Submit" />
 </form>
 <?php echo anchor('pos/cashier_home', 'Cancel Delivery', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

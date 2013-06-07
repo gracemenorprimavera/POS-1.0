@@ -1,5 +1,5 @@
 <div id="purchase_list">
-	<h3> PURCHASE LIST </h3> 
+<br><br>
 
 
 <?php echo form_open('cashier/do_purchase') ?>
@@ -21,7 +21,7 @@
 
 	<tr>
 	  <td>
-	  	<?php echo form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?></td>
+	  	<?php echo $items['qty']//echo form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?></td>
 	  <td>
 		<?php echo $items['name']; ?>
 
