@@ -1,7 +1,7 @@
 <div id="bills_form" class="forms">
 
 		
-	<?php echo form_open('pos/register_amount',array('id' => 'closingBills')); ?>	
+	<?php echo form_open('cashier/register_amount',array('id' => 'closingBills')); ?>	
 	<table id="three">
 	<tr>
 		<th colspan="2"><b>BILLS</b> </th>

@@ -24,9 +24,7 @@ class Manager extends CI_Controller {
     }
 
     private function check_isvalidated(){
-       /* if(! $this->session->userdata('validated')){
-            redirect('pos');
-        } */
+
         $is_logged_in = $this->session->userdata('validated');
         $user= $this->session->userdata('role');
 		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin')

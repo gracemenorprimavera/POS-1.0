@@ -24,54 +24,54 @@ class Cashier extends CI_Controller {
     }
 
     private function check_isvalidated(){
-       /* if(! $this->session->userdata('validated')){
-            redirect('pos');
-        } */
         $is_logged_in = $this->session->userdata('validated');
         $user= $this->session->userdata('role');
-		if(!isset($is_logged_in) || $is_logged_in != true || $user!='cashier')
-		{
+		if(!isset($is_logged_in) || $is_logged_in != true || $user!='cashier') {
 			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Cashier');	
 			die();
 
 		}		
     }
 
-   function index() {
+    function index() {
 
 		$data['header'] = 'Cashier';
 		$is_open = $this->session->userdata('open');
-		if(!isset($is_open) || $is_open != true)
-		{
-			echo 'You don\'t have permission to access this page.'.anchor('pos/opening', 'Register Opening Bills');	
+		if(!isset($is_open) || $is_open != true) {
+			echo 'You don\'t have permission to access this page.'.anchor('cashier/open_amount', 'Record Opening Bills');	
 			die();
-
 		}	
 		else {
 			$data['page'] = 'cashier_home';
-			//$data['subpage'] = 'dummy';
-
 			$this->load->view('template', $data);
 		}
 	}
 
-	function grace() {
-
-	}
-
-	function purchase() {
-		$data['message'] = "";
-		$data['header'] = 'New Transaction';
-		
-		//$data['page'] = 'cashier_home';
-		//$data['subpage'] = 'cashier/purchase_main';
-		$data['page'] = 'cashier/purchase_main';
-		$data['customer'] = $this->pos_model->getAll_customers();
-		//$data['subpage'] = 0;
-
+	function open_amount() {
+		$data['header'] = 'Cashier';
+		$data['page'] = 'forms/bills_form';
 		$this->load->view('template', $data);
 	}
 
+	function register_amount() {
+
+		$mode =  $this->input->post('registerMode');
+		$bills = $this->input->post('billsTotal');
+		$coins = $this->input->post('coinsTotal');
+		
+		if($mode == 'opening'){
+			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
+			redirect('cashier');
+		}
+		else if($mode == 'closing'){
+			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
+			redirect('cashier/close_store');
+		}
+	
+	}
+
+// SALES
+/*
 	function add_item() {
 
 		$bar_code = $this->input->post('search_item');
@@ -79,18 +79,13 @@ class Cashier extends CI_Controller {
 
 		$this->form_validation->set_rules('search_item','Bar Code', 'required');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required');
-		
+		$data['customer'] = $this->pos_model->getAll_customers();
 
 		if($this->form_validation->run() == FALSE) {
 			$data['message'] = 'All fields are required!';
 
 			$data['header'] = 'New Transaction';
-		
-			//$data['page'] = 'cashier_home';
-			//$data['subpage'] = 'cashier/purchase_main';
 			$data['page'] = 'cashier/purchase_main';
-			$data['subpage'] = 0;
-			$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template', $data);
 		}
 		else {
@@ -130,14 +125,10 @@ class Cashier extends CI_Controller {
 		    	$data['message'] = 'No item found!';		
 		    }
 		   
-				$data['header'] = 'New Transaction';
-		
-				//$data['page'] = 'cashier_home';
-				//$data['subpage'] = 'cashier/purchase_main';
-				$data['page'] = 'cashier/purchase_main';
-				$data['subpage'] = 0;
-				$data['customer'] = $this->pos_model->getAll_customers();
-				$this->load->view('template', $data);		
+			$data['header'] = 'New Transaction';
+			$data['page'] = 'cashier/purchase_main';
+			$data['subpage'] = 0;
+			$this->load->view('template', $data);		
 		}
 	}
 
@@ -153,12 +144,8 @@ class Cashier extends CI_Controller {
 		    
 		$data['customer'] = $this->pos_model->getAll_customers();
 		$data['header'] = 'New Transaction';
-		
-		//$data['page'] = 'cashier_home';
-		//$data['subpage'] = 'cashier/purchase_main';
 		$data['page'] = 'cashier/purchase_main';
-		$data['subpage'] = 0;
-
+		
 		$this->load->view('template', $data);	
 	}
 
@@ -175,7 +162,7 @@ class Cashier extends CI_Controller {
 				'total_amount'=>$total
 				));
 						
-			$trans_id = $this->db->insert_id();	/* get last transaction id */
+			$trans_id = $this->db->insert_id();	// get last transaction id 
 
 				// insert trans_details 
 			$i = 1;
@@ -195,7 +182,7 @@ class Cashier extends CI_Controller {
 				'total_amount'=>$total
 				));
 
-			$credit_id = $this->db->insert_id();	/* get last credit id*/
+			$credit_id = $this->db->insert_id();	// get last credit id
 
 				// insert credit_details 
 			$i = 1;
@@ -215,13 +202,11 @@ class Cashier extends CI_Controller {
 		redirect('cashier');
 	}
 
-
-
 	function cancel_trans() {
 		$this->cart->destroy();
 		redirect('cashier');
-
 	}
+*/
 
 	function createDelivery(){
 		//$this->load->helper('form');
@@ -251,6 +236,7 @@ class Cashier extends CI_Controller {
 			$total = $this->input->post('totalPrice');
 				
 			$id = $this->pos_model->get_supplierID($supplier); // get supplier id 
+				
 				// create delivery 
 			$this->db->insert('delivery', array('supplier_id'=>$id, 
 				'delivery_id'=>NULL, 
@@ -270,7 +256,7 @@ class Cashier extends CI_Controller {
 
 			endforeach;
 
-			redirect('cashier/incoming');
+			redirect('cashier');
 		}
 	}
 	
@@ -293,7 +279,6 @@ class Cashier extends CI_Controller {
 		{
 			$data['header'] = 'Cashier';
 			$data['page'] = 'cashier/incoming_main';
-			$data['subpage'] = 'cashier/incoming_main';
 			$data['supplier'] = $this->pos_model->getAll_supplier();
 			$this->load->view('template', $data);
 		}
@@ -306,31 +291,26 @@ class Cashier extends CI_Controller {
 			$price = $this->input->post('outgoingAmt');
 			$total = $this->input->post('outTotalPrice');
 				
-				/* create outgoing */
+				// create outgoing 
 			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
 				'date_out'=>date('y-m-d'),
 				'description'=>$desc,
 				'amount'=>$total,
 				'status'=>$status
 				));
-				
-				/* get outgoing ID */
-			$outgoing_id = $this->db->insert_id();
-			//echo $delivery_id;
+				 
+			$outgoing_id = $this->db->insert_id();	// get outgoing ID
 
-				/* insert out_items */
+				// insert out_items 
 			$i = 0;
 			foreach($item as $d): 
-				
 				$this->pos_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
-				echo $item[$i].'<br>'.$qty[$i].'<br>'.$price[$i].'<br>';
-				//$this->pos_model->subtract_item($items['id'], $items['qty']);
-				//$this->pos_model->add_item($item[$i], $qty[$i]);
+				$this->pos_model->subtract_item($items['id'], $items['qty']);
 				$i++;
 
 			endforeach;
 
-			//redirect('cashier/outgoing');
+			redirect('cashier');
 		}
 	}
 
@@ -338,38 +318,26 @@ class Cashier extends CI_Controller {
 		$status = $this->input->post('expenses_dropdown');
 		$date = $this->input->post('expenseDate');
 		$desc = $this->input->post('exp_desc');
-		$amount = $this->input->post('expense_amount');	
-		
+		$amount = $this->input->post('expense_amount');			
 		$this->pos_model->store_expenses($status, $date, $desc, $amount);
 
-		redirect('pos/cashier_home');
+		redirect('cashier');
 	}
-	
-	
-	public function supplier_check($str)
-	{
-		if ($str == "")
-		{
+		
+	public function supplier_check($str) {
+		
+		if ($str == "") {
 			$this->form_validation->set_message('supplier_check', 'The %s field can not be empty.');
 			return FALSE;
 		}
-		else
-		{
+		else {
 			return TRUE;
 		}
 	}
 	
-
-
 	function credit() {
-
-		/*$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/credit_main';
-
-		$this->load->view('template', $data);*/
-
+		$data['customer_flag'] = false;
+		$data['trans_flag'] = false;
 		if($this->pos_model->getAll_customers()) {
 			$data['customers'] = $this->pos_model->getAll_customers();
 			$data['message'] = '';
@@ -377,30 +345,22 @@ class Cashier extends CI_Controller {
 		else 
 			$data['message'] = 'No Customers Found';
  		
-		$data['header'] = 'Credit';
-		
-		$data['page'] = 'view_list';
-		$data['list_id'] = 2; // list id # 2 - list of customers
-		//$data['subpage'] = 'view_list';
-		
+		$data['header'] = 'Credit';		
+		$data['page'] = 'customer_list';
 		$this->load->view('template', $data);
 	}
 
 	function outgoing() {
 
-		$data['header'] = 'Outgoing';
-		
-		$data['page'] = 'cashier/outgoing_main';
-		//$data['subpage'] = 'cashier/outgoing_main';
-
+		$data['header'] = 'Outgoing';		
+		$data['page'] = 'forms/outgoing_form';
 		$this->load->view('template', $data);
 	}
 
 	function incoming() {
 
 		$data['header'] = 'Incoming';
-		$data['page'] = 'cashier/incoming_main';
-		//$data['subpage'] = 'cashier/incoming_main';
+		$data['page'] = 'forms/incoming_form';		
 		$data['supplier'] = $this->pos_model->getAll_supplier();
 		$this->load->view('template', $data);
 	}
@@ -408,88 +368,85 @@ class Cashier extends CI_Controller {
 	function expenses() {
 
 		$data['header'] = 'Expenses';
-		
-		$data['page'] = 'cashier/expenses_main';
-		//$data['subpage'] = 'cashier/expenses_main';
-
+		$data['page'] = 'forms/expense_form';
 		$this->load->view('template', $data);
 	}
 
 	function search() {
 
 		$data['header'] = 'Search';
-		
 		$data['page'] = 'cashier/search_main';
-		//$data['subpage'] = 'cashier/search_main';
-
 		$this->form_validation->set_rules('search','search item','');
-
 		$search = $this->input->post('search');
 
 		if ($this->form_validation->run() == FALSE){
-
 			$data['results'] = FALSE;
- 
  			$this->load->view('template', $data);
- 
 		}
 		else {
-
-				$data['search'] = $search;
-
-				$data['results'] = $this->pos_model->get_search($search);
-
-				$this->load->view('template', $data);
+			$data['search'] = $search;
+			$data['results'] = $this->pos_model->get_search($search);
+			$this->load->view('template', $data);
 		}		
 	}
 
 	function inventory() {
 
 		$data['header'] = 'Inventory';
-		
 		$data['page'] = 'inventory_main';
-		//$data['subpage'] = 'inventory_main';
-
 		$this->load->view('template', $data);
 	}
 
-	function amount() {
+	function closing() {
+		$data['header'] = 'Record Closing Amount';	
+		$data['page'] = 'forms/closing_form';
+		$this->load->view('template', $data);
+	}
+
+	/*function amount() {
 
 		$data['header'] = 'Opening & Closing Amount';
-		
 		$data['page'] = 'forms/bills_form';
-		//$data['subpage'] = 'forms/bills_form';
-
 		$this->load->view('template', $data);
-	}
+	}*/
+
+	function pay_credit() {
+		$amount = $this->input->post('customerCash');
+		$customer_id = $this->input->post('customer_id');
+		
+		//echo $payment.' '.$customer_id;
+
+		$this->pos_model->record_payment($customer_id, $amount);	// record payment_details
+		$this->pos_model->update_credit($customer_id, $amount);
 
 
-	
-	function pay_credit($customer_id) {
-		$payment = 2;
-		$this->pos_model->update_credit($customer_id, $payment);
-
-		$this->load->view('cashier/success');
+		redirect('cashier/view_customerDetails/'.$customer_id);
 	}
 
 	function view_customerDetails($customer_id) {
+		$data['customer_flag'] = true;
+		$data['trans_flag'] = false;
+		$data['customers'] = $this->pos_model->getAll_customers();
+		
 		if($this->pos_model->get_customerDetails($customer_id)) {
-			$data['customers'] = $this->pos_model->get_customerDetails($customer_id);
+			$data['customers_det'] = $this->pos_model->get_customerDetails($customer_id);
 			$data['message'] = '';
 		}
 		else 
 			$data['message'] = 'No Details Found';
  		
 		$data['header'] = 'Cashier';
-		
-		//$data['page'] = 'cashier_home';
-		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
-		$data['page'] = 'view_list';
+		$data['page'] = 'customer_list';
 		
 		$this->load->view('template', $data);
 	}
 
-	function view_transDetails($trans_id) {
+	function view_transDetails($trans_id, $customer_id) {
+		$data['customer_flag'] = true;
+		$data['trans_flag'] = true;
+		$data['customers'] = $this->pos_model->getAll_customers();
+		$data['customers_det'] = $this->pos_model->get_customerDetails($customer_id);
+		
 		if($this->pos_model->get_transDetails($trans_id)) {
 			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
 			$data['message'] = '';
@@ -498,10 +455,7 @@ class Cashier extends CI_Controller {
 			$data['message'] = 'No Transactions Found';
  		
 		$data['header'] = 'Cashier';
-		
-		//$data['page'] = 'cashier_home';
-		$data['list_id'] = 5; // list id # 5 - list of transactions' details
-		$data['page'] = 'view_list';
+		$data['page'] = 'customer_list';
 		
 		$this->load->view('template', $data);
 	}
@@ -509,10 +463,7 @@ class Cashier extends CI_Controller {
 	function reports() {
 
 		$data['header'] = 'Report';
-		
 		$data['page'] = 'cashier/reports_main';
-		//$data['subpage'] = 'cashier/reports_main';
-
 		$this->load->view('template', $data);
 	}
 
@@ -533,11 +484,7 @@ class Cashier extends CI_Controller {
 			$data['message'] = 'No Reports Found';
  		
 		$data['header'] = 'Reports';
-		
-		$data['page'] = 'report_list';
-		
-		//$data['subpage'] = 'view_list';
-		
+		$data['page'] = 'report_list';		
 		$this->load->view('template', $data);
 	}
 
@@ -547,25 +494,9 @@ class Cashier extends CI_Controller {
 		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
-		
 		$data['page'] = 'forms/report_form';
-		//print_r($data['expenses']);
-		//$data['subpage'] = 'view_list';
-		
-		$this->load->view('template', $data);
-
-
-	}
-
-	function closing() {
-		$data['header'] = 'Closing';
-		
-		$data['page'] = 'forms/closing_form';
-		//$data['subpage'] = 'dummy';
-
 		$this->load->view('template', $data);
 	}
-
 
 }
 

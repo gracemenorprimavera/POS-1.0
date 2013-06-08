@@ -2,7 +2,7 @@
 <div id="left_con">
 	<table cellpadding="30" text-align="center">
 		<tr>
-			<td> <?php echo anchor('cashier/purchase', ' Sales '); ?> </td>
+			<td> <?php echo anchor('sales', ' Sales '); ?> </td>
 			<td> <?php echo anchor('cashier/credit', ' Credit '); ?> </td>
 			<td> <?php echo anchor('cashier/view_reports', ' Reports '); ?> </td>
 

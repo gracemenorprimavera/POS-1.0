@@ -9,10 +9,16 @@
 <script language="javascript" type="text/javascript">
 
  $(document).ready(function() {
- 
- /*
-	Add new row to delivery table on button click
- */
+  	
+  	$("#search_item").keydown(function(e){
+        if(e.which==17 || e.which==74){
+            e.preventDefault();
+        }else{
+            console.log(e.which);
+        }
+    })
+
+ /*	Add new row to delivery table on button click */
    $("#addDeliveryRow").click(function () {
 			var newRow = '<tr><td><select name="invoiceItem[]" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty[]" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoicePrice[]" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoiceAmt[]" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
 			$('table#deliveryTable').append(newRow);
@@ -172,6 +178,14 @@
 			$('div#hcustomerName').css('display','inline-block');
 			
 		}
+	});
+
+	$('#pay_credit').click(function(){
+
+		
+		$('div#hcustomerName').css('display','none');
+		$('div#hcustomerCash').css('display','inline-block');
+		
 	});
 	
 	

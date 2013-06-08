@@ -73,6 +73,8 @@ class Pos_model extends CI_Model {
 	}
 
 	function getAll_customers() {
+		$this->db->select('*');
+		$this->db->group_by('customer_name');
 		$result = $this->db->get('customers');
 
 		if($result->num_rows() > 0) {
@@ -89,7 +91,7 @@ class Pos_model extends CI_Model {
 		
 		$this->db->from('customers');
 		$this->db->where('customers.customer_id', $customer_id);
-		$this->db->join('transactions', 'customers.customer_id = transactions.customer_id');
+		$this->db->join('credits', 'customers.customer_id = credits.customer_id');
 		//$this->db->join('trans_details', 'transactions.trans_id = trans_details.trans_id');
 		
 		$result = $this->db->get();
@@ -108,9 +110,9 @@ class Pos_model extends CI_Model {
 		
 		$this->db->from('customers');
 		
-		$this->db->join('transactions', 'customers.customer_id = transactions.customer_id');
-		$this->db->join('trans_details', 'transactions.trans_id = trans_details.trans_id');
-		$this->db->where('transactions.trans_id', $trans_id);
+		$this->db->join('credits', 'customers.customer_id = credits.customer_id');
+		$this->db->join('credit_details', 'credits.credit_id = credit_details.credit_id');
+		$this->db->where('credits.credit_id', $trans_id);
 		
 		$result = $this->db->get();
 
@@ -702,6 +704,17 @@ class Pos_model extends CI_Model {
 	function update_balance($customer_id, $total) {
 		$query = "UPDATE customers set balance=balance+$total WHERE customer_id=$customer_id";
 		$this->db->query($query);	
+	}
+
+	function record_payment($id, $amount) {
+
+		$this->db->insert('payment_details', array(
+				'payment_id'=>NULL,
+				'date'=>date('y-m-d'),
+				'customer_id'=>$id,
+				'amount_paid'=>$amount,
+				'balance'=>0
+			));
 	}
 	
 }

@@ -583,7 +583,7 @@ class Admin extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 
-	function import_excel(){
+		function import_excel(){
 
 				echo $this->db->_error_message();
 				if(isset($_POST["Import"]))
@@ -640,6 +640,7 @@ class Admin extends CI_Controller {
 				$data['flag']=1;
 				$this->load->view('template', $data);
 	} //end of import_excel
+
 
 }
 

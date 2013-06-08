@@ -70,7 +70,7 @@ class Pos extends CI_Controller {
 					if($this->session->userdata('open'))
 						redirect('cashier');
 					else
-						$this->opening();
+						redirect('cashier/open_amount');
 				}
 				else if($account=='admin') {
 					redirect('admin');
@@ -87,17 +87,6 @@ class Pos extends CI_Controller {
 				$this->load->view('template', $data);			
 			}
 		}		
-	}
-
-
-
-	public function opening() {
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'forms/bills_form';
-		//$data['subpage'] = 'dummy';
-
-		$this->load->view('template', $data);
 	}
 
 	public function closing() {
@@ -119,29 +108,7 @@ class Pos extends CI_Controller {
 		$this->load->view('template', $data);
 	}	
 
-	function register_amount() {
 
-		/*$amount = $this->input->post('total');
-
-		$this->pos_model->register_amount($amount);
-
-		redirect('pos/cashier_home');*/
-
-		$mode =  $this->input->post('registerMode');
-		$bills = $this->input->post('billsTotal');
-		$coins = $this->input->post('coinsTotal');
-		//$amount = $this->input->post('total');
-
-		if($mode == 'opening'){
-			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
-			redirect('cashier');
-		}
-		else if($mode == 'closing'){
-			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
-			redirect('cashier/close_store');
-		}
-	
-	}
 
 	public function manager_home(){
 		$data['header'] = 'Manager';

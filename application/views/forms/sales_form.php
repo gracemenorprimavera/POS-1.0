@@ -1,3 +1,11 @@
+
+<?php echo $message; ?>
+<?php echo form_open('sales/add_item') ?>	
+	<label> Bar Code </label> <input type="text" name="search_item" id="search_item" class="tags" tabindex="1">
+	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2">
+	<?php echo form_submit('enterItem_submit','Enter'); ?>
+<?php echo form_close(); ?>
+
 <div id="purchase_list">
 <br><br>
 
@@ -83,7 +91,7 @@
 		echo '<span>Credit</span>';
 		
 		echo '<br>';
-		echo "<div style='display:none' id='hcustomerCash'>Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange();'>PAY</button></div>";
+		echo "<div style='display:none' id='hcustomerCash'>Customer Cash: <input type='text' name='customerCash' id='customerCash' /><button onclick='alertChange();'>PAY</button></div>";
 			
 		//print_r($customer);
 		$data = array();
@@ -95,7 +103,7 @@
 			}
 		}
 
-		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" required')."<button >RECORD</button></div>"; 		//incoming from
+		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" ')."<button >RECORD</button></div>"; 		//incoming from
 		echo '<br><br>';
 	}
 echo form_close();
@@ -107,3 +115,11 @@ echo form_close();
 //echo form_close();
  ?>	
 </div>
+
+
+
+
+	
+
+
+
