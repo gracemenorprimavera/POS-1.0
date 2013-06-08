@@ -3,7 +3,7 @@
 		echo 'View items by: ';
 		echo anchor('admin/get_item_bygroup',' Group');
 		echo anchor('admin/get_item_byclass',' | Classification');
-		echo anchor('admin/goto_view_items',' | ALL');
+		echo anchor('admin/get_item_bysupplier',' | Supplier');
 		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
 		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
 		if($message) {

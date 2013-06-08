@@ -18,12 +18,40 @@ class Manager extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
-	function outgoing() {
+	function __construct(){
+        parent::__construct();
+        $this->check_isvalidated();
+    }
+
+    private function check_isvalidated(){
+       /* if(! $this->session->userdata('validated')){
+            redirect('pos');
+        } */
+        $is_logged_in = $this->session->userdata('validated');
+        $user= $this->session->userdata('role');
+		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin')
+		{
+			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Manager');	
+			die();		
+		}		
+    }
+
+   function index() {
 
 		$data['header'] = 'Manager';
 		
 		$data['page'] = 'manager_home';
-		$data['subpage'] = 'manager/outgoing_main';
+		//$data['subpage'] = 'dummy';
+
+		$this->load->view('template', $data);
+	}
+
+	function outgoing() {
+
+		$data['header'] = 'Manager';
+		
+		//$data['page'] = 'manager_home';
+		$data['page'] = 'manager/outgoing_main';
 
 		$this->load->view('template', $data);
 	}
@@ -31,8 +59,8 @@ class Manager extends CI_Controller {
 	function incoming() {
 
 		$data['header'] = 'Manager';
-		$data['page'] = 'manager_home';
-		$data['subpage'] = 'manager/incoming_main';
+		//$data['page'] = 'manager_home';
+		$data['page'] = 'manager/incoming_main';
 		$data['supplier'] = $this->pos_model->getAll_supplier();
 		$this->load->view('template', $data);
 	}

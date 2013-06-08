@@ -18,6 +18,34 @@ class Admin extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
+	function __construct(){
+        parent::__construct();
+        $this->check_isvalidated();
+    }
+
+    private function check_isvalidated(){
+       /* if(! $this->session->userdata('validated')){
+            redirect('pos');
+        } */
+        $is_logged_in = $this->session->userdata('validated');
+        $user= $this->session->userdata('role');
+		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin')
+		{
+			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Administrator');	
+			die();		
+		}		
+    }
+
+    public function index() {
+
+		$data['header'] = 'Administrator';
+		
+		$data['page'] = 'admin_home';
+		//$data['subpage'] = 'dummy';
+
+		$this->load->view('template', $data);
+	}
+
 /* PASSWORD */
 	function password() {
 		$data['message'] = " ";
@@ -116,17 +144,6 @@ class Admin extends CI_Controller {
 		$this->db->insert('item', $data); 
 
 		redirect('admin/goto_add_item');
-	}
-	
-	function importExcel() {
-
-		$data['header'] = 'Import Excel';
-		$data['flag']=1;
-		
-		$data['page'] = 'forms/import_excel';
-		//$data['subpage'] = 'forms/item_form';
-
-		$this->load->view('template', $data);
 	}
 
 	function goto_edit_item($edit) {
@@ -493,6 +510,77 @@ class Admin extends CI_Controller {
 				'balance'=>0
 			));
 		redirect('pos/admin_home');
+	}
+
+	function view_incoming() {
+		$data['detail_flag'] = false; 
+		$data['incoming'] = $this->pos_model->getAll_incoming();
+		$data['message'] = '';
+		$data['header'] = 'Delivery Record';
+		$data['page'] = 'incoming_list';
+		$this->load->view('template', $data);
+	}
+
+	function view_incomingDetails($date) {
+		$data['detail_flag'] = true; 
+		$data['incoming'] = $this->pos_model->getAll_incoming();
+		$data['date'] = $date;
+		$data['daily'] = $this->pos_model->getAll_incoming_byDate($date);
+		$data['message'] = '';
+		$data['header'] = 'Incoming Record';
+		$data['page'] = 'incoming_list';
+		$this->load->view('template', $data);
+	}	
+
+	function view_outgoing() {
+		$data['detail_flag'] = false; 
+		$data['outgoing'] = $this->pos_model->getAll_outgoing();
+		$data['message'] = '';
+		$data['header'] = 'Pull-outs Record';
+		$data['page'] = 'outgoing_list';
+		$this->load->view('template', $data);
+	}
+
+	function view_outgoingDetails($date) {
+		$data['detail_flag'] = true; 
+		$data['outgoing'] = $this->pos_model->getAll_outgoing();
+		$data['date'] = $date;
+		$data['daily'] = $this->pos_model->getAll_outgoing_byDate($date);
+		$data['message'] = '';
+		$data['header'] = 'Pull-outs Record';
+		$data['page'] = 'outgoing_list';
+		$this->load->view('template', $data);
+	}
+
+	function view_expenses() {
+		$data['detail_flag'] = false; 
+		$data['expenses'] = $this->pos_model->getAll_expenses();
+		$data['message'] = '';
+		$data['header'] = 'Expenses Record';
+		$data['page'] = 'expenses_list';
+		$this->load->view('template', $data);
+	}
+
+	function view_expensesDetails($date) {
+		$data['detail_flag'] = true; 
+		$data['expenses'] = $this->pos_model->getAll_expenses();
+		$data['date'] = $date;
+		$data['daily'] = $this->pos_model->getAll_expenses_byDate($date);
+		$data['message'] = '';
+		$data['header'] = 'Expenses Record';
+		$data['page'] = 'expenses_list';
+		$this->load->view('template', $data);
+	}
+
+	function importExcel() {
+
+		$data['header'] = 'Import Excel';
+		$data['flag']=1;
+		
+		$data['page'] = 'forms/import_excel';
+		//$data['subpage'] = 'forms/item_form';
+
+		$this->load->view('template', $data);
 	}
 
 }

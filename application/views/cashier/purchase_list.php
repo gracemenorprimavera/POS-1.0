@@ -97,16 +97,19 @@
 		
 		//echo '<div id="paymentDetails"></div>';
 		echo '<br>';
-		echo "<div style='display:none' id='hcustomerCash'>Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange(); '>PAY</button></div>";
+		echo "<div style='display:none' id='hcustomerCash'>Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange();'>PAY</button></div>";
 			
-
+		//print_r($customer);
 		$data = array();
 		$data[''] = 'Please Select';
-		foreach($customer as $row){
-		$data[$row->customer_id] = $row->customer_name;
+		
+		if(isset($customer)){
+			foreach($customer as $row){
+				$data[$row->customer_id] = $row->customer_name;
+			}
 		}
 
-		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" required').'</div>'; 		//incoming from
+		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" required')."<button >RECORD</button></div>"; 		//incoming from
 		echo '<br><br>';
 	}
 echo form_close();

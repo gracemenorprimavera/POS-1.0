@@ -10,17 +10,20 @@
 	<tr id="two">
 
 		<td>P 20 <input type="number" name="20" pattern="\d*" min="0" id="one" class="bills"> </td>
-		<td>P 50 <input type="number" name="50" pattern="\d*" min="0" class="bills"> </td>
-		<td>P 100 <input type="number" name="100" pattern="\d*" min="0" class="bills"> </td>
-	</tr>
-	<tr>
 		<td>P 200 <input type="number" name="200" pattern="\d*" min="0" class="bills"> </td>
-		<td>P 500 <input type="number" name="500" pattern="\d*" min="0" class="bills"></td>
-		<td>P1000<input type="number" name="1000" pattern="\d*" min="0" class="bills"></td>
+		<td>P1 <input type="number" name="1" pattern="\d*" min="0" class="coins"></td>
 	</tr>
 	<tr>
-		<td>P1 <input type="number" name="1" pattern="\d*" min="0" class="coins"></td>
+		<td>P 50 <input type="number" name="50" pattern="\d*" min="0" class="bills"> </td>
+		
+		<td>P 500 <input type="number" name="500" pattern="\d*" min="0" class="bills"></td>
 		<td>P5 <input type="number" name="5" pattern="\d*" min="0" class="coins"></td>
+		
+	</tr>
+	<tr>
+		<td>P 100 <input type="number" name="100" pattern="\d*" min="0" class="bills"> </td>
+		<td>P1000<input type="number" name="1000" pattern="\d*" min="0" class="bills"></td>
+		
 		<td>P10 <input type="number" name="10" pattern="\d*" min="0" class="coins"></td>
 	</tr>
 	<tr>

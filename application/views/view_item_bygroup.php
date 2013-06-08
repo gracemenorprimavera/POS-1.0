@@ -1,7 +1,7 @@
 <?php 
 		echo '<h3> VIEW ITEMS </h3>';
 		echo 'View items by: ';
-		echo anchor('admin/goto_view_items',' ALL');
+		echo anchor('admin/get_item_bygroup',' Group');
 		echo anchor('admin/get_item_byclass',' | Classification');
 		echo anchor('admin/get_item_bysupplier',' | Supplier');
 		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');

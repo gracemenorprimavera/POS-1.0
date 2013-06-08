@@ -9,14 +9,17 @@
 		<tr>
 			<td> <?php echo anchor('admin/inventory', ' Inventory '); ?> </td>
 			<td> <?php echo anchor('admin/customers', ' Customers '); ?> </td>
-			<td> <?php echo anchor('admin/logout', ' Log out '); ?> </td>
+			<td> <?php echo anchor('pos/do_logout', ' Log out '); ?> </td>
 		</tr>
 		<tr>
 			<td> <?php echo anchor('admin/goto_add_customers', ' Add Customers'); ?></td>
 			<td> <?php echo anchor('admin/password', ' Password '); ?></td>
-			<td><?php echo anchor('admin/importExcel', ' Import Excel '); ?></td>
+			<td> <?php echo anchor('admin/importExcel', ' Import Excel '); ?></td>
 		</tr>	
+		<tr>
+			<td> <?php echo anchor('admin/view_incoming', 'Delivery Record'); ?> </td>
+			<td> <?php echo anchor('admin/view_outgoing', 'Pull-outs Record'); ?> </td>
+			<td> <?php echo anchor('admin/view_expenses', 'Expenses Record'); ?> </td>
+		</tr>
 	</table>
-
-	
 </div>

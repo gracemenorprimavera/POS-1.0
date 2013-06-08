@@ -146,6 +146,17 @@
 	});
 */
 
+	/*$('#purchase_list input[type=radio]').click(function(){
+		if($(this).attr('id') == 'cashChoice'){
+			var div = "Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange(); '>PAY</button>";
+			$('#paymentDetails').html(div);
+		}
+		else if($(this).attr('id') == 'creditChoice'){
+			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required /><button>RECORD</button>";
+			$('#paymentDetails').html(div);
+		}
+	});*/
+	
 	$('#purchase_list input[type=radio]').click(function(){
 
 		if($(this).attr('id') == 'cashChoice'){
@@ -159,7 +170,7 @@
 		}
 	});
 	
-
+	
 	$(document).on('keyup', '.tags', function(){
 		var url = '';
 		var source_id = $(this).attr('id');
@@ -211,13 +222,14 @@
 					
 					}
 			},
-				minLength:0
+				minLength:1
 			});
 		
 	});
 
 	
 	//automatic computation of opening and closing bills
+	
 	$('#openingBills input[type=number],#closingBills input[type=number] ').on('keyup mouseup',function(){
 	 
 	var total = 0, billsTotal = 0, coinsTotal = 0;
@@ -251,12 +263,12 @@
 	var cash = $('#customerCash').val();
 	var purchase = $('#totalPurchase').html().substring(1);
 	var change = cash - purchase;
-		if(cash=='')
-			return;
-		else {
-			if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
-			else alert("Invalid change.");
-		}
+	if(cash==NULL || cash=='')
+		return;
+	else {
+		if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
+		else alert("Invalid change.");
+	}
 	}
 
 	//delete a table row

@@ -20,7 +20,6 @@
 				'transfer' => 'Transfer',
 				'return' => 'Return Product' ,
 				'bad_order' => 'Bad Order' ,
-				'snacks'=>'Employee Snack',
 				'other' => 'Others'
 		);
 
