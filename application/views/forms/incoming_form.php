@@ -17,10 +17,11 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 
 	$data = array();
 	$data[''] = 'Please Select';
-	foreach($supplier as $row){
-		$data[$row->supplier_name] = $row->supplier_name;
+	if(isset($supplier)){
+		foreach($supplier as $row){
+			$data[$row->supplier_name] = $row->supplier_name;
+		}
 	}
-
 	echo '<table  cellpadding="10px"><tr>';	
 	echo '<th>Incoming from <br>(Supplier) <br>'.form_dropdown('outgoing', $data,'','id="outgoing" autocomplete="off" required').'</th>'; 		//incoming from
 	echo '<th>Incoming Description <br>'.form_textarea(array('rows' => '3', 'cols'=>'20', 'name' => 'in_desc', 'autocomplete' => 'off')).'</th>';		//comments
@@ -94,7 +95,7 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 		?>
 		</td>
 		<td>
-			<input class="button" style="margin-bottom:23px;" type="button" value="Delete Row" onclick="DeleteRowFunction(this)" />
+			<input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" />
 		</td>
 	</tr>
 	</table>
@@ -112,6 +113,6 @@ echo form_open('cashier/createDelivery');	//Controller -> Delivery, Action -> Cr
 	?>
 	<br/><br/>
 	<label for="totalPrice">Total: </label><input type="input" name="totalPrice" id='totalPrice' autocomplete="off" readonly/>
-	<input class="button" type="submit" name="submit" value="Submit" />
+	<input type="submit" name="submit" value="Submit" />
 </form>
 <?php echo anchor('pos/cashier_home', 'Cancel Delivery', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

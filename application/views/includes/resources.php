@@ -147,17 +147,19 @@
 */
 
 	$('#purchase_list input[type=radio]').click(function(){
+
 		if($(this).attr('id') == 'cashChoice'){
-			var div = "Customer Cash: <input type='text' name='customerCash' id='customerCash'/><button onclick='alertChange(); return false;'>PAY</button>";
-			$('#paymentDetails').html(div);
+			$('div#hcustomerName').css('display','none');
+			$('div#hcustomerCash').css('display','inline-block');
 		}
 		else if($(this).attr('id') == 'creditChoice'){
-			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required/><button>RECORD</button>";
-			$('#paymentDetails').html(div);
+			$('div#hcustomerCash').css('display','none');
+			$('div#hcustomerName').css('display','inline-block');
+			
 		}
 	});
 	
-	
+
 	$(document).on('keyup', '.tags', function(){
 		var url = '';
 		var source_id = $(this).attr('id');
@@ -209,25 +211,33 @@
 					
 					}
 			},
-				minLength:1
+				minLength:0
 			});
 		
 	});
 
 	
 	//automatic computation of opening and closing bills
-	$('#openingBills input[type=number]').keyup(function(){
-	
-	var total = 0;
+	$('#openingBills input[type=number],#closingBills input[type=number] ').on('keyup mouseup',function(){
+	 
+	var total = 0, billsTotal = 0, coinsTotal = 0;
 	var val = '';
 	var par = $(this).parent().parent().parent().parent().parent().attr('id');
 			//loop through the form and add the sum
 			$('#' + par + ' input[type=number]').each(function(){
 				val = $(this).val();
-				if(!isNaN(val) && val != '') total = total + (val*$(this).attr('name'));
+				if(!isNaN(val) && val != ''){
+					//total = total + (val*$(this).attr('name'));
+					if($(this).attr('class') == 'bills')
+						billsTotal = billsTotal + (val*$(this).attr('name'));
+					else if($(this).attr('class') == 'coins')
+						coinsTotal = coinsTotal + (val*$(this).attr('name'));
+				}
 			});
 			
-			$('#' + par + ' input.totalBills').val(total);
+			$('#' + par + ' input[name=billsTotal]').val(billsTotal);
+			$('#' + par + ' input[name=coinsTotal]').val(coinsTotal);
+			$('#' + par + ' input.totalBills').val(billsTotal + coinsTotal);
 			//alert(par);
 	});
 	
@@ -241,8 +251,12 @@
 	var cash = $('#customerCash').val();
 	var purchase = $('#totalPurchase').html().substring(1);
 	var change = cash - purchase;
-	if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
-	else alert("Invalid change.");
+		if(cash=='')
+			return;
+		else {
+			if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
+			else alert("Invalid change.");
+		}
 	}
 
 	//delete a table row

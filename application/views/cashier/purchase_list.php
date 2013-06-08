@@ -54,7 +54,8 @@
 </tr>
 
 </table>
-<?php 
+
+<?php
 	if($this->cart->total_items() > 0) {
 		//echo form_dropdown('cash_dropdown', array('cashier'=> 'Cash', 'credit'=> 'Credit' ));
 		/*echo form_submit('purchase_submit','Purchase'); 
@@ -94,9 +95,21 @@
 		echo form_checkbox($data);
 		echo '<span>Credit</span>';
 		
-		echo '<div id="paymentDetails"></div>';
+		//echo '<div id="paymentDetails"></div>';
+		echo '<br>';
+		echo "<div style='display:none' id='hcustomerCash'>Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange(); '>PAY</button></div>";
+			
+
+		$data = array();
+		$data[''] = 'Please Select';
+		foreach($customer as $row){
+		$data[$row->customer_id] = $row->customer_name;
+		}
+
+		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" required').'</div>'; 		//incoming from
+		echo '<br><br>';
 	}
-echo form_close(); 
+echo form_close();
 
 //echo form_open('cashier/cancel_trans');
  	

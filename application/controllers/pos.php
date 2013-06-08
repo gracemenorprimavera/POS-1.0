@@ -25,8 +25,7 @@ class Pos extends CI_Controller {
 	public function index()
 	{
 		$data['message'] = " ";
-		$data['header'] = 'P.O.S.';
-		$data['subheader'] = 'Point of Sale';
+		$data['header'] = 'POS';
 		
 		$data['page'] = 'forms/login_form';
 		
@@ -40,8 +39,7 @@ class Pos extends CI_Controller {
 		// password is invalid
 		if ($this->form_validation->run() == FALSE) {
 			$data['message'] = "* Invalid password";
-			$data['header'] = 'P.O.S.';
-			$data['subheader'] = 'Point of Sale';
+			$data['header'] = 'POS';
 			$data['page'] = 'forms/login_form';
 		
 			$this->load->view('template', $data);
@@ -53,15 +51,17 @@ class Pos extends CI_Controller {
 			$account = $this->pos_model->check_user($password);
 						
 			if($account=='cashier') {
-				redirect('pos/cashier_home');
+				redirect('pos/opening');
 			}
 			else if($account=='admin') {
 				redirect('pos/admin_home');
 			}
+			else if($account=='manager'){
+				redirect('pos/manager_home');
+			}
 			else {
 				$data['message'] = "* Invalid password";
-				$data['header'] = 'P.O.S.';
-				$data['subheader'] = 'Point of Sale';
+				$data['header'] = 'POS';
 				$data['page'] = 'forms/login_form';
 			
 				$this->load->view('template', $data);			
@@ -80,7 +80,7 @@ class Pos extends CI_Controller {
 	}
 
 	public function opening() {
-		$data['header'] = 'Cashier';
+		$data['header'] = 'Opening';
 		
 		$data['page'] = 'forms/bills_form';
 		$data['subpage'] = 'dummy';
@@ -88,14 +88,7 @@ class Pos extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 
-	public function closing() {
-		$data['header'] = 'Cashier';
 		
-		$data['page'] = 'forms/closing_form';
-		$data['subpage'] = 'dummy';
-
-		$this->load->view('template', $data);
-	}	
 
 	public function admin_home() {
 
@@ -109,12 +102,30 @@ class Pos extends CI_Controller {
 
 	function register_amount() {
 
-		$amount = $this->input->post('total');
+		$mode =  $this->input->post('registerMode');
+		$bills = $this->input->post('billsTotal');
+		$coins = $this->input->post('coinsTotal');
+		//$amount = $this->input->post('total');
 
-		$this->pos_model->register_amount($amount);
-
-		redirect('pos/cashier_home');
+		if($mode == 'opening'){
+			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
+			redirect('pos/cashier_home');
+		}
+		else if($mode == 'closing'){
+			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
+			redirect('cashier/close_store');
+		}
+		
 	
+	}
+
+	public function manager_home(){
+		$data['header'] = 'Manager';
+		
+		$data['page'] = 'manager_home';
+		$data['subpage'] = 'dummy';
+		
+		$this->load->view('template', $data);
 	}
 }
 

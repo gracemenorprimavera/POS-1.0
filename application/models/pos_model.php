@@ -257,9 +257,13 @@ class Pos_model extends CI_Model {
 	function store_transDetails($trans_id, $item_code, $qty, $subtotal) {
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 			'item_code'=>$item_code,
+			'division'=>NULL,
 			'quantity'=>$qty,
 			'price'=>$subtotal
 			));
+		$query_str = "UPDATE  trans_details set division=(select division from item where item_code='$item_code')";
+		$this->db->query($query_str);
+
 	}
 
 	function store_deliveredItem($delivery_id, $item_code, $qty, $price ) {
@@ -465,16 +469,27 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
-	function register_amount($amount) {
-		$this->db->insert('amount', array('date'=>date('y-m-d'),
-				'opening_bills'=>$amount,
-				'opening_coins'=>$amount,
-				'opening_total'=>$amount+$amount,
-				'closing_bills'=>$amount,
-				'closing_coins'=>$amount,
-				'closing_total'=>$amount+$amount
-			));
+	function register_amount($mode,$amount,$bills,$coins) {
+		if($mode == 'opening'){
+			$this->db->insert('amount', array('date'=>date('y-m-d'),
+					'opening_bills'=>$bills,
+					'opening_coins'=>$coins,
+					'opening_total'=>$amount,
+					'closing_bills'=>0,
+					'closing_coins'=>0,
+					'closing_total'=>0
+				));
+		}
+		else if($mode  == 'closing'){
+			$this->db->where('date', date('y-m-d'));
+			$this->db->update('amount', array(
+					'closing_bills'=>$bills,
+					'closing_coins'=>$coins,
+					'closing_total'=>$amount
+				));
+		}
 	}
+
 	
 }
 ?>

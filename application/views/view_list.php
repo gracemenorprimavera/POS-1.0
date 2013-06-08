@@ -1,16 +1,12 @@
 <?php 
 	if($list_id==1) { 	// items list
-		echo '<h3> VIEW ITEMS </h3>';
-		echo '<div class="links">View items by: ';
+		
+		echo 'View items by: ';
 		echo anchor('admin/get_item_bygroup',' Group');
-		echo ' | ';
-		echo anchor('admin/get_item_byclass',' Classification');
-		echo ' | ';
-		echo anchor('admin/get_item_bysupplier',' Supplier');
-		echo ' | ';
-		echo anchor('admin/get_item_byOutofStock',' Out of Stock by supplier');
-		echo ' | ';
-		echo anchor('admin/get_item_bybelowReorder',' Below reorder point by supplier').'</div>';
+		echo anchor('admin/get_item_byclass',' | Classification');
+		echo anchor('admin/get_item_bysupplier',' | Supplier');
+		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
+		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
 		if($message) {
 			echo $message;
 		}
@@ -23,12 +19,6 @@
 					<th> Bar Code </th>
 					<th> Item Code</th>
 					<th> Description 1 </th>
-					<th> Description 2 </th>
-					<th> Description 3 </th>
-					<th> Description 4 </th>
-					<th> Group </th>
-					<th> Classification 1 </th>
-					<th> Classification 2 </th>
 					<th> Cost </th>
 					<th> Retail Price </th>
 					<th> Model Quantity </th>
@@ -45,12 +35,6 @@
 				echo '<td>'.$r->bar_code.'</td>';
 				echo '<td>'.$r->item_code.'</td>';
 				echo '<td>'.$r->desc1.'</td>';
-				echo '<td>'.$r->desc2.'</td>';
-				echo '<td>'.$r->desc3.'</td>';
-				echo '<td>'.$r->desc4.'</td>';
-				echo '<td>'.$r->group.'</td>';
-				echo '<td>'.$r->class1.'</td>';
-				echo '<td>'.$r->class2.'</td>';
 				echo '<td>'.$r->cost.'</td>';
 				echo '<td>'.$r->retail_price.'</td>';
 				echo '<td>'.$r->model_quantity.'</td>';
@@ -70,14 +54,14 @@
 
 <?php 
 	if($list_id==2) {	//customer list 
-		echo '<h3> VIEW CUSTOMERS </h3>';
+		//echo '<h4> Customers </h4>';
 		if($message) {
 			echo $message;
 		}
 		else {
 			echo '<div id="view_customer" class="view">';
 
-			echo '<table border="1px solid brown">
+			echo '<table border="1px solid brown" cellpadding="6">
 				<tr>
 					<th> Customer Name</th>
 					<th> Balance </th>
@@ -90,13 +74,14 @@
 				
 				echo '<td>'.anchor('cashier/view_customerDetails/'.$r->customer_id,$r->customer_name).'</td>';
 				echo '<td>'.$r->balance.'</td>';
-				
-				echo '<td>'.anchor('cashier/pay_credit/'.$r->customer_id,'Pay', array('onclick'=>"return confirm('Finalize Payment')")).'</td>';
+				echo '<td>'.anchor('','Pay', array('onclick'=>"return confirm('Finalize Payment')")).'</td>';
+				//echo '<td>'.anchor('cashier/pay_credit/'.$r->customer_id,'Pay', array('onclick'=>"return confirm('Finalize Payment')")).'</td>';
 				echo '</tr>';
 			}
 
 			echo '</table></div>';
 		}
+		echo '<br>'.anchor('pos/cashier_home', 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); 
 	}
 ?>
 
@@ -136,7 +121,7 @@
 
 <?php 
 	if($list_id==4) {	//customer full details 
-		echo '<h3> VIEW CUSTOMERS </h3>';
+		
 		if($message) {
 			echo $message;
 		}
@@ -145,7 +130,7 @@
 			foreach ($customers as $r) {
 				$id = $r->customer_id;
 				echo 'Customer Name: '.$r->customer_name.'<br>';
-				echo 'Balance: P'.$r->balance.'<br>';
+				echo 'Balance: P '.$r->balance.'<br>';
 				break;
 			}
 			echo anchor('cashier/credit', 'Back ');
@@ -180,7 +165,7 @@
 
 <?php 
 	if($list_id==5) {	//transactions full details 
-		echo '<h3> VIEW CUSTOMERS </h3>';
+		//echo '<h3> VIEW CUSTOMERS </h3>';
 		if($message) {
 			echo $message;
 		}

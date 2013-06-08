@@ -1,16 +1,14 @@
 
-	<?php echo anchor('#', ' Log out '); ?>
-	<ul class="listview">
-	<li>
-   <div class="data"><h4>
-   	<?php echo anchor('manager/incoming', ' Incoming '); ?></h4>
-    <p>*edit desc*</p>
-   </div>
-  </li>
-	<li>
-   <div class="data">
-    <h4><?php echo anchor('manager/outgoing', ' Outgoing '); ?></h4>
-    <p>*edit desc*</p>
-   </div>
-  </li>
-</ul>
+<div id="left_con">
+	<ul>
+	<?php
+		echo '<li>'.anchor('manager/incoming', ' Incoming ').'</li>';
+		echo '<li>'.anchor('manager/outgoing', ' Outgoing ').'</li>';
+		echo '<li>'.anchor('#', ' Log out ').'</li>';
+	?>
+	</ul>
+</div>
+
+<div id="right_con">
+	<?php $this->load->view($subpage); ?>
+</div>

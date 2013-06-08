@@ -32,10 +32,9 @@ class Manager extends CI_Controller {
 
 		$data['header'] = 'Manager';
 		$data['page'] = 'manager_home';
-		$data['flag'] = 3;
 		$data['subpage'] = 'manager/incoming_main';
 		$data['supplier'] = $this->pos_model->getAll_supplier();
-		$this->load->view('template2', $data);
+		$this->load->view('template', $data);
 	}
 
 }
