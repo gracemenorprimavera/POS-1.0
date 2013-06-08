@@ -160,10 +160,14 @@
 	$('#purchase_list input[type=radio]').click(function(){
 
 		if($(this).attr('id') == 'cashChoice'){
+			$('#customerName').removeAttr("required");
+			$('#customerCash')[0].setAttribute("required", true);
 			$('div#hcustomerName').css('display','none');
 			$('div#hcustomerCash').css('display','inline-block');
 		}
 		else if($(this).attr('id') == 'creditChoice'){
+			$('#customerName')[0].setAttribute("required", true);
+			$('#customerCash').removeAttr("required");
 			$('div#hcustomerCash').css('display','none');
 			$('div#hcustomerName').css('display','inline-block');
 			
@@ -263,7 +267,7 @@
 	var cash = $('#customerCash').val();
 	var purchase = $('#totalPurchase').html().substring(1);
 	var change = cash - purchase;
-	if(cash==NULL || cash=='')
+	if(cash=='')
 		return;
 	else {
 		if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");

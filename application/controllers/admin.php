@@ -583,6 +583,64 @@ class Admin extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 
+	function import_excel(){
+
+				echo $this->db->_error_message();
+				if(isset($_POST["Import"]))
+				{
+					$filename=$_FILES["file"]["tmp_name"];
+					$i = 0;
+					//echo $ext=substr($filename,strrpos($filename,"."),(strlen($filename)-strrpos($filename,".")));
+					 if($_FILES["file"]["size"] > 0)
+					 {
+						$file = fopen($filename, "r");
+						$this->db->trans_start();
+								 while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
+								 {
+								if($emapData[1] == '') $emapData[1] = NULL;
+								if($emapData[0] == '') $emapData[0] = NULL;
+								   $data = array(
+									   'item_code' => $emapData[1],
+									   'bar_code' => $emapData[0],
+									   'desc1' => $emapData[2],
+									   'desc2' => $emapData[3],
+									   'desc3' => $emapData[4],
+									   'desc4' => $emapData[5],
+									   'division' => $emapData[6],
+									   'group' => $emapData[7],
+									   'class1' => $emapData[8],
+									   'class2' => $emapData[9],
+									   'cost' => $emapData[10],
+									   'retail_price' => $emapData[11],
+									   'model_quantity' => $emapData[12],
+									   'supplier_code' => $emapData[13],
+									   'manufacturer' => $emapData[14],
+									   'quantity' => 0,
+									   'reorder_point' => 0
+									);
+									$this->db->insert('item', $data);
+								 }
+						$this->db->trans_complete();
+						fclose($file);
+						if ($this->db->trans_status() === FALSE){
+							$data['message']="CSV File not Imported";
+							$data['page'] = 'forms/import_excel';
+						}
+						else{
+							$data['message']="CSV File has been successfully Imported";;
+							$data['page'] = 'forms/import_excel';
+						}
+					}
+					else{
+					$data['message'] =  "Invalid File:Please Upload CSV File";
+					}
+					
+				}
+				$data['header'] = 'Import Excel';
+				$data['flag']=1;
+				$this->load->view('template', $data);
+	} //end of import_excel
+
 }
 
 /* End of file pos.php */

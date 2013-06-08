@@ -79,7 +79,7 @@ class Cashier extends CI_Controller {
 
 		$this->form_validation->set_rules('search_item','Bar Code', 'required');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required');
-		$data['customer'] = $this->pos_model->getAll_customers();
+		
 
 		if($this->form_validation->run() == FALSE) {
 			$data['message'] = 'All fields are required!';
@@ -90,7 +90,7 @@ class Cashier extends CI_Controller {
 			//$data['subpage'] = 'cashier/purchase_main';
 			$data['page'] = 'cashier/purchase_main';
 			$data['subpage'] = 0;
-
+			$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template', $data);
 		}
 		else {
@@ -136,7 +136,7 @@ class Cashier extends CI_Controller {
 				//$data['subpage'] = 'cashier/purchase_main';
 				$data['page'] = 'cashier/purchase_main';
 				$data['subpage'] = 0;
-
+				$data['customer'] = $this->pos_model->getAll_customers();
 				$this->load->view('template', $data);		
 		}
 	}
