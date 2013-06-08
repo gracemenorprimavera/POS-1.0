@@ -117,6 +117,17 @@ class Admin extends CI_Controller {
 
 		redirect('admin/goto_add_item');
 	}
+	
+	function importExcel() {
+
+		$data['header'] = 'Import Excel';
+		$data['flag']=1;
+		
+		$data['page'] = 'forms/import_excel';
+		//$data['subpage'] = 'forms/item_form';
+
+		$this->load->view('template', $data);
+	}
 
 	function goto_edit_item($edit) {
 

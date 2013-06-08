@@ -14,6 +14,7 @@
 		<tr>
 			<td> <?php echo anchor('admin/goto_add_customers', ' Add Customers'); ?></td>
 			<td> <?php echo anchor('admin/password', ' Password '); ?></td>
+			<td><?php echo anchor('admin/importExcel', ' Import Excel '); ?></td>
 		</tr>	
 	</table>
 
