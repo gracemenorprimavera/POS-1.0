@@ -1,12 +1,12 @@
+<div id="note">WELCOME</div>
 
 <div id="login_form" class="forms">
 		
 	<?php
-		echo $message;
-
+		echo '<div class="error">'.$message.'</div>';
 		echo form_open('pos/user_login');
-			echo form_password('password', '').'<br>';
-			echo form_submit('submit', 'Login');
+			echo form_password(array('id'=>'login', 'name'=>'password','type'=>'password'), '','required').'<br>';
+			echo form_submit(array('id'=>'btnlog', 'name'=>'submit'), 'Login');
 		echo form_close();
 
 	/*	echo anchor('pos/cashier_home', 'Cashier ');

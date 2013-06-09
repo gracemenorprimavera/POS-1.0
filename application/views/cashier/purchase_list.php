@@ -2,7 +2,7 @@
 <br><br>
 
 
-<?php echo form_open('sales/do_purchase') ?>
+<?php echo form_open('cashier/do_purchase') ?>
 <table cellpadding="6" cellspacing="1" style="width:100%" border="1px solid black">
 
 <tr>
@@ -40,7 +40,7 @@
 	  </td>
 	  <td style="text-align:right"><?php echo $this->cart->format_number($items['price']); ?></td>
 	  <td style="text-align:right">P<?php echo $this->cart->format_number($items['subtotal']); ?></td>
-	  <td> <?php echo anchor('sales/remove_item/'.$items['rowid'], 'Cancel',array('onclick' => "return confirm ('Are you sure want to cancel this item?')")); ?> </td>
+	  <td> <?php echo anchor('cashier/remove_item/'.$items['rowid'], 'Cancel',array('onclick' => "return confirm ('Are you sure want to cancel this item?')")); ?> </td>
 	</tr>
 
 <?php $i++; ?>
@@ -54,9 +54,21 @@
 </tr>
 
 </table>
-
-<?php
+<?php 
 	if($this->cart->total_items() > 0) {
+		//echo form_dropdown('cash_dropdown', array('cashier'=> 'Cash', 'credit'=> 'Credit' ));
+		/*echo form_submit('purchase_submit','Purchase'); 
+		
+	//credit button
+		$data = array(
+			'name' => 'creditButton',
+			'id' => 'creditButton',
+			'value' => 'true',
+			'content' => 'Credit'
+		);
+
+		echo form_button($data);
+		*/
 		
 		$data = array(
 			'name'        => 'paymentChoice',
@@ -82,27 +94,13 @@
 		echo form_checkbox($data);
 		echo '<span>Credit</span>';
 		
-		echo '<br>';
-		echo "<div style='display:none' id='hcustomerCash'>Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange();'>PAY</button></div>";
-			
-		//print_r($customer);
-		$data = array();
-		$data[''] = 'Please Select';
-		
-		if(isset($customer)){
-			foreach($customer as $row){
-				$data[$row->customer_id] = $row->customer_name;
-			}
-		}
-
-		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" required')."<button >RECORD</button></div>"; 		//incoming from
-		echo '<br><br>';
+		echo '<div id="paymentDetails"></div>';
 	}
-echo form_close();
+echo form_close(); 
 
 //echo form_open('cashier/cancel_trans');
  	
-	echo anchor('sales/cancel_trans',' Cancel Transaction',array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")); 
+	echo anchor('cashier/cancel_trans',' Cancel Transaction',array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")); 
 	
 //echo form_close();
  ?>	

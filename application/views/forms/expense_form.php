@@ -29,7 +29,7 @@
 		echo '<tr><th>Amount<br>'.form_input('expense_amount', '').'</th>';
 			
 		echo '<th><br>';
-		echo form_submit('expense_submit','Record');
+		echo form_submit(array('class'=>'button','name'=>'expense_submit'),'Record');
 		echo form_close();
 		echo '</th></tr></table>';
 	?>

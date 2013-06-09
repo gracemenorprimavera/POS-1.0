@@ -1,6 +1,4 @@
 <div id="purchase_list">
-<br><br>
-
 
 <?php echo form_open('cashier/do_purchase') ?>
 <table cellpadding="6" cellspacing="1" style="width:100%" border="1px solid black">
@@ -21,7 +19,7 @@
 
 	<tr>
 	  <td>
-	  	<?php echo $items['qty']//echo form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?></td>
+	  	<?php echo $items['qty']; //form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?></td>
 	  <td>
 		<?php echo $items['name']; ?>
 
@@ -50,56 +48,45 @@
 <tr>
   <td colspan="2"></td>
   <td class="right"><strong>Total</strong></td>
-  <td class="right" id="totalPurchase">P<?php echo $this->cart->format_number($this->cart->total()); ?></td>
+  <td class="right">P<?php echo $this->cart->format_number($this->cart->total()); ?></td>
 </tr>
 
 </table>
 <?php 
 	if($this->cart->total_items() > 0) {
 		//echo form_dropdown('cash_dropdown', array('cashier'=> 'Cash', 'credit'=> 'Credit' ));
-		/*echo form_submit('purchase_submit','Purchase'); 
+		/*$data = array(
+			'name' => 'cashButton',
+			'id' => 'cashButton',
+			'value' => 'true',
+			'content' => 'Cash'
+		);
+
+		echo form_button($data);*/
+		echo '<br>';
+		$data2 = array(
+			'name' => 'purchase_submit',
+			'id' => 'purchase_submit',
+		);
+
+		echo form_submit($data2,'Cash'); 
 		
 	//credit button
-		$data = array(
+		echo '<br>';
+		$data1 = array(
 			'name' => 'creditButton',
 			'id' => 'creditButton',
 			'value' => 'true',
 			'content' => 'Credit'
 		);
 
-		echo form_button($data);
-		*/
-		
-		$data = array(
-			'name'        => 'paymentChoice',
-			'id'          => 'cashChoice',
-			'value'       => 'cash',
-			'checked'     => FALSE,
-			'autocomplete' => 'off',
-			'type'			=> 'radio'
-		);
+		echo form_button($data1);
 
-		echo form_checkbox($data);
-		echo '<span>Cash</span>';
-		
-		$data = array(
-			'name'        => 'paymentChoice',
-			'id'          => 'creditChoice',
-			'value'       => 'credit',
-			'checked'     => FALSE,
-			'autocomplete' => 'off',
-			'type'			=> 'radio'
-		);
-
-		echo form_checkbox($data);
-		echo '<span>Credit</span>';
-		
-		echo '<div id="paymentDetails"></div>';
 	}
 echo form_close(); 
 
 //echo form_open('cashier/cancel_trans');
- 	
+ 	echo '<br>';
 	echo anchor('cashier/cancel_trans',' Cancel Transaction',array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")); 
 	
 //echo form_close();
