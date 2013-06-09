@@ -56,10 +56,10 @@ else if($flag==2){
 	$product_id = $this->uri->segment(3, 0);
 	form_input('url', $product_id );
 	
-	echo form_submit(array('class'=>'button','id'=>'button','style'=>'width:25px;','name'=>'view_submit'),' ');
+	echo form_submit(array('class'=>'button','style'=>'width:25px;','name'=>'view_submit'),' ');
  echo form_close(); 
 ?>	
-	<input type="button" value="Zoom In Modal Window" class="button" data-type="zoomin" />
+	<input type="button" value="Zoom In Modal Window" id="button" data-type="zoomin" />
 
 	
 <?php
