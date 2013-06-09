@@ -1,11 +1,19 @@
 <?php 
-		echo '<h3> VIEW ITEMS </h3>';
-		echo 'View items by: ';
-		echo anchor('admin/get_item_bygroup',' Group');
-		echo anchor('admin/get_item_byclass',' | Classification');
-		echo anchor('admin/get_item_bysupplier',' | Supplier');
-		echo anchor('admin/get_item_byOutofStock',' | Out of Stock by supplier');
-		echo anchor('admin/get_item_bybelowReorder',' | Below reorder point by supplier');
+		echo '<h3>VIEW ALL ITEMS </h3>';
+		echo '<div class="links">View items by: ';
+		echo form_open('admin/get_view');
+		$options = array(
+				'all' => 'All Items',
+				'group' => "Group",
+				'class' => "Classification",
+				'supplier' => "Supplier",
+				'out' => 'Out of Stock by supplier',
+				'reorder' => 'Below reorder point by supplier'
+			);
+		echo form_dropdown('view_dropdown', $options,'','id="view" autocomplete="off" style="width:250px;" required');
+		echo form_submit(array('class'=>'button','style'=>'width:50px;','name'=>'view_submit'),'Go');
+		echo form_close();
+		echo '</div>';
 		if($message) {
 			echo '<br><br><br><center>'.$message.'</center>';
 		}
@@ -14,14 +22,19 @@
 			echo '<div id="view_item" class="view">';
 				foreach ($supply as $row) {
 				echo '<br>';
-				echo '<H3>'.$row->supplier_code.'</h3>';
+				echo '<H3 class="title">'.$row->supplier_code.'</h3>';
 
 				echo '<table border="1px solid brown">
 				<tr>
 					<th> Bar Code </th>
 					<th> Item Code</th>
 					<th> Description 1 </th>
-					
+					<th> Description 2 </th>
+					<th> Description 3 </th>
+					<th> Description 4 </th>
+					<th> Group </th>
+					<th> Classification 1 </th>
+					<th> Classification 2 </th>
 					<th> Cost </th>
 					<th> Retail Price </th>
 					<th> Model Quantity </th>
@@ -40,7 +53,12 @@
 				echo '<td>'.$r->bar_code.'</td>';
 				echo '<td>'.$r->item_code.'</td>';
 				echo '<td>'.$r->desc1.'</td>';
-				
+				echo '<td>'.$r->desc2.'</td>';
+				echo '<td>'.$r->desc3.'</td>';
+				echo '<td>'.$r->desc4.'</td>';
+				echo '<td>'.$r->group.'</td>';
+				echo '<td>'.$r->class1.'</td>';
+				echo '<td>'.$r->class2.'</td>';
 				echo '<td>'.$r->cost.'</td>';
 				echo '<td>'.$r->retail_price.'</td>';
 				echo '<td>'.$r->model_quantity.'</td>';

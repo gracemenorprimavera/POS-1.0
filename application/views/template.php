@@ -15,7 +15,7 @@
 	<!-- <div id="main_con">	
 		<?php $this->load->view($page); ?>
 	</div> -->
-	<?php if($header=='POS') {
+	<?php if($header=='P.O.S.') {
 		echo '<div id="login_con">';
 			 $this->load->view($page);
 		echo '</div>';

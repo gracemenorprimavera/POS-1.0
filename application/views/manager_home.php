@@ -1,11 +1,16 @@
 
-<div id="left_con">
-	<ul>
-	<?php
-		echo '<li>'.anchor('manager/incoming', ' Incoming ').'</li>';
-		echo '<li>'.anchor('manager/outgoing', ' Outgoing ').'</li>';
-		echo '<li>'.anchor('pos/do_logout', ' Log out ').'</li>';
-	?>
-	</ul>
-</div>
-
+	<?php echo '<ul id="otherlinks"><li>'.anchor('#', ' Log out ').'</li></ul>'; ?>
+	<ul class="listview">
+	<li>
+   <div class="data"><h4>
+   	<?php echo anchor('manager/incoming', ' Incoming '); ?></h4>
+    <p>*edit desc*</p>
+   </div>
+  </li>
+	<li>
+   <div class="data">
+    <h4><?php echo anchor('manager/outgoing', ' Outgoing '); ?></h4>
+    <p>*edit desc*</p>
+   </div>
+  </li>
+</ul>
