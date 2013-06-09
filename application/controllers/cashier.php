@@ -24,14 +24,15 @@ class Cashier extends CI_Controller {
 
 	function purchase() {
 		$data['message'] = "";
-		$data['header'] = 'Cashier';
+		$data['header'] = 'New Transaction';
+		$data['flag']=2;
 		
-		//$data['page'] = 'cashier_home';
+		//$data['subpage'] = 'nav_menu';
 		//$data['subpage'] = 'cashier/purchase_main';
 		$data['page'] = 'cashier/purchase_main';
-		$data['subpage'] = 0;
+		//$data['subpage'] = 0;
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function add_item() {
@@ -45,12 +46,14 @@ class Cashier extends CI_Controller {
 		if($this->form_validation->run() == FALSE) {
 			$data['message'] = 'All fields are required!';
 
-			$data['header'] = 'Cashier';
-			
-			$data['page'] = 'cashier_home';
-			$data['subpage'] = 'cashier/purchase_main';
+			$data['header'] = 'New Transaction';
+			$data['flag']=2;
+			//$data['page'] = 'cashier_home';
+			//$data['subpage'] = 'cashier/purchase_main';
+			$data['page'] = 'cashier/purchase_main';
+			$data['subpage'] = 0;
 
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 		}
 		else {
 			$this->db->from('item');
@@ -74,12 +77,14 @@ class Cashier extends CI_Controller {
 		    	$data['message'] = 'No item found!';		
 		    }
 		   
-				$data['header'] = 'Cashier';
-				
-				$data['page'] = 'cashier_home';
-				$data['subpage'] = 'cashier/purchase_main';
+				$data['header'] = 'New Transaction';
+				$data['flag']=2;
+				//$data['page'] = 'cashier_home';
+				//$data['subpage'] = 'cashier/purchase_main';
+				$data['page'] = 'cashier/purchase_main';
+				$data['subpage'] = 0;
 
-				$this->load->view('template', $data);		
+				$this->load->view('template2', $data);		
 		}
 	}
 
@@ -94,11 +99,14 @@ class Cashier extends CI_Controller {
 		$data['message'] = 'Item succesfully canceled!';		
 		    
 		   
-		$data['header'] = 'Cashier';
-			
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/purchase_main';
-		$this->load->view('template', $data);	
+		$data['header'] = 'New Transaction';
+		$data['flag']=2;
+		//$data['page'] = 'cashier_home';
+		//$data['subpage'] = 'cashier/purchase_main';
+		$data['page'] = 'cashier/purchase_main';
+		$data['subpage'] = 0;
+
+		$this->load->view('template2', $data);	
 	}
 
 	function do_purchase() {
@@ -141,13 +149,7 @@ class Cashier extends CI_Controller {
 
 		$this->cart->destroy();
 
-		$data['message'] = "";
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/purchase_main';
-
-		$this->load->view('template', $data);
+		redirect('pos/cashier_home');
 	}
 
 	function do_credit() {
@@ -172,10 +174,9 @@ class Cashier extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		
-		$data['title'] = 'Create a delivery slip';
 		$data['header'] = 'Cashier';
 		
-		$this->form_validation->set_rules('invoiceDate', 'Delivery date', 'required');				//require date
+		$this->form_validation->set_rules('invoiceDate', 'Date', 'required');				//require date
 		$this->form_validation->set_rules('outgoing' ,'Supplier name', 'required|callback_supplier_check');					//require supplier
 		//$this->form_validation->set_rules('outgoing','Supplier name', 'callback_supplier_check');	//check if supplier is not ''
 		$this->form_validation->set_rules('invoiceItem', 'Item code' , 'required');					//require item code
@@ -186,10 +187,11 @@ class Cashier extends CI_Controller {
 		if ($this->form_validation->run() === FALSE)
 		{
 			$data['header'] = 'Cashier';
-			$data['page'] = 'cashier_home';
-			$data['subpage'] = 'cashier/incoming_main';
+			$data['flag']=2;
+			$data['page'] = 'cashier/incoming_main';
+			//$data['subpage'] = 'cashier/incoming_main';
 			$data['supplier'] = $this->pos_model->getAll_supplier();
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 		}
 		else
 		{	
@@ -197,7 +199,7 @@ class Cashier extends CI_Controller {
 			$desc = $this->input->post('in_desc');
 			$item = $this->input->post('invoiceItem');
 			$qty = $this->input->post('invoiceQty');
-			$price = $this->input->post('invoicePrice');
+			$price = $this->input->post('invoiceAmt');
 			$total = $this->input->post('totalPrice');
 				/* get supplier id */
 			$id = $this->pos_model->get_supplierID($supplier);
@@ -220,18 +222,85 @@ class Cashier extends CI_Controller {
 			foreach($item as $d): 
 				//echo $item[$i].'<br>'.$qty[$i].'<br>'.$price[$i].'<br>';
 				$this->pos_model->store_deliveredItem($delivery_id, $item[$i], $qty[$i], $price[$i]);
-				/*$this->db->insert('delivered_item', array('delivery_id'=>$delivery_id,
-					'item_code'=>$item[$i],
-					'quantity'=>$qty[$i],
-					'price'=>$price[$i]
-					));*/
 				$this->pos_model->add_item($item[$i], $qty[$i]);
 				$i++;
 
 			endforeach;
 
-			redirect('cashier/incoming');
+			//redirect('cashier/incoming');
 		}
+	}
+	
+
+	function createOutgoing(){
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$data['header'] = 'Cashier';
+		
+		$this->form_validation->set_rules('outgoingDate', 'Date', 'required');				//require date
+		$this->form_validation->set_rules('outgoing' ,'Status', 'required');					//require supplier
+		//$this->form_validation->set_rules('outgoing','Supplier name', 'callback_supplier_check');	//check if supplier is not ''
+		$this->form_validation->set_rules('outgoingItem', 'Item code' , 'required');					//require item code
+		$this->form_validation->set_rules('outgoingQty', 'Item quantity' , 'required');				//require item quantity
+		$this->form_validation->set_rules('outgoingPrice', 'Item price' , 'required');				//require	item price
+		$this->form_validation->set_rules('outgoingAmt', 'Item amount' , 'required');				//require item amount
+
+		if ($this->form_validation->run() === FALSE)
+		{
+			$data['header'] = 'Cashier';
+			$data['flag']=2;
+			$data['page'] = 'cashier/incoming_main';
+			$data['subpage'] = 'cashier/incoming_main';
+			$data['supplier'] = $this->pos_model->getAll_supplier();
+			$this->load->view('template2', $data);
+		}
+		else
+		{	
+			$status = $this->input->post('outgoing');
+			$desc = $this->input->post('out_desc');
+			$item = $this->input->post('outgoingItem');
+			$qty = $this->input->post('outgoingAmt');
+			$price = $this->input->post('outgoingPrice');
+			$total = $this->input->post('outTotalPrice');
+				
+				/* create outgoing */
+			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
+				'date_out'=>date('y-m-d'),
+				'description'=>$desc,
+				'amount'=>$total,
+				'status'=>$status
+				));
+				
+				/* get outgoing ID */
+			$outgoing_id = $this->db->insert_id();
+			//echo $delivery_id;
+
+				/* insert out_items */
+			$i = 0;
+			foreach($item as $d): 
+				
+				$this->pos_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
+				echo $item[$i].'<br>'.$qty[$i].'<br>'.$price[$i].'<br>';
+				//$this->pos_model->subtract_item($items['id'], $items['qty']);
+				//$this->pos_model->add_item($item[$i], $qty[$i]);
+				$i++;
+
+			endforeach;
+
+			//redirect('cashier/outgoing');
+		}
+	}
+
+	function createExpense() {
+		$status = $this->input->post('expenses_dropdown');
+		$date = $this->input->post('expenseDate');
+		$desc = $this->input->post('exp_desc');
+		$amount = $this->input->post('expense_amount');	
+		
+		$this->pos_model->store_expenses($status, $date, $desc, $amount);
+
+		redirect('pos/cashier_home');
 	}
 	
 	
@@ -266,90 +335,103 @@ class Cashier extends CI_Controller {
 		else 
 			$data['message'] = 'No Customers Found';
  		
-		$data['header'] = 'Cashier';
+		$data['header'] = 'Credit';
+		$data['flag']=2;
 		
-		$data['page'] = 'cashier_home';
+		$data['page'] = 'view_list';
 		$data['list_id'] = 2; // list id # 2 - list of customers
-		$data['subpage'] = 'view_list';
+		//$data['subpage'] = 'view_list';
 		
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function outgoing() {
 
-		$data['header'] = 'Cashier';
+		$data['header'] = 'Outgoing';
 		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/outgoing_main';
+		$data['page'] = 'cashier/outgoing_main';
+		//$data['subpage'] = 'cashier/outgoing_main';
+		$data['flag']=2;
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function incoming() {
 
-		$data['header'] = 'Cashier';
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/incoming_main';
+		$data['header'] = 'Incoming';
+		$data['flag']=2;
+		$data['page'] = 'cashier/incoming_main';
+		//$data['subpage'] = 'cashier/incoming_main';
 		$data['supplier'] = $this->pos_model->getAll_supplier();
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function expenses() {
 
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/expenses_main';
+		$data['header'] = 'Expenses';
+		$data['flag']=2;
+		$data['page'] = 'cashier/expenses_main';
+		//$data['subpage'] = 'cashier/expenses_main';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function search() {
 
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/search_main';
+		$data['header'] = 'Search';
+		$data['flag']=2;
+		$data['page'] = 'cashier'.$url;
+		//$data['subpage'] = 'cashier/search_main';
 
 		$this->form_validation->set_rules('search','search item','');
 
 		$search = $this->input->post('search');
+		$searchin = $this->input->post('search_dropdown');
 
 		if ($this->form_validation->run() == FALSE){
 
 			$data['results'] = FALSE;
  
- 			$this->load->view('template', $data);
+ 			$this->load->view('template2', $data);
  
 		}
 		else {
+			
+			if ($searchin == 'ps' && $search != ' '){
+
+				$data['results'] = $this->pos_model->get_search($search,$searchin);
+ 
+			}else{
+
+				$data['results'] = $this->pos_model->get_search($search,$searchin);
+
+			}
 
 				$data['search'] = $search;
 
-				$data['results'] = $this->pos_model->get_search($search);
-
-				$this->load->view('template', $data);
+				//his->load->view('template2', $data);
+				redirect($this->input->get('last_url', $data));
 		}		
 	}
 
 	function inventory() {
 
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'inventory_main';
+		$data['header'] = 'Iventory';
+		$data['flag']=2;
+		$data['page'] = 'inventory_main';
+		//$data['subpage'] = 'inventory_main';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
-	function close() {
+	function amount() {
 
-		$data['header'] = 'Cashier';
+		$data['header'] = 'Opening & Closing Amount';
 		
-		$data['page'] = 'cashier_home';
-		$data['subpage'] = 'cashier/close';
-
-		$this->load->view('template', $data);
+		$data['page'] = 'forms/bills_form';
+		//$data['subpage'] = 'forms/bills_form';
+		$data['flag']=2;
+		$this->load->view('template2', $data);
 	}
 
 	function logout() {
@@ -379,12 +461,12 @@ class Cashier extends CI_Controller {
 			$data['message'] = 'No Details Found';
  		
 		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
+		$data['flag']=2;
+		//$data['page'] = 'cashier_home';
 		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
-		$data['subpage'] = 'view_list';
+		$data['page'] = 'view_list';
 		
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function view_transDetails($trans_id) {
@@ -397,12 +479,24 @@ class Cashier extends CI_Controller {
  		
 		$data['header'] = 'Cashier';
 		
-		$data['page'] = 'cashier_home';
+		//$data['page'] = 'cashier_home';
 		$data['list_id'] = 5; // list id # 5 - list of transactions' details
-		$data['subpage'] = 'view_list';
-		
-		$this->load->view('template', $data);
+		$data['page'] = 'view_list';
+		$data['flag']=2;
+		$this->load->view('template2', $data);
 	}
+
+	function reports() {
+
+		$data['header'] = 'Report';
+		
+		$data['page'] = 'cashier/reports_main';
+		//$data['subpage'] = 'cashier/reports_main';
+		$data['flag']=2;
+		$this->load->view('template2', $data);
+	}
+
+
 }
 
 /* End of file pos.php */

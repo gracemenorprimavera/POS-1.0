@@ -21,20 +21,22 @@ class Manager extends CI_Controller {
 	function outgoing() {
 
 		$data['header'] = 'Manager';
+		$data['flag'] = 3;
 		
-		$data['page'] = 'manager_home';
-		$data['subpage'] = 'manager/outgoing_main';
+		//$data['page'] = 'manager_home/';
+		$data['page'] = 'manager/outgoing_main';
 
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 	function incoming() {
 
 		$data['header'] = 'Manager';
 		$data['page'] = 'manager_home';
+		$data['flag'] = 3;
 		$data['subpage'] = 'manager/incoming_main';
 		$data['supplier'] = $this->pos_model->getAll_supplier();
-		$this->load->view('template', $data);
+		$this->load->view('template2', $data);
 	}
 
 }
