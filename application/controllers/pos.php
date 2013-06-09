@@ -25,24 +25,12 @@ class Pos extends CI_Controller {
 	public function index()
 	{
 		$data['message'] = " ";
-		$data['header'] = 'POS';
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
 		
 		$data['page'] = 'forms/login_form';
 		
 		$this->load->view('template', $data);
-	}
-
-    function do_logout() {
-
-		$data['message'] = " ";
-		$data['header'] = 'POS';
-
-		$this->session->unset_userdata('validated');
-		//$this->session->sess_destroy();
-        redirect('pos');
-		
-		//$data['page'] = 'forms/login_form';
-		//$this->load->view('template', $data);
 	}
 
 	public function user_login() {
@@ -52,7 +40,8 @@ class Pos extends CI_Controller {
 		// password is invalid
 		if ($this->form_validation->run() == FALSE) {
 			$data['message'] = "* Invalid password";
-			$data['header'] = 'POS';
+			$data['header'] = 'P.O.S.';
+			$data['subheader'] = 'Point of Sale';
 			$data['page'] = 'forms/login_form';
 		
 			$this->load->view('template', $data);
@@ -61,32 +50,42 @@ class Pos extends CI_Controller {
 			
 			$password = $this->input->post('password');
 			
-			$valid_user = $this->pos_model->check_user($password);
-				
-			if($valid_user) {
-				$account = $this->session->userdata('role');
+			$account = $this->pos_model->check_user($password);
 						
-				if($account=='cashier') {
-					if($this->session->userdata('open'))
-						redirect('cashier');
-					else
-						redirect('cashier/open_amount');
-				}
-				else if($account=='admin') {
-					redirect('admin');
-				}
-				else if($account=='manager'){
-					redirect('manager');
-				}
+			if($account=='cashier') {
+				redirect('pos/cashier_home');
+			}
+			else if($account=='admin') {
+				redirect('pos/admin_home');
 			}
 			else {
 				$data['message'] = "* Invalid password";
-				$data['header'] = 'POS';
+				$data['header'] = 'P.O.S.';
+				$data['subheader'] = 'Point of Sale';
 				$data['page'] = 'forms/login_form';
 			
 				$this->load->view('template', $data);			
 			}
 		}		
+	}
+
+	public function cashier_home() {
+
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'cashier_home';
+		$data['subpage'] = 'dummy';
+
+		$this->load->view('template', $data);
+	}
+
+	public function opening() {
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'forms/bills_form';
+		$data['subpage'] = 'dummy';
+
+		$this->load->view('template', $data);
 	}
 
 	public function closing() {
@@ -103,23 +102,10 @@ class Pos extends CI_Controller {
 		$data['header'] = 'Administrator';
 		
 		$data['page'] = 'admin_home';
-		//$data['subpage'] = 'dummy';
+		$data['subpage'] = 'dummy';
 
 		$this->load->view('template', $data);
 	}	
-
-
-
-	public function manager_home(){
-		$data['header'] = 'Manager';
-		
-		$data['page'] = 'manager_home';
-		$data['subpage'] = 'dummy';
-		
-		$this->load->view('template', $data);
-	}
-
-
 }
 
 /* End of file pos.php */

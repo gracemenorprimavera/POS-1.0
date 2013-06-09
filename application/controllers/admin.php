@@ -18,41 +18,13 @@ class Admin extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
-	function __construct(){
-        parent::__construct();
-        $this->check_isvalidated();
-    }
-
-    private function check_isvalidated(){
-       /* if(! $this->session->userdata('validated')){
-            redirect('pos');
-        } */
-        $is_logged_in = $this->session->userdata('validated');
-        $user= $this->session->userdata('role');
-		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin')
-		{
-			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Administrator');	
-			die();		
-		}		
-    }
-
-    public function index() {
-
-		$data['header'] = 'Administrator';
-		
-		$data['page'] = 'admin_home';
-		//$data['subpage'] = 'dummy';
-
-		$this->load->view('template', $data);
-	}
-
 /* PASSWORD */
 	function password() {
 		$data['message'] = " ";
-		$data['header'] = 'Change Password';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'forms/password_form';
-		//$data['subpage'] = 'forms/password_form';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'forms/password_form';
 
 		$this->load->view('template', $data);
 	}
@@ -71,10 +43,10 @@ class Admin extends CI_Controller {
 
 		if($this->form_validation->run() == FALSE) {
 			$data['message'] = "";
-			$data['header'] = 'Change Password';
+			$data['header'] = 'Administrator';
 			
-			$data['page'] = 'forms/password_form';
-			//$data['subpage'] = 'forms/password_form';
+			$data['page'] = 'admin_home';
+			$data['subpage'] = 'forms/password_form';
 
 			$this->load->view('template', $data);
 		}
@@ -85,11 +57,10 @@ class Admin extends CI_Controller {
 			else
 				$data['message'] = "Wrong combination of role and password.";
 			
-			$data['header'] = 'Change Password';
+			$data['header'] = 'Administrator';
 			
-			$data['page'] = 'forms/password_form';
-			//$data['subpage'] = 'forms/password_form';
-
+			$data['page'] = 'admin_home';
+			$data['subpage'] = 'forms/password_form';
 
 			$this->load->view('template', $data);
 		}
@@ -100,20 +71,30 @@ class Admin extends CI_Controller {
 /* ITEMS */
 	function items() {
 
-		$data['header'] = 'Item';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'admin/item_form';
-		//$data['subpage'] = 'admin/item_form';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'admin/item_form';
+
+		$this->load->view('template', $data);
+	}
+
+	function goto_items() {
+
+		$data['header'] = 'Administrator';
+		
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'admin/items';
 
 		$this->load->view('template', $data);
 	}
 
 	function goto_add_item() {
 
-		$data['header'] = 'Add Item';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'forms/item_form';
-		//$data['subpage'] = 'forms/item_form';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'forms/item_form';
 
 		$this->load->view('template', $data);
 	}
@@ -148,10 +129,10 @@ class Admin extends CI_Controller {
 
 	function goto_edit_item($edit) {
 
-		$data['header'] = 'Edit Item';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'forms/itemEdit_form';
-		//$data['subpage'] = 'forms/itemEdit_form';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'forms/itemEdit_form';
 		$data['edit'] = $edit;
 
 		$this->load->view('template', $data);
@@ -185,10 +166,10 @@ class Admin extends CI_Controller {
 		$data['success'] = $this->pos_model->update_item($data,$edit);
 		$data['edit']=$edit;
 
-		$data['header'] = 'Edit Item';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'admin/successEdit';
-		//$data['subpage'] = 'admin/successEdit';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'admin/successEdit';
 											
 		$this->load->view('template', $data);
 
@@ -210,13 +191,12 @@ class Admin extends CI_Controller {
 		else 
 			$data['message'] = 'No Items Found';
  		
-		$data['header'] = 'Item List';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'view_list';
-		//$data['subpage'] = 'view_list';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_list';
 		$data['list_id'] = 1; // list id # 1 - list of items
 
-		//$this->load->view('template', $data);
 		$this->load->view('template', $data);
 	}
 
@@ -251,20 +231,20 @@ class Admin extends CI_Controller {
 
 	function reports() {
 
-		$data['header'] = 'Report';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'admin/reports_main';
-		//$data['subpage'] = 'admin/reports_main';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'admin/reports_main';
 
 		$this->load->view('template', $data);
 	}
 
 	function inventory() {
 
-		$data['header'] = 'Inventory';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'inventory_main';
-		//$data['subpage'] = 'inventory_main';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'inventory_main';
 
 		$this->load->view('template', $data);
 	}
@@ -288,21 +268,21 @@ class Admin extends CI_Controller {
 		else 
 			$data['message'] = 'No Customers Found';
  		
-		$data['header'] = 'Customers';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'view_list';
+		$data['page'] = 'admin_home';
 		$data['list_id'] = 2; // list id # 2 - list of customers
-		//$data['subpage'] = 'view_list';
+		$data['subpage'] = 'view_list';
 		
 		$this->load->view('template', $data);
 	}
 
 	function delivery() {
 
-		$data['header'] = 'Delivery';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'admin/delivery_main';
-		//$data['subpage'] = 'admin/delivery_main';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'admin/delivery_main';
 
 		$this->load->view('template', $data);		
 	}
@@ -316,11 +296,11 @@ class Admin extends CI_Controller {
 		else 
 			$data['message'] = 'No Delivery Found';
  		
-		$data['header'] = 'Delivery';
+		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'view_list';
+		$data['page'] = 'admin_home';
 		$data['list_id'] = 3; // list id # 3 - list of customers
-		//$data['subpage'] = 'view_list';
+		$data['subpage'] = 'view_list';
 		
 		$this->load->view('template', $data);	
 	}
@@ -328,7 +308,8 @@ class Admin extends CI_Controller {
 	function logout() {
 
 		$data['message'] = " ";
-		$data['header'] = 'POS';
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
 		
 		$data['page'] = 'forms/login_form';
 		
@@ -346,11 +327,10 @@ class Admin extends CI_Controller {
  		
 		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'view_item_bygroup';
-		//$data['subpage'] = 'view_item_bygroup';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_bygroup';
 
 		$this->load->view('template', $data);
-		//$this->load->view('view_item_bygroup', $data);
 	}
 
 	function get_item_byclass() {
@@ -364,11 +344,10 @@ class Admin extends CI_Controller {
  		
 		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'view_item_byclass';
-		//$data['subpage'] = 'view_item_byclass';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_byclass';
 
 		$this->load->view('template', $data);
-		//$this->load->view('view_item_byclass', $data);
 	}
 
 	function get_item_bysupplier() {
@@ -383,11 +362,10 @@ class Admin extends CI_Controller {
  		
 		$data['header'] = 'Administrator';
 		
-		$data['page'] = 'view_item_bysupplier';
-		//$data['subpage'] = 'view_item_bysupplier';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_bysupplier';
 
 		$this->load->view('template', $data);
-		//$this->load->view('view_item_bysupplier', $data);
 	}
 
 	function get_item_byOutofStock() {
@@ -402,11 +380,10 @@ class Admin extends CI_Controller {
  		
 		$data['header'] = 'Administrator';
 		
-		//$data['page'] = 'admin_home';
-		$data['page'] = 'view_item_byOutofStock';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_byOutofStock';
 
 		$this->load->view('template', $data);
-		//$this->load->view('view_item_byOutofStock', $data);
 	}
 
 	function get_item_bybelowReorder() {
@@ -421,11 +398,10 @@ class Admin extends CI_Controller {
  		
 		$data['header'] = 'Administrator';
 		
-		//$data['page'] = 'admin_home';
-		$data['page'] = 'view_item_bybelowReorder';
+		$data['page'] = 'admin_home';
+		$data['subpage'] = 'view_item_bybelowReorder';
 
 		$this->load->view('template', $data);
-		//$this->load->view('view_item_bybelowReorder', $data);
 	}
 	
 
@@ -436,211 +412,6 @@ class Admin extends CI_Controller {
 		}
 		echo json_encode($data);
 	}
-
-	function view_customerDetails($customer_id) {
-		if($this->pos_model->get_customerDetails($customer_id)) {
-			$data['customers'] = $this->pos_model->get_customerDetails($customer_id);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Details Found';
- 		
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['list_id'] = 4; // list id # 4 - list of customers' transactions
-		$data['subpage'] = 'view_list';
-		
-		$this->load->view('template', $data);
-	}
-
-	function view_transDetails($trans_id) {
-		if($this->pos_model->get_transDetails($trans_id)) {
-			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Transactions Found';
- 		
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		$data['list_id'] = 5; // list id # 5 - list of transactions' details
-		$data['subpage'] = 'view_list';
-		
-		$this->load->view('template', $data);
-	}
-
-	function customers2() {
-		
-		if($this->pos_model->getAll_customers2()) {
-			$data = $this->pos_model->getAll_customers2();
-		}
-		echo json_encode($data);
-	}
-
-	function get_all_items2() {
-		
-		if($this->pos_model->getAll_items3()) {
-			$data = $this->pos_model->getAll_items3();
-		}
-		echo json_encode($data);
-	}
-
-	function goto_add_customers() {
-
-		$data['header'] = 'Administrator';
-		
-		//$data['page'] = 'admin_home';
-		$data['page'] = 'forms/customer_form';
-
-		$this->load->view('template', $data);
-	}
-
-	function add_customer() {
-
-		$name = $this->input->post('customerName');
-		$contact = $this->input->post('customerNum');
-		$add = $this->input->post('customerAdd');
-
-		$this->db->insert('customers', array('customer_id'=>NULL,
-				'customer_name'=>$name,
-				'contact_number'=>$contact,
-				'address'=>$add,
-				'balance'=>0
-			));
-		redirect('pos/admin_home');
-	}
-
-	function view_incoming() {
-		$data['detail_flag'] = false; 
-		$data['incoming'] = $this->pos_model->getAll_incoming();
-		$data['message'] = '';
-		$data['header'] = 'Delivery Record';
-		$data['page'] = 'incoming_list';
-		$this->load->view('template', $data);
-	}
-
-	function view_incomingDetails($date) {
-		$data['detail_flag'] = true; 
-		$data['incoming'] = $this->pos_model->getAll_incoming();
-		$data['date'] = $date;
-		$data['daily'] = $this->pos_model->getAll_incoming_byDate($date);
-		$data['message'] = '';
-		$data['header'] = 'Incoming Record';
-		$data['page'] = 'incoming_list';
-		$this->load->view('template', $data);
-	}	
-
-	function view_outgoing() {
-		$data['detail_flag'] = false; 
-		$data['outgoing'] = $this->pos_model->getAll_outgoing();
-		$data['message'] = '';
-		$data['header'] = 'Pull-outs Record';
-		$data['page'] = 'outgoing_list';
-		$this->load->view('template', $data);
-	}
-
-	function view_outgoingDetails($date) {
-		$data['detail_flag'] = true; 
-		$data['outgoing'] = $this->pos_model->getAll_outgoing();
-		$data['date'] = $date;
-		$data['daily'] = $this->pos_model->getAll_outgoing_byDate($date);
-		$data['message'] = '';
-		$data['header'] = 'Pull-outs Record';
-		$data['page'] = 'outgoing_list';
-		$this->load->view('template', $data);
-	}
-
-	function view_expenses() {
-		$data['detail_flag'] = false; 
-		$data['expenses'] = $this->pos_model->getAll_expenses();
-		$data['message'] = '';
-		$data['header'] = 'Expenses Record';
-		$data['page'] = 'expenses_list';
-		$this->load->view('template', $data);
-	}
-
-	function view_expensesDetails($date) {
-		$data['detail_flag'] = true; 
-		$data['expenses'] = $this->pos_model->getAll_expenses();
-		$data['date'] = $date;
-		$data['daily'] = $this->pos_model->getAll_expenses_byDate($date);
-		$data['message'] = '';
-		$data['header'] = 'Expenses Record';
-		$data['page'] = 'expenses_list';
-		$this->load->view('template', $data);
-	}
-
-	function importExcel() {
-
-		$data['header'] = 'Import Excel';
-		$data['flag']=1;
-		
-		$data['page'] = 'forms/import_excel';
-		//$data['subpage'] = 'forms/item_form';
-
-		$this->load->view('template', $data);
-	}
-
-		function import_excel(){
-
-				echo $this->db->_error_message();
-				if(isset($_POST["Import"]))
-				{
-					$filename=$_FILES["file"]["tmp_name"];
-					$i = 0;
-					//echo $ext=substr($filename,strrpos($filename,"."),(strlen($filename)-strrpos($filename,".")));
-					 if($_FILES["file"]["size"] > 0)
-					 {
-						$file = fopen($filename, "r");
-						$this->db->trans_start();
-								 while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
-								 {
-								if($emapData[1] == '') $emapData[1] = NULL;
-								if($emapData[0] == '') $emapData[0] = NULL;
-								   $data = array(
-									   'item_code' => $emapData[1],
-									   'bar_code' => $emapData[0],
-									   'desc1' => $emapData[2],
-									   'desc2' => $emapData[3],
-									   'desc3' => $emapData[4],
-									   'desc4' => $emapData[5],
-									   'division' => $emapData[6],
-									   'group' => $emapData[7],
-									   'class1' => $emapData[8],
-									   'class2' => $emapData[9],
-									   'cost' => $emapData[10],
-									   'retail_price' => $emapData[11],
-									   'model_quantity' => $emapData[12],
-									   'supplier_code' => $emapData[13],
-									   'manufacturer' => $emapData[14],
-									   'quantity' => 0,
-									   'reorder_point' => 0
-									);
-									$this->db->insert('item', $data);
-								 }
-						$this->db->trans_complete();
-						fclose($file);
-						if ($this->db->trans_status() === FALSE){
-							$data['message']="CSV File not Imported";
-							$data['page'] = 'forms/import_excel';
-						}
-						else{
-							$data['message']="CSV File has been successfully Imported";;
-							$data['page'] = 'forms/import_excel';
-						}
-					}
-					else{
-					$data['message'] =  "Invalid File:Please Upload CSV File";
-					}
-					
-				}
-				$data['header'] = 'Import Excel';
-				$data['flag']=1;
-				$this->load->view('template', $data);
-	} //end of import_excel
-
 
 }
 
