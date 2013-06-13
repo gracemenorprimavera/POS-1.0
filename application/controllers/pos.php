@@ -100,6 +100,29 @@ class Pos extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 
+	public function get_all_items() {
+		
+		if($this->pos_model->getAll_items2()) {
+			$data = $this->pos_model->getAll_items2();
+		}
+		echo json_encode($data);
+	}
+
+	public function customers2() {
+		
+		if($this->pos_model->getAll_customers2()) {
+			$data = $this->pos_model->getAll_customers2();
+		}
+		echo json_encode($data);
+	}
+
+	public function get_all_items2($mode) {
+		
+		if($this->pos_model->getAll_items3($mode)) {
+			$data = $this->pos_model->getAll_items3($mode);
+		}
+		echo json_encode($data);
+	}
 
 }
 

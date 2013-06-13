@@ -17,6 +17,10 @@
       <h4><?php echo anchor('items/importExcel', 'Import Excel'); ?></h4>
       <p>Import excel file to add item in the stock</p>
      </div></li>
+	 <li><div class="data">
+      <h4><?php echo anchor('items/exportExcel', 'Export Excel'); ?></h4>
+      <p>Export database to Excel CSV format</p>
+     </div></li>
   </ul>
 <?php } ?>
 

@@ -30,6 +30,7 @@ class Items extends CI_Controller {
 
         $data['header'] = 'Add Item';
         $data['flag'] = 1;
+		$data['supplier'] = $this->pos_model->getAll_supplier();
         $data['page'] = 'forms/item_form';
         $this->load->view('template2', $data);
     }
@@ -209,6 +210,7 @@ class Items extends CI_Controller {
                      'reorder_point' => 0
                   );
                   $this->db->insert('item', $data);
+				  
                  }
             $this->db->trans_complete();
             fclose($file);
@@ -231,7 +233,32 @@ class Items extends CI_Controller {
         $this->load->view('template2', $data);
   } //end of import_excel
     
+	function exportExcel() {
 
+		$tables = $this->db->list_tables();
+		$this->load->dbutil();
+		$this->load->helper('file');
+		$url = $_SERVER['DOCUMENT_ROOT']."/POS/export_file/ ";
+		
+		foreach ($tables as $table)
+		{
+		
+			$report = $this->pos_model->fetch_table($table);
+			$table_report = $this->dbutil->csv_from_result($report);
+			//force_download($table . '_csv_file.csv',$table_report);
+			//$data = 'Some file data';
+		
+			write_file($url.$table.".php", $table_report);
+		}
+		$data['header'] = 'Administrator';
+        $data['flag']=1;
+        $data['subnav'] = 1; // sub-navigation for items
+        $data['page'] = 'admin/subnav';
+
+        $this->load->view('template2', $data);
+		
+    }
+	
 
 }
 ?>

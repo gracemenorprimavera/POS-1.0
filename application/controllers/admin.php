@@ -123,7 +123,7 @@ class Admin extends CI_Controller {
 	}
 
 
-	function get_all_items() {
+	public function get_all_items() {
 		
 		if($this->pos_model->getAll_items2()) {
 			$data = $this->pos_model->getAll_items2();
@@ -131,7 +131,7 @@ class Admin extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	function customers2() {
+	public function customers2() {
 		
 		if($this->pos_model->getAll_customers2()) {
 			$data = $this->pos_model->getAll_customers2();
@@ -139,7 +139,7 @@ class Admin extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	function get_all_items2() {
+	public function get_all_items2() {
 		
 		if($this->pos_model->getAll_items3()) {
 			$data = $this->pos_model->getAll_items3();
@@ -230,6 +230,14 @@ class Admin extends CI_Controller {
 		$this->pos_model->record_report();
 		$this->session->sess_destroy();
 		redirect('pos');
+	}
+	
+	function goto_add_category(){
+			$cat_name =  $this->input->post('cat_name');
+			$mode = $this->input->post('mode');
+			if($mode == 'addSupplier')
+				echo $this->pos_model->add_supplier($cat_name);
+			
 	}
 }
 

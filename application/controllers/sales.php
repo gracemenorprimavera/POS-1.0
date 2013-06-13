@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Sales extends CI_Controller {
-
 	function __construct(){
         parent::__construct();
         $this->check_isvalidated();
@@ -34,11 +33,10 @@ class Sales extends CI_Controller {
     }
 
 	function add_item() {
-
-		$bar_code = $this->input->post('search_item');
+		$item_id = $this->input->post('hItemPurchase');
 		$qty = $this->input->post('quantity');
 
-		$this->form_validation->set_rules('search_item','Bar Code', 'required');
+		$this->form_validation->set_rules('search_item','Barcode/ Itemcode', 'required');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required');
 		$data['customer'] = $this->pos_model->getAll_customers();
 
@@ -46,16 +44,15 @@ class Sales extends CI_Controller {
 			$data['message'] = 'All fields are required!';
 
 			$data['header'] = 'New Transaction';
-			$data['page'] = 'cashier/purchase_main';
+			//$data['page'] = 'cashier/purchase_main';
+			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template', $data);
 		}
 		else {
 			$this->db->from('item');
-			$this->db->where('bar_code', $bar_code);
+			$this->db->where('item_id', $item_id);
 			$result = $this->db->get();
-
-
 			if($result->num_rows() == 1) {
 				foreach($result->result() as $r) {
 
@@ -76,7 +73,7 @@ class Sales extends CI_Controller {
 			               'id'      => $r->item_id,
 			               'qty'     => $qty,
 			               'price'   => $r->retail_price,
-			               'name'    => $r->desc1
+			               'name'    => str_replace("'", "",$r->desc1)
 			            );
 			            $this->cart->insert($data);
 			        }
@@ -88,9 +85,11 @@ class Sales extends CI_Controller {
 		    }
 		   
 			$data['header'] = 'New Transaction';
-			$data['page'] = 'cashier/purchase_main';
+			//$data['page'] = 'cashier/purchase_main';
+			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template', $data);		
+			$this->load->view('template', $data);
+			
 		}
 	}
 

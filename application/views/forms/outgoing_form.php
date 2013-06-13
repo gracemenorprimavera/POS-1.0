@@ -38,7 +38,7 @@ $user = $this->session->userdata('role');
 		);
 
 		echo '<table  cellpadding="10px"><tr>';
-		echo '<th>Outgoing<br>'.form_dropdown('outgoing', $options, '', 'autocomplete="off" required').'</th>';
+		echo '<th>Outgoing<br>'.form_dropdown('outgoing', $options, '', 'id="outgoingDd" autocomplete="off" required').'</th>';
 		echo '<th>Description <br>'.form_textarea(array('rows' => '3', 'cols'=>'20', 'name' => 'out_desc')).'</th>';
 		echo '<th><label for="outgoingDate">Date </label><br>';
 		echo form_input($data).'<th/>';

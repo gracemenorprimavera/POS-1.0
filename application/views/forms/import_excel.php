@@ -1,5 +1,5 @@
 <?php if(isset($message)) echo $message; ?>
-<?php echo form_open_multipart('item/import_excel') ?>
+<?php echo form_open_multipart('items/import_excel') ?>
 	<table border="1" width="40%" align="center">
 		<tr>
 			<td colspan="2" align="center"><strong>Import CSV/Excel file</strong></td>

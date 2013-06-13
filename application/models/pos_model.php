@@ -482,9 +482,10 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
-	function getAll_items3() {
+	function getAll_items3($mode) {
 
-		$this->db->select("CONCAT(item.bar_code,' ',item.desc1) as label,item.bar_code as value",false);
+		if($mode == 'Barcode') $this->db->select("CONCAT(item.bar_code,' ',item.desc1) as label,item.bar_code as value ,item.item_id",false);
+		else if($mode == 'Itemcode')$this->db->select("CONCAT(item.desc1,' ',item.bar_code) as label,item.desc1 as value,item.item_id",false);
 		$this->db->from('item');
 		$result = $this->db->get();
 		if($result->num_rows() > 0) {
@@ -777,6 +778,25 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+	
+	function add_supplier($supplier){
+		$arr = array('supplier_id'=>NULL,
+			'supplier_name'=>$supplier,
+			'manufacturer'=>NULL
+		);
+		$this->db->insert('supplier',$arr);
+		if($this->db->affected_rows() > 0)
+		{	
+		return true;
+		}
+		else return false;
+	}
+	
+	function fetch_table($table_name){
+		 return $result = $this->db->get($table_name);
+		
+	}
+	
 	
 }
 ?>

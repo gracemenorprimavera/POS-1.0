@@ -15,7 +15,18 @@
 		Cost: <input type="text" name="cost" required><br>
 		Retail Price: <input type="text" name="price" required><br>
 		Model Quantity: <input type="text" name="m_quantity"><br>
-		Supplier Code: <input type="text" name="supplier_code" required><br>
+		<!--Supplier Code: <input type="text" name="supplier_code" required><br>-->
+		<?php 
+		$data = array();
+		$data[''] = 'Please Select';
+		if(isset($supplier)){
+			foreach($supplier as $row){
+				$data[$row->supplier_name] = $row->supplier_name;
+			}
+		}	
+		echo 'Supplier Code: '.form_dropdown('supplierItem', $data,'','id="supplierItem" autocomplete="off" required');
+		echo '<input type="text" id="addSupplier_input" placeholder="New supplier" /><input type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/><br>';
+		?>
 		Manufacturer: <input type="text" name="manufacturer" required><br>
 		Quantity:  <input type="number" name="quantity" min="0" required><br>
 		Reorder Point: <input type="number" name="reorder_point" min="0" required><br>
