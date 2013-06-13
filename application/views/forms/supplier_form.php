@@ -1,7 +1,12 @@
+<?php echo form_open('incoming/add_supplier'); ?>
 
-<div id="supplier_form" class="forms">
-<h3> SUPPLIER FORM </h3>	
-	
-	Supplier Name: <input type="text" name="supplier_name">
-	Supplier Description: <input type="text" name="supplier_desc">
-</div>
+	<table>
+		<?php echo form_open('incoming/add_supplier'); ?>	
+		<tr><td>Supplier:</td><td><input type="text" name="supplierName" required /></td></tr>
+		<tr><td>Manufacturer:</td><td><input type="text" name="manufacturer" required /></td></tr>
+
+		<tr><td></td><td><?php echo form_submit(array('name'=>'add_supplier', 'class'=>'button'), 'Add Supplier'); ?></td></tr>
+		<?php echo form_close(); ?>
+	</table>
+
+<?php echo form_close() ?>

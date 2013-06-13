@@ -9,12 +9,18 @@
 <script language="javascript" type="text/javascript">
 
  $(document).ready(function() {
- 
- /*
-	Add new row to delivery table on button click
- */
+  	
+  	$("#search_item").keydown(function(e){
+        if(e.which==17 || e.which==74){
+            e.preventDefault();
+        }else{
+            console.log(e.which);
+        }
+    })
+
+ /*	Add new row to delivery table on button click */
    $("#addDeliveryRow").click(function () {
-			var newRow = '<tr><td><select name="invoiceItem[]" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty[]" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoicePrice[]" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoiceAmt[]" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
+			var newRow = '<tr><td><select name="invoiceItem[]" class="invoiceItem" autocomplete="off" required><option value="" selected="selected">Select one</option></select></td><td><input type="number" name="invoiceQty[]" value="" id="" class="invoiceQty" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoicePrice[]" value="" id="" class="invoicePrice" maxlength="" size="" style="" autocomplete="off" required /></td><td><input type="text" name="invoiceAmt[]" value="" id="" class="invoiceAmt" maxlength="" size="" style="" autocomplete="off" readonly="readonly" required /></td><td><input class="button" style="margin-bottom:23px;" type="button" value="Delete Row" onclick="DeleteRowFunction(this)" /></td></tr>';
 			$('table#deliveryTable').append(newRow);
 			$.ajax({
 					url: '<?php echo base_url().'index.php/admin/goto_view_items_supplier';?>',
@@ -34,7 +40,7 @@
 	Add new row to outgoing table on button click
  */
    $("#addOutgoingRow").click(function () {
-			var newRow = '<tr><td><input name="outgoingItem[]" id="tags" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty[]" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  /></td><td><input type="text" name="outgoingPrice[]" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt[]" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="button" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
+			var newRow = '<tr><td><input name="outgoingItem[]" id="tags" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty[]" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  /></td><td><input type="text" name="outgoingPrice[]" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt[]" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input class="button" type="button" style="margin-bottom:23px;" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
 			$('table#outgoingTable').append(newRow);
    }); 
  /*
@@ -146,15 +152,37 @@
 	});
 */
 
-	$('#purchase_list input[type=radio]').click(function(){
+	/*$('#purchase_list input[type=radio]').click(function(){
 		if($(this).attr('id') == 'cashChoice'){
-			var div = "Customer Cash: <input type='text' name='customerCash' id='customerCash'/><button onclick='alertChange(); return false;'>PAY</button>";
+			var div = "Customer Cash: <input type='text' name='customerCash' id='customerCash' required /><button onclick='alertChange(); '>PAY</button>";
 			$('#paymentDetails').html(div);
 		}
 		else if($(this).attr('id') == 'creditChoice'){
-			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required/><button>RECORD</button>";
+			var div = "<input type='hidden' id='hCustomerName' />Customer Name: <input type='text' name='customerName' id='customerName' class='tags' autocomplete='off' required /><button>RECORD</button>";
 			$('#paymentDetails').html(div);
 		}
+	});*/
+	
+	$('#purchase_list input[type=radio]').click(function(){
+
+		if($(this).attr('id') == 'cashChoice'){
+			$('#customerName').removeAttr("required");
+			$('#customerCash')[0].setAttribute("required", true);
+			$('div#hcustomerName').css('display','none');
+			$('div#hcustomerCash').css('display','inline-block');
+		}
+		else if($(this).attr('id') == 'creditChoice'){
+			$('#customerName')[0].setAttribute("required", true);
+			$('#customerCash').removeAttr("required");
+			$('div#hcustomerCash').css('display','none');
+			$('div#hcustomerName').css('display','inline-block');
+			
+		}
+	});
+
+	$('#pay_credit').click(function(){		
+		$('div#hcustomerName').css('display','none');
+		$('div#hcustomerCash').css('display','inline-block');		
 	});
 	
 	
@@ -216,18 +244,27 @@
 
 	
 	//automatic computation of opening and closing bills
-	$('#openingBills input[type=number]').keyup(function(){
 	
-	var total = 0;
+	$('#openingBills input[type=number],#closingBills input[type=number] ').on('keyup mouseup',function(){
+	 
+	var total = 0, billsTotal = 0, coinsTotal = 0;
 	var val = '';
 	var par = $(this).parent().parent().parent().parent().parent().attr('id');
 			//loop through the form and add the sum
 			$('#' + par + ' input[type=number]').each(function(){
 				val = $(this).val();
-				if(!isNaN(val) && val != '') total = total + (val*$(this).attr('name'));
+				if(!isNaN(val) && val != ''){
+					//total = total + (val*$(this).attr('name'));
+					if($(this).attr('class') == 'bills')
+						billsTotal = billsTotal + (val*$(this).attr('name'));
+					else if($(this).attr('class') == 'coins')
+						coinsTotal = coinsTotal + (val*$(this).attr('name'));
+				}
 			});
 			
-			$('#' + par + ' input.totalBills').val(total);
+			$('#' + par + ' input[name=billsTotal]').val(billsTotal);
+			$('#' + par + ' input[name=coinsTotal]').val(coinsTotal);
+			$('#' + par + ' input.totalBills').val(billsTotal + coinsTotal);
 			//alert(par);
 	});
 	
@@ -241,8 +278,12 @@
 	var cash = $('#customerCash').val();
 	var purchase = $('#totalPurchase').html().substring(1);
 	var change = cash - purchase;
-	if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
-	else alert("Invalid change.");
+	if(cash=='')
+		return;
+	else {
+		if(!isNaN(change) && change >= 0 ) alert("CHANGE:\n" + change + " php");
+		else alert("Invalid change.");
+	}
 	}
 
 	//delete a table row
@@ -372,7 +413,5 @@
 	});	
 	
 */
-
-
 </script>
 	

@@ -1,5 +1,5 @@
 <div id="item_form" class="forms">
-	<?php echo form_open('admin/edit_item');
+	<?php echo form_open('items/edit_item');
 	
 	echo '<h3>EDIT ITEM</h3>
 		 Fill in required fields marked with *<br><br>';

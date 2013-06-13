@@ -1,7 +1,7 @@
 <?php 
 		echo '<h3>VIEW ALL ITEMS </h3>';
 		echo '<div class="links">View items by: ';
-		echo form_open('admin/get_view');
+		echo form_open('items/get_view');
 		$options = array(
 				'all' => 'All Items',
 				'group' => "Group",
@@ -20,7 +20,7 @@
 		else {
 			echo '<h3> ITEMS by SUPPLIER </h3>';
 			echo '<div id="view_item" class="view">';
-				foreach ($supply as $row) {
+				foreach ($items as $row) {
 				echo '<br>';
 				echo '<H3 class="title">'.$row->supplier_code.'</h3>';
 

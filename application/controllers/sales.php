@@ -18,11 +18,19 @@ class Sales extends CI_Controller {
 
     function index() {
     	$data['message'] = "";
+    	$data['flag'] = 2;   	
 		$data['header'] = 'New Transaction';		
-		$data['page'] = 'forms/sales_form';
-		$data['customer'] = $this->pos_model->getAll_customers();
-
-		$this->load->view('template', $data);
+		$is_open = $this->session->userdata('open');
+		if(!isset($is_open) || $is_open != true) {
+			echo 'You don\'t have permission to access this page. '.anchor('cashier/open_amount', 'Record Opening Bills');	
+			die();
+		}	
+		else {
+			$data['page'] = 'forms/sales_form';
+			$data['customer'] = $this->pos_model->getAll_customers();
+			$this->load->view('template', $data);
+		}
+			
     }
 
 	function add_item() {
@@ -130,13 +138,17 @@ class Sales extends CI_Controller {
 		else {
 			$customer_id = $this->input->post('customerName');
 				// insert credits 
-			$this->db->insert('credits', array('credit_id'=>NULL,  
+			
+			$this->db->insert('credit', array('credit_id'=>NULL,  
 				'customer_id'=>$customer_id,
-				'credit_date'=>date('y-m-d'),
-				'total_amount'=>$total
+				'date'=>date('y-m-d'),
+				'status'=>'credit',
+				'amount_credit'=>$total,
+				'amount_paid'=>0,
+				'credit_balance'=>0
 				));
 
-			$credit_id = $this->db->insert_id();	/* get last credit id*/
+			$credit_id = $this->db->insert_id();	// get last credit id
 
 				// insert credit_details 
 			$i = 1;
@@ -148,7 +160,7 @@ class Sales extends CI_Controller {
 			endforeach;
 
 				// update balance 
-			$this->pos_model->update_balance($customer_id, $total);
+			$this->pos_model->update_balance($customer_id, $total, $credit_id);
 
 		}
 			

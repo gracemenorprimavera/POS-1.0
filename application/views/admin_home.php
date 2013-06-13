@@ -1,5 +1,5 @@
 
-<?php echo '<ul id="otherlinks"><li>'.anchor('cashier/logout', ' Log out ').'</li></ul>'; ?>
+<?php //echo '<ul id="otherlinks"><li>'.anchor('cashier/logout', ' Log out ').'</li></ul>'; ?>
 	<ul class="listview">
 	<div class="left_list">
 	<li>

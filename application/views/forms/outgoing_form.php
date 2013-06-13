@@ -1,9 +1,9 @@
 <?php
-
+$user = $this->session->userdata('role');
 		echo validation_errors();
-		echo form_open('cashier/createOutgoing');	//Controller -> Delivery, Action -> Create	
+		echo form_open('outgoing/add_outgoing/'.$user);	//Controller -> Delivery, Action -> Create	
 
-			//delivery date
+	if($user=='manager') {	//delivery date
 		$data = array(
               'name'        => 'outgoingDate',
               'id'          => '',
@@ -14,13 +14,26 @@
 			  'required'	=> 'required',
 			  'readonly'	=> 'readonly'
 		);
+	} 
+	else {
+		$data = array(
+              'name'        => 'outgoingDate',
+              'id'          => '',
+              'type'		=> 'date',
+              'value'       => date('m/d/Y'),
+              'maxlength'   => '',
+              'size'        => '',
+              'style'       => '',
+			  //'required'	=> 'required',
+			  //'readonly'	=> 'readonly'
+		);
+	}
 		
 		$options = array(
 				'' => 'Please Select',
 				'transfer' => 'Transfer',
 				'return' => 'Return Product' ,
 				'bad_order' => 'Bad Order' ,
-				'snacks'=>'Employee Snack',
 				'other' => 'Others'
 		);
 
@@ -116,4 +129,4 @@
 	<input class="button" type="submit" name="submit" value="Submit" />	
 	
 </form>
-<?php echo anchor('pos/cashier_home', 'Cancel Outgoing', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>
+<?php echo anchor($user, 'Cancel Outgoing', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 	<title> POS </title>
 	<?php $this->load->view('includes/resources'); ?>
-
 </head>	
 
 <body>
 <div id="main">
-<div id="navmenu"><?php
-
+<div id="navmenu">
+<?php
+$user = $this->session->userdata('role');
 if($flag==1){
 echo '<div class="navbox">
 	<ul id="nav">';
-
+		echo '<li>'.anchor('admin', 'Home ').'</li>';
 		echo '<li>'.anchor('admin/password', ' Password ').'</li>';
-		echo '<li>'.anchor('admin/goto_items', 'Items ').'</li>';
+		echo '<li>'.anchor('items/goto_itemPage', 'Items ').'</li>';
+		echo '<li>'.anchor('credits/goto_customerPage', 'Customers ').'</li>';
+		echo '<li>'.anchor('expenses/goto_expensesPage', 'Expenses ').'</li>';
+		echo '<li>'.anchor('incoming/goto_incomingPage', 'Deliveries').'</li>';
+		echo '<li>'.anchor('outgoing/goto_outgoingPage', 'Pull-outs').'</li>';
+		echo '<li>'.anchor('admin/goto_amountPage', 'Opening & Closing Amounts').'</li>';
+		echo '<li>'.anchor('admin/sales', 'Transactions').'</li>';
 		echo '<li>'.anchor('admin/reports', ' Reports ').'</li>';
 		echo '<li>'.anchor('admin/inventory', ' Inventory ').'</li>';
-		echo '<li>'.anchor('admin/customers', ' Customers ').'</li>';
-		echo '<li>'.anchor('admin/delivery', ' Delivery ').'</li>';
-	
 	echo'</ul>
 </div>';
 }
@@ -59,19 +60,19 @@ else if($flag==2){
 	echo form_submit(array('class'=>'button','style'=>'width:25px;','name'=>'view_submit'),' ');
  echo form_close(); 
 ?>	
-	<input type="button" value="Zoom In Modal Window" id="button" data-type="zoomin" />
+	<input class='button' type="button" value="Zoom In" id="button" data-type="zoomin" />
 
 	
 <?php
 echo'<div class="navbox">
 	<ul id="nav">';
-	
-		echo '<li>'.anchor('cashier/purchase', ' Purchase ').'</li>';
-		echo '<li>'.anchor('cashier/credit', ' Credit ').'</li>';
-		echo '<li>'.anchor('cashier/expenses', ' Expenses ').'</li>';
+		echo '<li>'.anchor('cashier', ' Home ').'</li>';
+		echo '<li>'.anchor('sales', ' Sales ').'</li>';
+		echo '<li>'.anchor('credits/index', ' Credits ').'</li>';
+		echo '<li>'.anchor('expenses/goto_expensesForm', ' Expenses ').'</li>';
+		echo '<li>'.anchor('cashier/reports', 'Reports').'</li>';
 		echo '<li>'.anchor('cashier/inventory', ' Inventory ').'</li>';
-		echo '<li>'.anchor('', 'Reports').'</li>';
-		echo '<li>'.anchor('cashier/close', ' Close Store ').'</li>';
+		echo '<li>'.anchor('cashier/close_amount', ' Close Store ').'</li>';
 	
 	echo'</ul>
 </div>';
@@ -79,8 +80,8 @@ echo'<div class="navbox">
 echo'<div class="navbox">
 	<ul id="nav">';
 	
-		echo '<li>'.anchor('cashier/outgoing', ' Outgoing ').'</li>';
-		echo '<li>'.anchor('cashier/incoming', ' Incoming ').'</li>';
+		echo '<li>'.anchor('outgoing/goto_outgoingForm', 'Outgoing').'</li>';
+		echo '<li>'.anchor('incoming/goto_incomingForm', 'Incoming').'</li>';
 	
 	echo'</ul>
 </div>';
@@ -91,10 +92,7 @@ echo'<div class="navbox">
 	<?php $this->load->view('includes/header'); ?>
 	
 	<div id="main_con">	
-		<?php if($flag==1)echo '<ul id="otherlinks"><li>'.anchor('admin/logout', ' Log out ').'</li></ul>';
-
-				else if($flag==2) echo '<ul id="otherlinks"><li>'.anchor('cashier/logout', ' Log out ').'</li></ul>';
-				else echo anchor('manager/logout', ' Log out ');?> 
+		<?php echo '<ul id="otherlinks"><li>'.anchor('pos/do_logout', ' Log out ').'</li></ul>';?> 
 		<?php $this->load->view($page); ?>
 
 	<div class="overlay-container" style="overflow:scroll;">
