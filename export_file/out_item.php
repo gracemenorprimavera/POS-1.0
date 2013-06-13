@@ -1,5 +1,0 @@
-"outgoing_id","item_code","quantity","price",
-"17","Champion","64","9.65",
-"18","Del Monte","2","63.75",
-"19","Del Monte","2","127.5",
-"20","Del Monte","1","63.75",

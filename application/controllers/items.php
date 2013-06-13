@@ -237,7 +237,9 @@ class Items extends CI_Controller {
 
 		$tables = $this->db->list_tables();
 		$this->load->dbutil();
-		$this->load->helper('file');
+		//$this->load->helper('file');
+		//$this->load->helper('download');
+		$this->load->library('zip');
 		$url = $_SERVER['DOCUMENT_ROOT']."/POS/export_file/ ";
 		
 		foreach ($tables as $table)
@@ -247,9 +249,15 @@ class Items extends CI_Controller {
 			$table_report = $this->dbutil->csv_from_result($report);
 			//force_download($table . '_csv_file.csv',$table_report);
 			//$data = 'Some file data';
-		
-			write_file($url.$table.".php", $table_report);
+			//write_file($url.$table.".php", $table_report);
+			$this->zip->add_data($table.".php",$table_report);
 		}
+		if(!is_dir($url)){
+			mkdir($url, 0777, TRUE);
+		}
+		$this->zip->archive($url.'backup_sql.zip');
+		$this->zip->download('backup_sql.zip');
+		
 		$data['header'] = 'Administrator';
         $data['flag']=1;
         $data['subnav'] = 1; // sub-navigation for items

@@ -1,5 +1,0 @@
-"outgoing_id","status","date_out","description","amount",
-"17","transfer","2013-06-07","transfer","63.75",
-"18","return","2013-06-07","rp","127.5",
-"19","bad_order","2013-06-07","bo","127.5",
-"20","transfer","2013-06-08","transfer","63.75",
