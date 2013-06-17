@@ -2,7 +2,7 @@
 <div id="bills_form" class="forms">
 
 		
-	<?php echo form_open('cashier/register_amount',array('id' => 'openingBills')); ?>	
+	<?php echo form_open('cashier/register_amount',array('id' => 'openingBills', 'onsubmit'=>"return confirm('Finalize Record?') ")); ?>	
 	
 	<table id="three">
 	<tr>
@@ -32,7 +32,7 @@
 				  'readonly'	=> 'readonly'
 	    	);
 	    }
-	echo '<label for="amountDate">Delivery date </label>';
+	echo '<label for="amountDate">Date </label>';
 	echo form_input($data1);
 ?>
 

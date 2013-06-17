@@ -15,16 +15,15 @@
 		echo form_submit(array('class'=>'button','style'=>'width:50px;','name'=>'view_submit'),'Go');
 		echo form_close();
 		echo '</div>';
-		
 		if($message) {
 			echo '<br><br><br><center>'.$message.'</center>';
 		}
 		else {
-			echo '<h3> ITEMS by CLASSIFICATION </h3>';
+			echo '<h3> ITEMS by Division </h3>';
 			echo '<div id="view_item" class="view">';
 				foreach ($items as $row) {
 				echo '<br>';
-				echo '<H3 class="title">'.$row->class1.'</h3>';
+				echo '<H3 class="title">'.$row->division.'</h3>';
 
 				echo '<table border="1px solid brown">
 				<tr>
@@ -46,9 +45,9 @@
 					<th> Reorder Point </th>
 					<th> Action </th>
 				</tr>';
-			$class=$row->class1;
+			$division=$row->division;
 
-			$items = $this->pos_model->get_items_inclass($class);
+			$items = $this->pos_model->get_items_indivision($division);
 			
 			foreach ($items as $r) {
 				echo '<tr>';

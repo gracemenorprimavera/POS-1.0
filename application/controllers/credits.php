@@ -21,31 +21,25 @@ class Credits extends CI_Controller {
 		$user = $this->session->userdata('role');
 	
 
-		if($user=='cashier' && (!isset($is_open) || $is_open != true)) {
-			echo 'You don\'t have permission to access this page. '.anchor('cashier/open_amount', 'Record Opening Bills');	
-			die();
-		}	
-		else {
-			if($user=='cashier')
-				$data['flag'] = 2;
+		if($user=='cashier')
+			$data['flag'] = 2;
+		else if($user=='admin') 
+			$data['flag'] = 1;
+			
+		$data['customer_flag'] = false;
+		$data['trans_flag'] = false;
 		
-			else if($user=='admin') 
-				$data['flag'] = 1;
-			
-			$data['customer_flag'] = false;
-			$data['trans_flag'] = false;
-			
-			if($this->pos_model->getAll_customers()) {
-				$data['customers'] = $this->pos_model->getAll_customers();
-				$data['message'] = '';
-			}
-			else 
-				$data['message'] = 'No Customers Found';
-	 		
-			$data['header'] = 'Credits';			
-			$data['page'] = 'lists/customer_list';
-			$this->load->view('template2', $data);
+		if($this->pos_model->getAll_customers()) {
+			$data['customers'] = $this->pos_model->getAll_customers();
+			$data['message'] = '';
 		}
+		else 
+			$data['message'] = 'No Customers Found';
+	 		
+		$data['header'] = 'Credits';			
+		$data['page'] = 'lists/customer_list';
+		$this->load->view('template2', $data);
+		
 
 		
 	}
@@ -72,12 +66,14 @@ class Credits extends CI_Controller {
 		
 		if($this->pos_model->get_customerDetails($customer_id)) {
 			$data['customers_det'] = $this->pos_model->get_customerDetails($customer_id);
+			$data['message1'] = '';
 			$data['message'] = '';
 		}
 		else 
-			$data['message'] = 'No Details Found';
+			$data['message1'] = 'No Details Found';
+			$data['message'] = '';
  		
-		$data['header'] = 'Cashier';
+		$data['header'] = 'Credits';
 		$data['page'] = 'lists/customer_list';
 		
 		$this->load->view('template2', $data);
@@ -96,12 +92,16 @@ class Credits extends CI_Controller {
 		
 		if($this->pos_model->get_transDetails($trans_id)) {
 			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
+			$data['message1'] = '';
+			$data['message2'] = '';
 			$data['message'] = '';
 		}
 		else 
-			$data['message'] = 'No Transactions Found';
+			$data['message2'] = 'No Transactions Found';
+			$data['message1'] = '';
+			$data['message'] = '';
  		
-		$data['header'] = 'Cashier';
+		$data['header'] = 'Credits';
 		$data['page'] = 'lists/customer_list';
 		
 		$this->load->view('template2', $data);
@@ -109,7 +109,7 @@ class Credits extends CI_Controller {
 
 	function goto_customerPage() {
 
-		$data['header'] = 'Administrator';
+		$data['header'] = 'Credits';
 		$data['flag']=1;
 		$data['subnav'] = 2; // sub-navigation for items
 		$data['page'] = 'admin/subnav';
@@ -119,7 +119,7 @@ class Credits extends CI_Controller {
 
 	function goto_customerForm() {
 
-		$data['header'] = 'Administrator';
+		$data['header'] = 'Customer Form';
 		$data['flag'] = 1;
 		$data['page'] = 'forms/customer_form';
 		$this->load->view('template2', $data);
@@ -137,7 +137,7 @@ class Credits extends CI_Controller {
 				'address'=>$add,
 				'balance'=>0
 			));
-		redirect('admin');
+		redirect('credits/goto_customerPage');
 	}
 
 }

@@ -6,10 +6,14 @@
 		</tr>
 
 		<tr>
-			<td align="center">CSV/Excel File:</td><td><input type="file" name="file" id="file"></td>
+			<td align="center">CSV/Excel File:</td>
+			<td><input type="file" name="file" id="file"></td>
 		</tr>
 		<tr >
-			<td colspan="2" align="center"><input type="submit" name="Import" value="Import"></td>
+			<td colspan="2" align="center">
+				<input class="button" type="submit" name="Import" value="Import"></td>
 		</tr>
 	</table>
 <?php echo form_close(); ?>
+<?php $user = $this->session->userdata('role');
+echo anchor($user, 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

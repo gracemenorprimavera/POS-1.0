@@ -1,7 +1,7 @@
 <?php echo form_open('incoming/add_supplier'); ?>
 
 	<table>
-		<?php echo form_open('incoming/add_supplier'); ?>	
+		<?php echo form_open('incoming/add_supplier', array('onsubmit'=>"return confirm('Finalize Add Supplier?') ")); ?>	
 		<tr><td>Supplier:</td><td><input type="text" name="supplierName" required /></td></tr>
 		<tr><td>Manufacturer:</td><td><input type="text" name="manufacturer" required /></td></tr>
 

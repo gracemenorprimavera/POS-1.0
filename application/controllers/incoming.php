@@ -18,7 +18,12 @@ class Incoming extends CI_Controller {
 /* INCOMING */
 
 	function goto_incomingPage() {
-
+		$is_logged_in = $this->session->userdata('validated');
+        $user= $this->session->userdata('role');
+		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin') {
+			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Administrator');	
+			die();
+		}
 		$data['header'] = 'Administrator';
 		$data['flag']=1;
 		$data['subnav'] = 4; // sub-navigation for items
@@ -78,13 +83,14 @@ class Incoming extends CI_Controller {
 			$amount = $this->input->post('invoiceAmt');
 			$price = $this->input->post('invoicePrice');
  			$total = $this->input->post('totalPrice');
-				
+			$date = $this->input->post('invoiceDate');	
+
 			$id = $this->pos_model->get_supplierID($supplier); // get supplier id 
 				
 				// create delivery 
 			$this->db->insert('delivery', array('supplier_id'=>$id, 
 				'delivery_id'=>NULL, 
-				'date_delivered'=>date('y-m-d'),
+				'date_delivered'=>$date,
 				'description'=>$desc,
 				'total_amount'=>$total
 				));
@@ -100,15 +106,23 @@ class Incoming extends CI_Controller {
 
 			endforeach;
 
-        	redirect($user);
+        	if($user=='admin') // return to admin home
+        		redirect('incoming/goto_incomingPage');
+       	 	else 	// return to manager home
+        		redirect('manager');
         	
 		}
 	}
 
     function view_incoming() {
 		$data['detail_flag'] = false; 
-		$data['incoming'] = $this->pos_model->getAll_incoming();
-		$data['message'] = '';
+		if($this->pos_model->getAll_incoming()) {
+			$data['incoming'] = $this->pos_model->getAll_incoming();
+			$data['message'] ='';
+		}
+		else
+			$data['message'] = 'No Record of Delivery';
+
 		$data['header'] = 'Delivery Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/incoming_list';
@@ -151,7 +165,7 @@ class Incoming extends CI_Controller {
 				'manufacturer'=>$this->input->post('manufacturer')
 			);
 		$this->db->insert('supplier', $data);
-		redirect('admin');
+		redirect('incoming/goto_incomingPage');
 	}
 
 }

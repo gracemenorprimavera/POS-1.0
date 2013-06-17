@@ -6,8 +6,8 @@ class Pos extends CI_Controller {
 	public function index()
 	{
 		$data['message'] = " ";
-		$data['header'] = 'POS';
-		
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
 		$data['page'] = 'forms/login_form';
 		
 		$this->load->view('template', $data);
@@ -16,7 +16,8 @@ class Pos extends CI_Controller {
     function do_logout() {
 
 		$data['message'] = " ";
-		$data['header'] = 'POS';
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
 
 		$this->session->unset_userdata('validated');
 		//$this->session->sess_destroy();
@@ -33,9 +34,9 @@ class Pos extends CI_Controller {
 		// password is invalid
 		if ($this->form_validation->run() == FALSE) {
 			$data['message'] = "* Invalid password";
-			$data['header'] = 'POS';
+			$data['header'] = 'P.O.S.';
+			$data['subheader'] = 'Point of Sale';
 			$data['page'] = 'forms/login_form';
-		
 			$this->load->view('template', $data);
 		}
 		else {
@@ -43,15 +44,13 @@ class Pos extends CI_Controller {
 			$password = $this->input->post('password');
 			
 			$valid_user = $this->pos_model->check_user($password);
+
 				
 			if($valid_user) {
 				$account = $this->session->userdata('role');
 						
 				if($account=='cashier') {
-					if($this->session->userdata('open'))
-						redirect('cashier');
-					else
-						redirect('cashier/open_amount');
+					redirect('cashier');
 				}
 				else if($account=='admin') {
 					redirect('admin');
@@ -62,7 +61,8 @@ class Pos extends CI_Controller {
 			}
 			else {
 				$data['message'] = "* Invalid password";
-				$data['header'] = 'POS';
+				$data['header'] = 'P.O.S.';
+				$data['subheader'] = 'Point of Sale';
 				$data['page'] = 'forms/login_form';
 			
 				$this->load->view('template', $data);			
@@ -100,6 +100,7 @@ class Pos extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 
+	/* Nicole */
 	public function get_all_items() {
 		
 		if($this->pos_model->getAll_items2()) {

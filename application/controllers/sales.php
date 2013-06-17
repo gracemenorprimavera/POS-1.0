@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Sales extends CI_Controller {
+
 	function __construct(){
         parent::__construct();
         $this->check_isvalidated();
@@ -16,15 +17,21 @@ class Sales extends CI_Controller {
     }
 
     function index() {
-    	$data['message'] = "";
+    	
     	$data['flag'] = 2;   	
-		$data['header'] = 'New Transaction';		
+				
 		$is_open = $this->session->userdata('open');
 		if(!isset($is_open) || $is_open != true) {
-			echo 'You don\'t have permission to access this page. '.anchor('cashier/open_amount', 'Record Opening Bills');	
-			die();
+			$data['message']='Cashier is not yet open. You won\'t be able to record transactions.<br> To open, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
+			//die();
+			$data['header'] = 'Sales';
+			$data['page'] = 'dummy';
+			//$data['customer'] = $this->pos_model->getAll_customers();
+			$this->load->view('template2', $data);
 		}	
 		else {
+			$data['header'] = 'New Transaction';
+			$data['message'] = "";
 			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template', $data);
@@ -32,7 +39,7 @@ class Sales extends CI_Controller {
 			
     }
 
-	function add_item() {
+		function add_item() {
 		$item_id = $this->input->post('hItemPurchase');
 		$qty = $this->input->post('quantity');
 
@@ -105,7 +112,7 @@ class Sales extends CI_Controller {
 		    
 		$data['customer'] = $this->pos_model->getAll_customers();
 		$data['header'] = 'New Transaction';
-		$data['page'] = 'cashier/purchase_main';
+		$data['page'] = 'forms/sales_form';
 		
 		$this->load->view('template', $data);	
 	}
@@ -171,6 +178,8 @@ class Sales extends CI_Controller {
 		$this->cart->destroy();
 		redirect('cashier');
 	}
+
+	
 
 
 }

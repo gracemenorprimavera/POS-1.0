@@ -1,13 +1,14 @@
 <?php
 $user = $this->session->userdata('role');
 echo validation_errors();
-echo form_open('incoming/add_incoming');	//Controller -> Delivery, Action -> Create	
+echo form_open('incoming/add_incoming', array('onsubmit'=>"return confirm('Finalize Record?') "));	//Controller -> Delivery, Action -> Create	
 
 	if($user=='manager') {
 		$data1 = array(
 	              'name'        => 'invoiceDate',
 	              'id'          => '',
-	              'value'       => date('m/d/Y'),
+	              //'type'		=> 'date',
+	              'value'       => date('y-m-d'),
 	              'maxlength'   => '',
 	              'size'        => '',
 	              'style'       => '',

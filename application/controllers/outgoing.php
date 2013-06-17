@@ -17,13 +17,14 @@ class Outgoing extends CI_Controller {
     }
 
     function goto_outgoingPage() {
-		$user= $this->session->userdata('role');
+		$is_logged_in = $this->session->userdata('validated');
+        $user= $this->session->userdata('role');
+		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin') {
+			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Administrator');	
+			die();
+		}
 		$data['header'] = 'Administrator';
-		if($user=='cashier')
-			$data['flag'] = 2;
-		
-		else if($user=='admin') 
-			$data['flag'] = 1;
+		$data['flag'] = 1;
 		$data['subnav'] = 5; // sub-navigation for items
 		$data['page'] = 'admin/subnav';
 
@@ -41,7 +42,8 @@ class Outgoing extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
-	function add_outgoing($user){
+	function add_outgoing(){
+		$user = $this->session->userdata('role');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		
@@ -69,10 +71,11 @@ class Outgoing extends CI_Controller {
 			$qty = $this->input->post('outgoingQty');
 			$price = $this->input->post('outgoingAmt');
 			$total = $this->input->post('outTotalPrice');
+			$date = $this->input->post('outgoingDate');
 				
 				// create outgoing 
 			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
-				'date_out'=>date('y-m-d'),
+				'date_out'=>$date,
 				'description'=>$desc,
 				'amount'=>$total,
 				'status'=>$status
@@ -89,14 +92,22 @@ class Outgoing extends CI_Controller {
 
 			endforeach;
 
-			redirect('cashier');
+			if($user=='admin') // return to admin home
+        		redirect('outgoing/goto_outgoingPage');
+       	 	else 	// return to manager home
+        		redirect('manager');
 		}
 	}
 
 	function view_outgoing() {
-		$data['detail_flag'] = false; 
-		$data['outgoing'] = $this->pos_model->getAll_outgoing();
-		$data['message'] = '';
+		$data['detail_flag'] = false;
+		if($this->pos_model->getAll_outgoing()) {
+			$data['outgoing'] = $this->pos_model->getAll_outgoing();
+			$data['message'] = '';
+		}
+		else
+			$data['message'] = 'No Record of Pull-out';
+
 		$data['header'] = 'Pull-outs Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/outgoing_list';

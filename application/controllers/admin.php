@@ -51,9 +51,9 @@ class Admin extends CI_Controller {
 		else {
 
 			if($this->pos_model->change_password($role, $old_pwd, $new_pwd))
-				$data['message'] = "Password of $role succesfully changed.";
+				$data['message'] = "<span>Password of $role succesfully changed.</span>";
 			else
-				$data['message'] = "Wrong combination of role and password.";
+				$data['message'] = "<span>Wrong combination of role and password.</span>";
 		}
 		$data['header'] = 'Change Password';
 		$data['flag'] = 1;
@@ -89,9 +89,27 @@ class Admin extends CI_Controller {
 
 	function reports() {
 
-		$data['header'] = 'Report';
+		if($this->pos_model->getAll_reports()) {
+			$data['report'] = $this->pos_model->getAll_reports();
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Reports Found';
+ 		
+		$data['header'] = 'Reports';
 		$data['flag'] = 1;
-		$data['page'] = 'admin/reports_main';
+		$data['page'] = 'lists/report_list';		
+		$this->load->view('template2', $data);
+	}
+
+	function view_daily_report($report_id, $report_date) {
+
+		$data['report'] = $this->pos_model->get_dailyReport($report_id);
+		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
+		$data['message'] = '';
+		$data['header'] = 'Daily Report';
+		$data['flag'] = 1;
+		$data['page'] = 'forms/report_form';
 		$this->load->view('template2', $data);
 	}
 
@@ -123,7 +141,7 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function get_all_items() {
+	function get_all_items() {
 		
 		if($this->pos_model->getAll_items2()) {
 			$data = $this->pos_model->getAll_items2();
@@ -131,7 +149,7 @@ class Admin extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	public function customers2() {
+	function customers2() {
 		
 		if($this->pos_model->getAll_customers2()) {
 			$data = $this->pos_model->getAll_customers2();
@@ -139,7 +157,7 @@ class Admin extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	public function get_all_items2() {
+	function get_all_items2() {
 		
 		if($this->pos_model->getAll_items3()) {
 			$data = $this->pos_model->getAll_items3();
@@ -185,7 +203,7 @@ class Admin extends CI_Controller {
             $data['message'] = '';
         }
         else 
-            $data['message'] = 'No Items Found';
+            $data['message'] = 'No Record Found';
         
         $data['header'] = 'Amount List';
         $data['flag'] = 1;
@@ -231,7 +249,101 @@ class Admin extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect('pos');
 	}
+
+	function view_sales() {
+		$data['detail_flag'] = false; 
+		if($this->pos_model->getAll_sales()) {
+			$data['sales'] = $this->pos_model->getAll_sales();
+			$data['message'] ='';
+		}
+		else
+			$data['message'] = 'No Record of Sales';
+		
+		$data['header'] = 'Sales Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/sales_list';
+		$this->load->view('template2', $data);
+	}
+
+	function view_salesDetails($date) {
+		$data['detail_flag'] = true; 
+		$data['sales'] = $this->pos_model->getAll_sales();
+		$data['date'] = $date;
+		$data['daily'] = $this->pos_model->getAll_sales_byDate($date);
+		$data['message'] = '';
+		$data['header'] = 'Sales Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/sales_list';
+		$this->load->view('template2', $data);
+	}
+
+	function view_credits() {
+		$data['detail_flag'] = false; 
+		if($this->pos_model->getAll_credits()) {
+			$data['credits'] = $this->pos_model->getAll_credits();
+			$data['message'] ='';
+		}
+		else
+			$data['message'] = 'No Record of Credit';
+		
+		$data['header'] = 'Credit Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/credit_list';
+		$this->load->view('template2', $data);
+	}
+
+	function view_creditDetails($date) {
+		$data['detail_flag'] = true; 
+		$data['credits'] = $this->pos_model->getAll_credits();
+		$data['date'] = $date;
+		$data['daily'] = $this->pos_model->getAll_credits_byDate($date);
+		$data['message'] = '';
+		$data['header'] = 'Credit Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/credit_list';
+		$this->load->view('template2', $data);
+	}
+
+	function delete_amount($id) {
+		$this->db->delete('amount', array('amount_id'=>$id));
+
+		redirect('admin/view_amountPage');
+	}
+
+	function load() {
+		
+			$data['header'] = 'E-load';
+			$data['flag'] = 1;	
+			$data['page'] = 'forms/load_form';
+			$this->load->view('template2', $data);
+	}
 	
+
+	function add_load() {
+		$network = $this->input->post('load_dropdown');
+		$amount = $this->input->post('load_amount');
+		//$balance = $this->input->post('load_balance');
+		$date = $this->input->post('loadDate');
+
+		//echo $network.$amount.$balance;
+		$this->db->insert('eload',array(
+				'load_id'=>NULL,
+				'network'=>$network,
+				'date'=>$date,
+				'status'=>'wallet',
+				'eload'=>0,
+				'wallet'=>$amount
+				//'load_balance'=>0,
+				//'load_cash'=>0
+			));
+		$id = $this->db->insert_id();
+		$query = "UPDATE eload set load_balance=load_balance+$amount WHERE load_id=$id";
+		$this->db->query($query);
+
+		//$query = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
+		//$this->db->query($query);
+	}
+
 	function goto_add_category(){
 			$cat_name =  $this->input->post('cat_name');
 			$mode = $this->input->post('mode');
@@ -239,6 +351,7 @@ class Admin extends CI_Controller {
 				echo $this->pos_model->add_supplier($cat_name);
 			
 	}
+
 }
 
 /* End of file pos.php */

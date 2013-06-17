@@ -11,7 +11,9 @@ $(document).ready(function() {
 			}, 100);
 			
 		});
+		
 	});
+	
 	
 	$('.close').click(function() {
 		$('.overlay-container').fadeOut().end().find('.window-container').removeClass('window-container-visible');

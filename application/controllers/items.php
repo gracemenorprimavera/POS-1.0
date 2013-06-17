@@ -28,7 +28,7 @@ class Items extends CI_Controller {
 
     function goto_itemForm() {
 
-        $data['header'] = 'Add Item';
+        $data['header'] = 'Item Form';
         $data['flag'] = 1;
 		$data['supplier'] = $this->pos_model->getAll_supplier();
         $data['page'] = 'forms/item_form';
@@ -73,12 +73,12 @@ class Items extends CI_Controller {
             );
 
         $this->db->insert('item', $data); 
-        redirect('items/goto_itemForm');
+        redirect('items/goto_itemPage');
     }
 
     function goto_editItemForm($edit) {
 
-        $data['header'] = 'Edit Item';
+        $data['header'] = 'Edit Item Form';
         $data['flag'] = 1;
         $data['page'] = 'forms/itemEdit_form';
         $data['edit'] = $edit;
@@ -87,8 +87,8 @@ class Items extends CI_Controller {
 
     function edit_item() {
 
-        $this->input->post('');
-        $edit=$this->input->post('itemcode');
+        //$this->input->post('');
+        $edit=$this->input->post('item_id');
         $data = array(
                'item_code' => $this->input->post('itemcode'),
                'bar_code' => $this->input->post('barcode'),
@@ -97,6 +97,7 @@ class Items extends CI_Controller {
                'desc3' => $this->input->post('desc3'),
                'desc4' => $this->input->post('desc4'),
                'group' => $this->input->post('group'),
+               'division' => $this->input->post('division'),
                'class1' => $this->input->post('class1'),
                'class2' => $this->input->post('class2'),
                'cost' => $this->input->post('cost'),
@@ -134,6 +135,10 @@ class Items extends CI_Controller {
             $result = $this->pos_model->get_group();
             $data['page'] = 'view_item_bygroup';
         }
+        else if($view=='division') {
+            $result = $this->pos_model->get_division();
+            $data['page'] = 'view_item_bydivision';
+        }
         else if($view=='class') {
             $result = $this->pos_model->get_class();
             $data['page'] = 'view_item_byclass';
@@ -168,7 +173,7 @@ class Items extends CI_Controller {
 
     function importExcel() {
 
-      $data['header'] = 'Import Excel';
+      $data['header'] = 'Import Excel Form';
       $data['flag']=1;
       $data['page'] = 'forms/import_excel';
       $this->load->view('template2', $data);
@@ -210,7 +215,6 @@ class Items extends CI_Controller {
                      'reorder_point' => 0
                   );
                   $this->db->insert('item', $data);
-				  
                  }
             $this->db->trans_complete();
             fclose($file);
@@ -232,41 +236,42 @@ class Items extends CI_Controller {
         $data['flag']=1;
         $this->load->view('template2', $data);
   } //end of import_excel
-    
-	function exportExcel() {
 
-		$tables = $this->db->list_tables();
-		$this->load->dbutil();
-		//$this->load->helper('file');
-		//$this->load->helper('download');
-		$this->load->library('zip');
-		$url = $_SERVER['DOCUMENT_ROOT']."/POS/export_file/ ";
-		
-		foreach ($tables as $table)
-		{
-		
-			$report = $this->pos_model->fetch_table($table);
-			$table_report = $this->dbutil->csv_from_result($report);
-			//force_download($table . '_csv_file.csv',$table_report);
-			//$data = 'Some file data';
-			//write_file($url.$table.".php", $table_report);
-			$this->zip->add_data($table.".php",$table_report);
-		}
-		if(!is_dir($url)){
-			mkdir($url, 0777, TRUE);
-		}
-		$this->zip->archive($url.'backup_sql.zip');
-		$this->zip->download('backup_sql.zip');
-		
-		$data['header'] = 'Administrator';
+  function exportExcel() {
+
+    $tables = $this->db->list_tables();
+    $this->load->dbutil();
+    //$this->load->helper('file');
+    //$this->load->helper('download');
+    $this->load->library('zip');
+    $url = $_SERVER['DOCUMENT_ROOT']."/POS/export_file/ ";
+    
+    foreach ($tables as $table)
+    {
+    
+      $report = $this->pos_model->fetch_table($table);
+      $table_report = $this->dbutil->csv_from_result($report);
+      //force_download($table . '_csv_file.csv',$table_report);
+      //$data = 'Some file data';
+      //write_file($url.$table.".php", $table_report);
+      $this->zip->add_data($table.".php",$table_report);
+    }
+    if(!is_dir($url)){
+      mkdir($url, 0777, TRUE);
+    }
+    $this->zip->archive($url.'backup_sql.zip');
+    $this->zip->download('backup_sql.zip');
+    
+    $data['header'] = 'Administrator';
         $data['flag']=1;
         $data['subnav'] = 1; // sub-navigation for items
         $data['page'] = 'admin/subnav';
 
         $this->load->view('template2', $data);
-		
+    
     }
-	
+    
+
 
 }
 ?>

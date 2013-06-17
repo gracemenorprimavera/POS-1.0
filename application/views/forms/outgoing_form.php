@@ -1,13 +1,13 @@
 <?php
 $user = $this->session->userdata('role');
 		echo validation_errors();
-		echo form_open('outgoing/add_outgoing/'.$user);	//Controller -> Delivery, Action -> Create	
+		echo form_open('outgoing/add_outgoing', array('onsubmit'=>"return confirm('Finalize Record?') "));	//Controller -> Delivery, Action -> Create	
 
 	if($user=='manager') {	//delivery date
 		$data = array(
               'name'        => 'outgoingDate',
               'id'          => '',
-              'value'       => date('m/d/Y'),
+              'value'       => date('y-m-d'),
               'maxlength'   => '',
               'size'        => '',
               'style'       => '',
@@ -20,7 +20,7 @@ $user = $this->session->userdata('role');
               'name'        => 'outgoingDate',
               'id'          => '',
               'type'		=> 'date',
-              'value'       => date('m/d/Y'),
+              //'value'       => date('m/d/Y'),
               'maxlength'   => '',
               'size'        => '',
               'style'       => '',
@@ -33,7 +33,7 @@ $user = $this->session->userdata('role');
 				'' => 'Please Select',
 				'transfer' => 'Transfer',
 				'return' => 'Return Product' ,
-				'bad_order' => 'Bad Order' ,
+				'bad order' => 'Bad Order' ,
 				'other' => 'Others'
 		);
 

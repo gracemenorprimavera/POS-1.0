@@ -28,27 +28,13 @@ class Expenses extends CI_Controller {
 
 	}
 
-	/* under cashier */
-/*	function expenses() {
-
-        $data['header'] = 'Expenses';
-        $data['flag'] = 2;
-        $data['page'] = 'forms/expense_form';
-        $this->load->view('template2', $data);
-    }
-
-    function createExpense() {
-        $status = $this->input->post('expenses_dropdown');
-        $date = $this->input->post('expenseDate');
-        $desc = $this->input->post('exp_desc');
-        $amount = $this->input->post('expense_amount');         
-        $this->pos_model->store_expenses($status, $date, $desc, $amount);
-
-        redirect('cashier');
-    }
-*/
-    
     function goto_expensesPage() {
+    	$is_logged_in = $this->session->userdata('validated');
+        $user= $this->session->userdata('role');
+		if(!isset($is_logged_in) || $is_logged_in != true || $user!='admin') {
+			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as Administrator');	
+			die();
+		}	
 
 		$data['header'] = 'Administrator';
 		$data['flag']=1;
@@ -59,11 +45,17 @@ class Expenses extends CI_Controller {
 	}
 
     function goto_expensesForm() {
-    	$is_open = $this->session->userdata('open');
+    	
 		$user= $this->session->userdata('role');
+		$is_open = $this->session->userdata('open');
 		if($user=='cashier' && (!isset($is_open) || $is_open != true)) {
-			echo 'You don\'t have permission to access this page. '.anchor('cashier/open_amount', 'Record Opening Bills');	
-			die();
+			$data['message']='Cashier is not yet open. You won\'t be able to record expenses. <br>To open cashier, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
+			//die();
+			$data['header'] = 'Expenses';
+			$data['page'] = 'dummy';
+			$data['flag'] = 2;
+			//$data['customer'] = $this->pos_model->getAll_customers();
+			$this->load->view('template2', $data);
 		}
 		else {
 
@@ -84,19 +76,26 @@ class Expenses extends CI_Controller {
         $date = $this->input->post('expenseDate');
         $desc = $this->input->post('exp_desc');
         $amount = $this->input->post('expense_amount');         
+       
         $this->pos_model->store_expenses($status, $date, $desc, $amount);
 
-        if($user=='admin') // return to admin home
-        	redirect('admin');
+       	if($user=='admin') // return to admin home
+        	redirect('expenses/goto_expensesPage');
         else 	// return to cashier home
         	redirect('cashier');
-
+		
     }
 
     function view_expenses() {
 		$data['detail_flag'] = false; 
-		$data['expenses'] = $this->pos_model->getAll_expenses();
-		$data['message'] = '';
+
+		if($this->pos_model->getAll_expenses()) {
+			$data['expenses'] = $this->pos_model->getAll_expenses();
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Expenses';
+
 		$data['header'] = 'Expenses Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/expenses_list';

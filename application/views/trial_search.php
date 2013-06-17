@@ -1,14 +1,15 @@
+	
+<div class="overlay-container" style="overflow:scroll;">
+		<div class="window-container zoomin">
+			<?php
 
-
-
-<?php 
 		if($results==false){
 
 					echo '<br /><br /><hr /><center>No items Found <br/> Kindly re-check the Columns you selected</center>';
 				//echo $results;
 		}
 		else {
-		
+		echo '<h3> VIEW ITEMS </h3>';
 		
 			echo '<div id="view_item" class="view">';
 
@@ -40,8 +41,8 @@
 			echo '</table></div>';
 		}
 	//}
+echo anchor('cashier', 'Home');
 ?>
 
-<?php echo anchor('cashier', 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>
-
-
+<script>!window.jQuery && document.write(unescape('%3Cscript src="jquery-1.7.1.min.js"%3E%3C/script%3E'))</script>
+	<script type="text/javascript" src="<?php echo base_url();?>js/demo.js"></script>

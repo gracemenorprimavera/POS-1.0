@@ -29,6 +29,7 @@
 			
 
 <?php
+
 			foreach($amounts as $d) {
 				echo '<tr>';
 					echo '<td>'.$d->date.'</td>';
@@ -44,11 +45,12 @@
 						echo '<th><span>'.$d->closing_total.'</span></th>';
 					else 
 						echo '<th>'.$d->closing_total.'</th>';
-					echo '<td>'.anchor('admin', 'Edit').'</td>';	// parang edit item lang din ito
-					echo '<td>'.anchor('admin', 'Delete').'</td>';
+					echo '<td>*Edit</td>'; //echo '<td>'.anchor('admin', 'Edit').'</td>';	// parang edit item lang din ito
+					echo '<td>*Delete</td>'; //echo '<td>'.anchor('admin/delete_amount/'.$d->amount_id, 'Delete', array('onclick'=>'return confirm("Delete this record?")')).'</td>';
 				echo '</tr>';
 			}
 			echo '</table>';
+			echo '<small>* Not yet functional </small>';
 		}
 ?>		
 

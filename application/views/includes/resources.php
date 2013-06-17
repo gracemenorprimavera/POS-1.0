@@ -65,14 +65,16 @@
    
    $('#expense option[value=other]').click(function(){
 		var opt = '';
-		while(opt == '') opt=prompt("Please specify","Others");
+		while(opt == '' || opt== 'Others') opt=prompt("Please specify","Others");
+			if(opt == null) return;
 			$("#expense option:first-child").after('<option value="' + opt + '" >' + opt + '</option>');
 			$("#expense").prop("selectedIndex", '1');
    });
    
    $('#outgoingDd option[value=other]').click(function(){
 		var opt = '';
-		while(opt == '') opt=prompt("Please specify","Others");
+		while(opt == ''|| opt== 'Others') opt=prompt("Please specify","Others");
+			if(opt == null) return;
 			$("#outgoingDd option:first-child").after('<option value="' + opt + '" >' + opt + '</option>');
 			$("#outgoingDd").prop("selectedIndex", '1');
    });
@@ -314,8 +316,7 @@
 	});
 	
  
-
-});  
+});  //end of document ready
 
 
 	function alertChange()

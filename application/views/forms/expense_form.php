@@ -3,7 +3,7 @@
 ?>
 <div id="expense_form" class="forms">
 	<?php 
-		echo form_open('expenses/add_expense/'.$user);
+		echo form_open('expenses/add_expense/'.$user, array('onsubmit'=>"return confirm('Finalize Record?') "));
 		$options = array(
 				'' => 'Please Select',
 				'salary' => "Employee's Salary",
@@ -27,7 +27,7 @@
 	    	$data1 = array(
 	              'name'        => 'expenseDate',
 	              'id'          => '',
-	              'value'       => date('m/d/Y'),
+	              'value'       => date('y-m-d'),
 	              'maxlength'   => '',
 	              'size'        => '',
 	              'style'       => '',
@@ -39,7 +39,7 @@
 		echo '<tr><th>Expense <br>'.form_dropdown('expenses_dropdown', $options,'','id="expense" autocomplete="off" required').'</th>';
 		echo '<th>Expense Description <br>'.form_textarea(array('rows' => '5', 'cols'=>'20', 'name' => 'exp_desc')).'</th>';
 
-		echo '<th><label for="expenseDate">Delivery date </label><br>';	//delivery date
+		echo '<th><label for="expenseDate">Date </label><br>';	//delivery date
 		echo form_input($data1).'</th></tr>';
 
 		$data = array('name'=>'expense_amount', 'required'=>'required');

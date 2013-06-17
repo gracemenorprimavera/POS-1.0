@@ -1,9 +1,13 @@
-<?php $user = $this->session->userdata('role'); ?>
+<?php $user = $this->session->userdata('role'); 
+  //echo $user;
+?>
 <?php if($subnav==1) { ?>
   <ul class="listview">
     <li><div class="data">
       <h4><?php echo anchor('items/view_items', 'View Items'); ?></h4>
-      <p>Record of existing items </p>
+      <p>
+        Record of items in the stock <br>
+      </p>
     </div></li>
     <li><div class="data">
       <h4><?php echo anchor('items/goto_itemForm', 'Item Form'); ?></h4>
@@ -15,11 +19,7 @@
      </div></li>
      <li><div class="data">
       <h4><?php echo anchor('items/importExcel', 'Import Excel'); ?></h4>
-      <p>Import excel file to add item in the stock</p>
-     </div></li>
-	 <li><div class="data">
-      <h4><?php echo anchor('items/exportExcel', 'Export Excel'); ?></h4>
-      <p>Export database to Excel CSV format</p>
+      <p><span>Import excel file to add item in the stock</span></p>
      </div></li>
   </ul>
 <?php } ?>
@@ -88,7 +88,7 @@
     </div></li>
     <li><div class="data">
       <h4><?php echo anchor('admin/goto_amountForm', 'Amounts Form'); ?></h4>
-      <p>Form to record opening and closing amount</p>
+      <p><span>Form to record opening and closing amount</span></p>
      </div></li>
   </ul>
 <?php } ?>
@@ -96,20 +96,20 @@
 <?php if($subnav==7) { ?>
   <ul class="listview">
     <li><div class="data">
-      <h4><?php echo anchor('', 'View Sales'); ?></h4>
+      <h4><?php echo anchor('admin/view_sales', 'View Sales'); ?></h4>
       <p>View all transactions recorded</p>
     </div></li>
      <li><div class="data">
-      <h4><?php echo anchor('', 'Sales Form'); ?></h4>
-      <p>Add Sales not recorded in the cashier.</p>
+      <h4><?php echo anchor('admin/sales', 'Sales Form'); ?></h4>
+      <p><span>Add Sales not recorded in the cashier.</span></p>
     </div></li>
     <li><div class="data">
-      <h4><?php echo anchor('', 'View Credits'); ?></h4>
-      <p>Add Sales not recorded in the cashier.</p>
+      <h4><?php echo anchor('admin/view_credits', 'View Credits'); ?></h4>
+      <p>View credits recoreded</p>
     </div></li>
     <li><div class="data">
-      <h4><?php echo anchor('', 'Credit Form'); ?></h4>
-      <p>Add Sales not recorded in the cashier.</p>
+      <h4><?php echo anchor('admin/sales', 'Credit Form'); ?></h4>
+      <p><span>Add Sales not recorded in the cashier</span></p>
     </div></li>
     
   </ul>

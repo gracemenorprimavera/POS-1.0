@@ -1,31 +1,47 @@
+<div id="item_success">
 <?php 
 	
-		echo '<h3> ITEM UPDATED!</h3>';
+		echo '<h3> Item Updated!</h3>';
 	
 			$myitem = $this->pos_model->get_edit_item($edit);
 
 	foreach ($myitem as $r) {
-
-  echo '
-  		<b>Bar Code:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->bar_code.'<br />
-		<b>Item Code:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->item_code.'<br>
-		<b>Description 1 (brandm sub-brand):</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->desc1.'<br>
-		<b>Description 2 (product_name):</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->desc2.'<br>
-		<b>Description 3 (variant, flavor):</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->desc3.'<br>
-		<b>Description 4 (size, packaging):</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->desc4.'<br>
-		<b>Group:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->group.'<br>
-		<b>Classification 1:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->class1.' <br>
-		<b>Classification 2:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->class2.'<br>
-		<b>Cost:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->cost.'<br>
-		<b>Retail Price:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->retail_price.'<br>
-		<b>Model Quantity:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->model_quantity.'<br>
-		<b>Supplier Code:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->supplier_code.'<br>
-		<b>Manufacturer:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->manufacturer.'<br>
-		<b>Quantity:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->quantity.'<br>
-		<b>Reorder Point:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$r->reorder_point.'<br>';
-
-	
-		}
-		
-	
+		$id = $r->item_id;
+		//echo $id;
 ?>
+
+		
+			Bar Code: <i><b><?php echo $r->bar_code; ?></b></i><br>
+			Item Code: <i><b><?php echo $r->item_code; ?></b></i><br>
+		
+			Description 1 (brandm sub-brand) : <i><b><?php echo $r->desc1; ?></b></i><br>
+			Description 2 (product_name): <i><b><?php echo $r->desc2; ?></b></i><br>
+		
+			Description 3 (variant, flavor): <i><b><?php echo $r->desc3; ?></b></i><br>
+			Description 4 (size, packaging): <i><b><?php echo $r->desc4; ?></b></i><br>
+		
+			Group: <i><b><?php echo $r->group; ?></b></i><br>
+			Division: <i><b><?php echo $r->division; ?></b></i><br>
+		
+			Classification 1: <i><b><?php echo $r->class1; ?></b></i><br>
+			Classification 2: <i><b><?php echo $r->class2; ?></b></i><br>
+		
+			Cost: <i><b><?php echo $r->cost; ?></b></i><br>
+			Retail Price: <i><b><?php echo $r->retail_price; ?></b></i><br>
+		
+			Model Quantity: <i><b><?php echo $r->model_quantity; ?></b></i><br>
+			Supplier Code: <i><b><?php echo $r->supplier_code; ?></b></i><br>
+		
+			Manufacturer: <i><b><?php echo $r->manufacturer; ?></b></i><br>
+			Quantity:  <i><b><?php echo $r->quantity; ?></b></i><br>
+		
+			Reorder Point: <i><b><?php echo $r->reorder_point; ?></b></i><br><br>
+		
+
+<?php
+	}
+	echo anchor('items/goto_editItemForm/'.$id, 'Edit Item').'<br>';
+	echo anchor('items/view_items', 'View Items');
+
+?>
+</div>

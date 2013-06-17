@@ -23,8 +23,8 @@
 <div id="view_center">
 <?php 
 	if($customer_flag) {
-		if($message) {
-			echo $message;
+		if($message1) {
+			echo $message1;
 		}
 		else {
 			echo form_open('credits/pay_credit');
@@ -42,15 +42,17 @@
 			echo '<table border="1px solid brown" cellpadding="3px"><tr><th> Credit ID</th><th> Date </th><th> Status </th><th> Amount </th><th> Balance </th></tr>';
 			foreach ($customers_det as $r) {
 				echo '<tr>';
-					echo '<td>'.anchor('credits/view_transDetails/'.$r->credit_id.'/'.$id,$r->credit_id).'</td>';
+					
 					
 					if($r->status=='payment') {
+						echo '<td><span>'.$r->credit_id.'</span></td>';
 						echo '<td><span>'.$r->date.'</span></td>';
 						echo '<td><span>'.$r->status.'</span></td>';
 						echo '<td><span>'.$r->amount_paid.'</span></td>';
 						echo '<td><span>'.$r->credit_balance.'</span></td>';
 					}
 					else {
+						echo '<td>'.anchor('credits/view_transDetails/'.$r->credit_id.'/'.$id,$r->credit_id).'</td>';
 						echo '<td>'.$r->date.'</td>';
 						echo '<td>'.$r->status.'</td>';
 						echo '<td>'.$r->amount_credit.'</td>';
@@ -67,8 +69,8 @@
 <div id="view_right1">
 <?php 
 	if($customer_flag && $trans_flag) {
-		if($message) {
-			echo $message;
+		if($message2) {
+			echo $message2;
 		}
 		else {
 			foreach ($transactions as $r) {

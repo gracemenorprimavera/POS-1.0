@@ -2,7 +2,7 @@
 <div id="bills_form" class="forms">
 
 		
-	<?php echo form_open('cashier/register_amount',array('id' => 'closingBills')); ?>	
+	<?php echo form_open('cashier/register_amount',array('id' => 'closingBills', 'onsubmit'=>"return confirm('Finalize Record?') ")); ?>	
 	
 	<table id="three">
 		<tr>

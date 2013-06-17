@@ -1,6 +1,6 @@
-<h1> ADD CUSTOMER </h1>	
+
 	<table>
-	<?php echo form_open('credits/add_customer'); ?>	
+	<?php echo form_open('credits/add_customer', array('onsubmit'=>"return confirm('Add New Customer?') ")); ?>	
 	<tr><td>Name:</td><td><input type="text" name="customerName" required /></td></tr>
 	<tr><td>Contact no:</td><td><input type="text" name="customerNum" /></td></tr>
 	<tr><td>Address:</td><td><textarea name="customerAdd"></textarea></td></tr>
