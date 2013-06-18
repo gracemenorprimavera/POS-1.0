@@ -1,16 +1,17 @@
 <?php 
-		echo '<h3>VIEW ALL ITEMS </h3>';
-		echo '<div class="links">View items by: ';
-		echo form_open('admin/get_view');
+		echo '<div class="links">';
+		echo form_open('items/get_view');
 		$options = array(
+				'' => 'Please Select',
 				'all' => 'All Items',
-				'group' => "Group",
-				'class' => "Classification",
-				'supplier' => "Supplier",
+				'group' => 'Group',
+				'division' => 'Division',
+				'class' => 'Classification',
+				'supplier' => 'Supplier',
 				'out' => 'Out of Stock by supplier',
 				'reorder' => 'Below reorder point by supplier'
 			);
-		echo form_dropdown('view_dropdown', $options,'','id="view" autocomplete="off" style="width:250px;" required');
+		echo 'View items by: '.form_dropdown('view_dropdown', $options,'','id="view" autocomplete="off" style="width:250px;" required');
 		echo form_submit(array('class'=>'button','style'=>'width:50px;','name'=>'view_submit'),'Go');
 		echo form_close();
 		echo '</div>';
@@ -20,7 +21,7 @@
 		else {
 			echo '<h3> ITEMS by GROUP </h3>';
 			echo '<div id="view_item" class="view">';
-				foreach ($group as $row) {
+				foreach ($items as $row) {
 				echo '<br>';
 				echo '<H3 class="title">'.$row->group.'</h3>';
 

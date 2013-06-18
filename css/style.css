@@ -77,12 +77,12 @@ div {
 	box-shadow: 0px 4px 5px #ccc;
 	font-weight: 600;
 	background: #fff; /* Old browsers */
-background: -moz-linear-gradient(left, #feffff 29%, #ddf1f9 64%, #a0d8ef 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, right top, color-stop(29%,#feffff), color-stop(64%,#ddf1f9), color-stop(100%,#a0d8ef)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(left, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(left, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(left, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* IE10+ */
-background: linear-gradient(to right, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* W3C */
+	background: -moz-linear-gradient(left, #feffff 29%, #ddf1f9 64%, #a0d8ef 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(29%,#feffff), color-stop(64%,#ddf1f9), color-stop(100%,#a0d8ef)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* IE10+ */
+	background: linear-gradient(to right, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* W3C */
 }
 
 
@@ -119,7 +119,6 @@ background: linear-gradient(to right, #feffff 29%,#ddf1f9 64%,#a0d8ef 100%); /* 
 	height: 400px;
 	width: 1000px;
 }
-
 
 #main_con {
 	text-align: center;
@@ -371,12 +370,18 @@ ul#nav li a:hover {
   cursor: pointer;
   *zoom: 1;
 }
-.listview li .data {
-  margin-left: 55px;
-}
 .listview li .data h4 {
   margin: 0;
   padding: 0 0 2px 0;
+  font-size: 23px;
+  text-transform: uppercase;
+  
+}
+.listview li .data a{
+  color:  #08C;
+}
+.listview li .data a:hover{
+  color:#b7a46c;
 }
 .listview li .data p {
   margin: 0;
@@ -438,6 +443,13 @@ ul#nav li a:hover {
   clear: both;
 }
 
+
+.ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_eeeeee_256x240.png);
+		background-position: -160px -112px; background-repeat: no-repeat;margin: 0 4px;}
+.ui-icon:hover { background-image: url(images/ui-icons_ffffff_256x240.png); background-position: -160px -112px; background-repeat: no-repeat;}
+.ui-icon-search { background-position: -160px -112px; }
+
+
 #main{
 	width: 1345px;
 	height:1150%;	
@@ -461,6 +473,10 @@ ul#nav li a:hover {
 
 /*GRACE*/
 
+span #values {
+	font-color:brown;
+	font-size: 12px;
+}
 
 #amount_submit {
 	width: 200px;
@@ -470,7 +486,19 @@ ul#nav li a:hover {
 	text-align:right;
 }
 
-#bills_form td {
+.forms {
+	margin: auto;
+}
+
+#item_success {
+	text-align: left; 
+}
+
+i {
+	margin:10px;
+}
+
+#item_form td, #bills_form td {
 	text-align:right;
 }
 
@@ -496,11 +524,14 @@ ul#nav li a:hover {
 	text-align: center;
 }
 
-.right_list,.left_list{
+.left_list,.right_list{
 	float:left;
 	width: 40%;
 	height: inherit;
-	margin-left: 55px;
+}.left_list{
+	margin-left: 155px;
+}.right_list{
+	margin-left: 10px;
 }
 
 #item_form {
@@ -645,6 +676,9 @@ ul#nav li a:hover {
 	outline: none;
 	text-decoration: none;
 	text-transform: uppercase;
+	right: 70px;
+	top: 90px;
+	position: absolute;
 }
 
 #otherlinks li a:hover {
@@ -659,7 +693,57 @@ ul#nav li a:hover {
 	box-shadow: 1px 1px 1px rgba(0,0,0,0.4); 
 }
 
+<<<<<<< HEAD
 /* care of Grace */
+=======
+label.filebutton {
+    width:150px;
+    height:25px;
+    overflow:hidden;
+    position:relative;
+	display: inline-block;
+	padding: 2px;
+	margin: 3px;
+	background: #08C;
+	color: white;
+	text-decoration: none;
+	font-family: 'Segoe UI';
+	font-size: 18px;
+	-webkit-border-radius: 3px; 
+	-moz-border-radius: 3px; 
+	border-radius: 3px;
+	-moz-box-shadow: inset 0 0 4px rgba(0,0,0,0.2); 
+	-webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2); 
+	box-shadow: inner 0 0 4px rgba(0, 0, 0, 0.2);
+	text-align: center;
+}label.filebutton:hover {    
+	background: #0AF;
+}
+
+label span input {
+    z-index: 999;
+    line-height: 0;
+    font-size: 50px;
+    position: absolute;
+    top: -2px;
+    left: -700px;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    -ms-filter: "alpha(opacity=0)";
+    cursor: pointer;
+    _cursor: hand;
+    margin: 0;
+    padding:0;
+}
+
+
+/* care of Grace */
+
+span a {
+	color:blue;
+}
+
+>>>>>>> a6839e61c12e6baab89f90b1c7b1d79ba13b6bb0
 #view_record {
 	margin:auto;
 	width: 100%;
@@ -671,7 +755,11 @@ ul#nav li a:hover {
 	padding: 10px;
 	width: 20%;
 	height: 90%;
+<<<<<<< HEAD
 	border: 1px solid black;
+=======
+	border: 0px solid black;
+>>>>>>> a6839e61c12e6baab89f90b1c7b1d79ba13b6bb0
 }
 
 #view_right {
@@ -679,7 +767,11 @@ ul#nav li a:hover {
 	padding: 10px;
 	width: 68%;
 	height: 90%;
+<<<<<<< HEAD
 	border: 1px solid black;
+=======
+	border: 0px solid black;
+>>>>>>> a6839e61c12e6baab89f90b1c7b1d79ba13b6bb0
 }
 
 #view_customer {
@@ -709,4 +801,7 @@ ul#nav li a:hover {
 	float:left;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6839e61c12e6baab89f90b1c7b1d79ba13b6bb0

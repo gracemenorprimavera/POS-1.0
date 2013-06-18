@@ -1,6 +1,7 @@
 <div id="reports_form">
-	<?php foreach($report as $d) { ?>
-	<table border="1px solid black" >
+	<?php if(isset($report)) {
+	 foreach($report as $d) { ?>
+	<table border="0px solid black" >
 	<tr> <th colspan="2"> Daily Sales Summary </th></tr>
 
 	<tr>
@@ -24,20 +25,24 @@
 		<td>Expenses: <input type="text"value="<?php echo $d->expenses ?>" ></td>
 	
 		<td>
+		<?php if($expenses) { ?>
 		<table border="1px solid black">
 			<tr>
 				<th> Status </th>
 				<th> Description </th>
 				<th> Amount </th>
 			</tr>
-		<?php 
-			foreach($expenses as $r) {
-				echo '<tr>';
-				echo '<td>'.$r->status.'</td><td>'.$r->description.'</td><td>'.$r->amount.'</td><br>';
-				echo '</tr>';
-			}
+		<?php
+			
+				foreach($expenses as $r) {
+					echo '<tr>';
+					echo '<td>'.$r->status.'</td><td>'.$r->description.'</td><td>'.$r->amount.'</td><br>';
+					echo '</tr>';
+				}
+			
 		?>
 		</table>
+		<?php } ?>
 		</td>
 	</tr>
 	<tr>
@@ -56,7 +61,7 @@
 	</tr>
 
 	</table>
-	<?php } ?>
+	<?php } }?>
 
 </div>
 <?php echo anchor('pos/cashier_home', 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

@@ -17,20 +17,33 @@ class Sales extends CI_Controller {
     }
 
     function index() {
-    	$data['message'] = "";
-		$data['header'] = 'New Transaction';		
-		$data['page'] = 'forms/sales_form';
-		$data['customer'] = $this->pos_model->getAll_customers();
-
-		$this->load->view('template', $data);
+    	
+    	$data['flag'] = 2;   	
+				
+		$is_open = $this->session->userdata('open');
+		if(!isset($is_open) || $is_open != true) {
+			$data['message']='Cashier is not yet open. You won\'t be able to record transactions.<br> To open, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
+			//die();
+			$data['header'] = 'Sales';
+			$data['page'] = 'dummy';
+			//$data['customer'] = $this->pos_model->getAll_customers();
+			$this->load->view('template2', $data);
+		}	
+		else {
+			$data['header'] = 'New Transaction';
+			$data['message'] = "";
+			$data['page'] = 'forms/sales_form';
+			$data['customer'] = $this->pos_model->getAll_customers();
+			$this->load->view('template', $data);
+		}
+			
     }
 
-	function add_item() {
-
-		$bar_code = $this->input->post('search_item');
+		function add_item() {
+		$item_id = $this->input->post('hItemPurchase');
 		$qty = $this->input->post('quantity');
 
-		$this->form_validation->set_rules('search_item','Bar Code', 'required');
+		$this->form_validation->set_rules('search_item','Barcode/ Itemcode', 'required');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required');
 		$data['customer'] = $this->pos_model->getAll_customers();
 
@@ -38,16 +51,15 @@ class Sales extends CI_Controller {
 			$data['message'] = 'All fields are required!';
 
 			$data['header'] = 'New Transaction';
-			$data['page'] = 'cashier/purchase_main';
+			//$data['page'] = 'cashier/purchase_main';
+			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template', $data);
 		}
 		else {
 			$this->db->from('item');
-			$this->db->where('bar_code', $bar_code);
+			$this->db->where('item_id', $item_id);
 			$result = $this->db->get();
-
-
 			if($result->num_rows() == 1) {
 				foreach($result->result() as $r) {
 
@@ -68,7 +80,7 @@ class Sales extends CI_Controller {
 			               'id'      => $r->item_id,
 			               'qty'     => $qty,
 			               'price'   => $r->retail_price,
-			               'name'    => $r->desc1
+			               'name'    => str_replace("'", "",$r->desc1)
 			            );
 			            $this->cart->insert($data);
 			        }
@@ -80,9 +92,11 @@ class Sales extends CI_Controller {
 		    }
 		   
 			$data['header'] = 'New Transaction';
-			$data['page'] = 'cashier/purchase_main';
+			//$data['page'] = 'cashier/purchase_main';
+			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template', $data);		
+			$this->load->view('template', $data);
+			
 		}
 	}
 
@@ -98,7 +112,7 @@ class Sales extends CI_Controller {
 		    
 		$data['customer'] = $this->pos_model->getAll_customers();
 		$data['header'] = 'New Transaction';
-		$data['page'] = 'cashier/purchase_main';
+		$data['page'] = 'forms/sales_form';
 		
 		$this->load->view('template', $data);	
 	}
@@ -130,13 +144,17 @@ class Sales extends CI_Controller {
 		else {
 			$customer_id = $this->input->post('customerName');
 				// insert credits 
-			$this->db->insert('credits', array('credit_id'=>NULL,  
+			
+			$this->db->insert('credit', array('credit_id'=>NULL,  
 				'customer_id'=>$customer_id,
-				'credit_date'=>date('y-m-d'),
-				'total_amount'=>$total
+				'date'=>date('y-m-d'),
+				'status'=>'credit',
+				'amount_credit'=>$total,
+				'amount_paid'=>0,
+				'credit_balance'=>0
 				));
 
-			$credit_id = $this->db->insert_id();	/* get last credit id*/
+			$credit_id = $this->db->insert_id();	// get last credit id
 
 				// insert credit_details 
 			$i = 1;
@@ -148,7 +166,7 @@ class Sales extends CI_Controller {
 			endforeach;
 
 				// update balance 
-			$this->pos_model->update_balance($customer_id, $total);
+			$this->pos_model->update_balance($customer_id, $total, $credit_id);
 
 		}
 			
@@ -160,6 +178,8 @@ class Sales extends CI_Controller {
 		$this->cart->destroy();
 		redirect('cashier');
 	}
+
+	
 
 
 }

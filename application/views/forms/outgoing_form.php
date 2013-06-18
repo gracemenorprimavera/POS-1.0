@@ -1,31 +1,44 @@
 <?php
-
+$user = $this->session->userdata('role');
 		echo validation_errors();
-		echo form_open('cashier/createOutgoing');	//Controller -> Delivery, Action -> Create	
+		echo form_open('outgoing/add_outgoing', array('onsubmit'=>"return confirm('Finalize Record?') "));	//Controller -> Delivery, Action -> Create	
 
-			//delivery date
+	if($user=='manager') {	//delivery date
 		$data = array(
               'name'        => 'outgoingDate',
               'id'          => '',
-              'value'       => date('m/d/Y'),
+              'value'       => date('y-m-d'),
               'maxlength'   => '',
               'size'        => '',
               'style'       => '',
 			  'required'	=> 'required',
 			  'readonly'	=> 'readonly'
 		);
+	} 
+	else {
+		$data = array(
+              'name'        => 'outgoingDate',
+              'id'          => '',
+              'type'		=> 'date',
+              //'value'       => date('m/d/Y'),
+              'maxlength'   => '',
+              'size'        => '',
+              'style'       => '',
+			  //'required'	=> 'required',
+			  //'readonly'	=> 'readonly'
+		);
+	}
 		
 		$options = array(
 				'' => 'Please Select',
 				'transfer' => 'Transfer',
 				'return' => 'Return Product' ,
-				'bad_order' => 'Bad Order' ,
-				'snacks'=>'Employee Snack',
+				'bad order' => 'Bad Order' ,
 				'other' => 'Others'
 		);
 
 		echo '<table  cellpadding="10px"><tr>';
-		echo '<th>Outgoing<br>'.form_dropdown('outgoing', $options, '', 'autocomplete="off" required').'</th>';
+		echo '<th>Outgoing<br>'.form_dropdown('outgoing', $options, '', 'id="outgoingDd" autocomplete="off" required').'</th>';
 		echo '<th>Description <br>'.form_textarea(array('rows' => '3', 'cols'=>'20', 'name' => 'out_desc')).'</th>';
 		echo '<th><label for="outgoingDate">Date </label><br>';
 		echo form_input($data).'<th/>';
@@ -116,4 +129,4 @@
 	<input class="button" type="submit" name="submit" value="Submit" />	
 	
 </form>
-<?php echo anchor('pos/cashier_home', 'Cancel Outgoing', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>
+<?php echo anchor($user, 'Cancel Outgoing', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

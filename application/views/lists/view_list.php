@@ -15,25 +15,25 @@
 		echo form_submit(array('class'=>'button','style'=>'width:50px;','name'=>'view_submit'),'Go');
 		echo form_close();
 		echo '</div>';
-		
+
 		if($message) {
-			echo '<br><br><br><center>'.$message.'</center>';
+			echo $message;
 		}
 		else {
-			echo '<h3> ITEMS by CLASSIFICATION </h3>';
+			
 			echo '<div id="view_item" class="view">';
-				foreach ($items as $row) {
-				echo '<br>';
-				echo '<H3 class="title">'.$row->class1.'</h3>';
 
-				echo '<table border="1px solid brown">
+				echo '<table border="1px solid brown" cellpadding="10">
 				<tr>
+					<th colspan="2"> Action </th>
+					<th> Item ID </th>
 					<th> Bar Code </th>
 					<th> Item Code</th>
 					<th> Description 1 </th>
 					<th> Description 2 </th>
 					<th> Description 3 </th>
 					<th> Description 4 </th>
+					<th> Division </th>
 					<th> Group </th>
 					<th> Classification 1 </th>
 					<th> Classification 2 </th>
@@ -44,20 +44,24 @@
 					<th> Manufacturer </th>
 					<th> Quantity </th>
 					<th> Reorder Point </th>
-					<th> Action </th>
+					
 				</tr>';
-			$class=$row->class1;
-
-			$items = $this->pos_model->get_items_inclass($class);
+			
 			
 			foreach ($items as $r) {
 				echo '<tr>';
+				$edit = $r->item_id;
+				//echo $edit;
+				echo '<td>'.anchor('items/delete_item/'.$edit,'Delete', array('onclick'=>"return confirm('Are you sure you want to delete this item?') ")).'</td>';
+				echo '<td>'.anchor('items/goto_editItemForm/'.$edit, 'Edit').'</td>';
+				echo '<td>'.$r->item_id.'</td>';
 				echo '<td>'.$r->bar_code.'</td>';
 				echo '<td>'.$r->item_code.'</td>';
 				echo '<td>'.$r->desc1.'</td>';
 				echo '<td>'.$r->desc2.'</td>';
 				echo '<td>'.$r->desc3.'</td>';
 				echo '<td>'.$r->desc4.'</td>';
+				echo '<td>'.$r->division.'</td>';
 				echo '<td>'.$r->group.'</td>';
 				echo '<td>'.$r->class1.'</td>';
 				echo '<td>'.$r->class2.'</td>';
@@ -68,14 +72,11 @@
 				echo '<td>'.$r->manufacturer.'</td>';
 				echo '<td>'.$r->quantity.'</td>';
 				echo '<td>'.$r->reorder_point.'</td>';
-				$edit = $r->item_code;
-				echo '<td>'.anchor('admin/delete_item/'.$edit,'Delete');
-				echo ' '.anchor('admin/goto_edit_item/'.$edit, 'Edit').'</td>';
 				echo '</tr>';
+				
+				
 			}
-			echo '</table>';
-			echo '<br>';
+			echo '</table></div>';
 		}
-		echo '</div>';
-	}
+	
 ?>

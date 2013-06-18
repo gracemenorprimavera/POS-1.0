@@ -2,35 +2,29 @@
 
 class Pos extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-
-	public function trial() {
-		$this->load->view('main_content');
-	}
 
 	public function index()
 	{
 		$data['message'] = " ";
 		$data['header'] = 'P.O.S.';
 		$data['subheader'] = 'Point of Sale';
-		
 		$data['page'] = 'forms/login_form';
 		
 		$this->load->view('template', $data);
+	}
+
+    function do_logout() {
+
+		$data['message'] = " ";
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
+
+		$this->session->unset_userdata('validated');
+		//$this->session->sess_destroy();
+        redirect('pos');
+		
+		//$data['page'] = 'forms/login_form';
+		//$this->load->view('template', $data);
 	}
 
 	public function user_login() {
@@ -43,20 +37,27 @@ class Pos extends CI_Controller {
 			$data['header'] = 'P.O.S.';
 			$data['subheader'] = 'Point of Sale';
 			$data['page'] = 'forms/login_form';
-		
 			$this->load->view('template', $data);
 		}
 		else {
 			
 			$password = $this->input->post('password');
 			
-			$account = $this->pos_model->check_user($password);
+			$valid_user = $this->pos_model->check_user($password);
+
+				
+			if($valid_user) {
+				$account = $this->session->userdata('role');
 						
-			if($account=='cashier') {
-				redirect('pos/cashier_home');
-			}
-			else if($account=='admin') {
-				redirect('pos/admin_home');
+				if($account=='cashier') {
+					redirect('cashier');
+				}
+				else if($account=='admin') {
+					redirect('admin');
+				}
+				else if($account=='manager'){
+					redirect('manager');
+				}
 			}
 			else {
 				$data['message'] = "* Invalid password";
@@ -67,25 +68,6 @@ class Pos extends CI_Controller {
 				$this->load->view('template', $data);			
 			}
 		}		
-	}
-
-	public function cashier_home() {
-
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'cashier_home';
-		//$data['subpage'] = 'dummy';
-
-		$this->load->view('template', $data);
-	}
-
-	public function opening() {
-		$data['header'] = 'Cashier';
-		
-		$data['page'] = 'forms/bills_form';
-		$data['subpage'] = 'dummy';
-
-		$this->load->view('template', $data);
 	}
 
 	public function closing() {
@@ -107,15 +89,42 @@ class Pos extends CI_Controller {
 		$this->load->view('template', $data);
 	}	
 
-	function register_amount() {
 
-		$amount = $this->input->post('total');
 
-		$this->pos_model->register_amount($amount);
-
-		redirect('pos/cashier_home');
-	
+	public function manager_home(){
+		$data['header'] = 'Manager';
+		
+		$data['page'] = 'manager_home';
+		$data['subpage'] = 'dummy';
+		
+		$this->load->view('template', $data);
 	}
+
+	/* Nicole */
+	public function get_all_items() {
+		
+		if($this->pos_model->getAll_items2()) {
+			$data = $this->pos_model->getAll_items2();
+		}
+		echo json_encode($data);
+	}
+
+	public function customers2() {
+		
+		if($this->pos_model->getAll_customers2()) {
+			$data = $this->pos_model->getAll_customers2();
+		}
+		echo json_encode($data);
+	}
+
+	public function get_all_items2($mode) {
+		
+		if($this->pos_model->getAll_items3($mode)) {
+			$data = $this->pos_model->getAll_items3($mode);
+		}
+		echo json_encode($data);
+	}
+
 }
 
 /* End of file pos.php */

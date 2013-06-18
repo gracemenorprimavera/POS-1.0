@@ -21,7 +21,7 @@
 		echo '</div>';
 	}else{
 		echo '<div id="main_con">';
-			 $this->load->view($page);
+			$this->load->view($page);
 		echo '</div>';
 	} ?>
 
