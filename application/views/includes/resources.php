@@ -7,7 +7,7 @@
 <script src="<?php echo base_url();?>js/jquery-ui.js"></script>
 
 <!--for modal-->
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="<?php echo base_url();?>js/jquery-ui.css" />
 <!--for modal-->
 
 <script language="javascript" type="text/javascript">

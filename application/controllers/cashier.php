@@ -156,19 +156,6 @@ class Cashier extends CI_Controller {
 				//redirect($this->input->get('last_url', $data));
 		}		
 	}
-
-	function search2($mode) {
-		
-		$search = $this->input->post('tag');
-
-		if($this->pos_model->get_search2($search,$mode)){
-			echo json_encode($this->pos_model->get_search2($search,$mode));
-			//echo 'true';
-		}
-		
-				
-	}
-
 	function goto_search_items() {
 		$search = $this->input->post('search'); // $supplier_name= $this->input->post('supplier_name');
 		$searchin = $this->input->post('search_dropdown');
@@ -277,20 +264,38 @@ class Cashier extends CI_Controller {
 				'date'=>$date,
 				'status'=>'eload',
 				'eload'=>$amount,
-				'wallet'=>0,
+				'wallet'=>$balance,
 				//'load_balance'=>0,
 				//'load_cash'=>0
 			));
 		$id = $this->db->insert_id();
-		$query = "UPDATE eload set load_balance=$balance WHERE load_id=$id";
+		$query = "UPDATE eload set load_balance=load_balance-$balance WHERE load_id=$id";
 		$this->db->query($query);
 
-		$query = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
-		$this->db->query($query);
+		$query1 = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
+		$this->db->query($query1);
 
 		redirect('cashier');
 	}
 
+	function view_dtrform() {
+		$data['header'] = 'DTR';
+			$data['flag'] = 2;	
+			$data['page'] = 'forms/dtr_form';
+			$this->load->view('template2', $data);
+	}
+
+	function search2($mode) {
+		
+		$search = $this->input->post('tag');
+
+		if($this->pos_model->get_search2($search,$mode)){
+			echo json_encode($this->pos_model->get_search2($search,$mode));
+			//echo 'true';
+		}
+		
+				
+	}
 	function dialog_show($mode){
 		if($mode == 'expenseDialog')
 			echo $this->load->view('forms/expense_form.php');

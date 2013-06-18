@@ -123,13 +123,13 @@ else {
 		echo '<li>'.anchor('#', 'Customer Payment Search','class="dialogThis" id="custDSearch"').'</li>';
 		echo '<li>'.anchor('', 'New Transaction').'</li>';
 		echo '<li>'.anchor('', 'Cancel Transaction').'</li>';
-		echo '<li>'.anchor('', 'E-Load','class="dialogThis2" id="loadDialog"');
-		echo '<li>'.anchor('', 'Start Day','class="dialogThis2" id="startDialog"').'</li>';
-		echo '<li>'.anchor('', 'End Day','class="dialogThis2" id="endDialog"').'</li>';
-		echo '<li>'.anchor('', 'Employee Time-in/out','class="dialogThis2" id="dtrDialog"').'</li>';
+		echo '<li>'.anchor('#', 'E-Load','class="dialogThis2" id="loadDialog"');
+		echo '<li>'.anchor('#', 'Start Day','class="dialogThis2" id="startDialog"').'</li>';
+		echo '<li>'.anchor('#', 'End Day','class="dialogThis2" id="endDialog"').'</li>';
+		echo '<li>'.anchor('#', 'Employee Time-in/out','class="dialogThis2" id="dtrDialog"').'</li>';
 		echo '<li>'.anchor('#', 'Expenses', 'class="dialogThis2" id="expenseDialog"').'</li>';
 		echo '<li>'.anchor('', 'Generate Daily Report').'</li>';
-		echo '<li>'.anchor('', 'Log out').'</li>';
+		echo '<li>'.anchor('pos/do_logout', 'Log out').'</li>';
 	
 	echo'</ul>
 	</div>';	
