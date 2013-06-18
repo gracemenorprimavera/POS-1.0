@@ -7,7 +7,7 @@
 <script src="<?php echo base_url();?>js/jquery-ui.js"></script>
 
 <!--for modal-->
-<link rel="stylesheet" href="<?php echo base_url();?>js/jquery-ui.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <!--for modal-->
 
 <script language="javascript" type="text/javascript">
@@ -330,8 +330,8 @@
 
 	 $( "#dialog-form" ).dialog({
 			autoOpen: false,
-			height: 500,
-			width: 850,
+			height: 700,
+			width: 1000,
 			modal: true,
 			buttons: {
 			"Search": function() {
@@ -376,36 +376,22 @@
 			}
 			},
 			close: function() {
-			//allFields.val( "" ).removeClass( "ui-state-error" );
+			$("#dialog-form input").val("");
 			}
 	});
 
 	 $( "#dialog-form2" ).dialog({
 			autoOpen: false,
-			height: 500,
-			width: 850,
+			height: 700,
+			width: 1000,
 			modal: true,
 			buttons: {
-			"Ok": function() {
-				var mode = $("#hsearchDialog2").val();
-				$.ajax({
-					url: '<?php echo base_url().'index.php/cashier/expense_form/';?>',
-					type: "post",
-					dataType: "html",
-					success: function(data){
-						alert(data);
-					},
-					error: function (xhr, ajaxOptions, thrownError) {
-					}
-				});
-
-			},
 			Close: function() {
 				$( this ).dialog( "close" );
 			}
 			},
 			close: function() {
-			//allFields.val( "" ).removeClass( "ui-state-error" );
+			 	
 			}
 	});
 
@@ -419,7 +405,21 @@
 	});
 	
 	$( ".dialogThis2" ).click(function() {
-		$("#hsearchDialog2").val($(this).attr('id'));
+		//$("#hsearchDialog2").val($(this).attr('id'));
+		$("#dialog-form2").html("");
+		var mode = $(this).attr('id');
+
+		$.ajax({
+			url: '<?php echo base_url().'index.php/cashier/dialog_show/';?>'+mode,
+			type: "post",
+			dataType: "html",
+			success: function(data){
+				$("#dialog-form2").html(data);
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			}
+		});
+
 		$( "#dialog-form2" ).dialog( "open" );
 		return false;
 	});

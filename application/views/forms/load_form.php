@@ -44,16 +44,13 @@ $user = $this->session->userdata('role');
 		<td>Load Balance:</td>
 		<td><input type="text" name="load_balance" required/></td></tr>
 	<tr>
-	<?php } else { 
-		//echo 'Balance: '.$this->pos_model->getload_balance();
-	?>
-
+	<?php } else { ?>
 		<td>Wallet:</td>
 		<td><input type="text" name="load_amount" required/></td></tr>
 	<?php } ?>
 	
 		
-		<td colspan="2"><?php echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td></tr>
+		<td colspan="2"><?php //echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td></tr>
 	<?php echo form_close(); ?>
 	</table>
 <?php echo anchor($user, 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

@@ -127,10 +127,6 @@
       <h4><?php echo anchor('credits/index', 'View Customers'); ?></h4>
       <p>Record of customers with credits</p>
     </div></li>
-     <li><div class="data">
-      <h4><?php echo anchor('', 'View Employee'); ?></h4>
-      <p><span>Record of customers with credits</span></p>
-    </div></li>
     <li><div class="data">
       <h4><?php echo anchor('expenses/view_expenses', 'View Expenses'); ?></h4>
       <p>Record of all expenses</p>
@@ -155,20 +151,12 @@
       <h4><?php echo anchor('admin/view_credits', 'View Credits'); ?></h4>
       <p>View credits recoreded</p>
     </div></li>
-    <li><div class="data">
-      <h4><?php echo anchor('', 'View E-Load Transactions'); ?></h4>
-      <p><span>View credits recoreded</span></p>
-    </div></li>
     
   </ul>
 <?php } ?>
 
 <?php if($subnav==9) { ?>
   <ul class="listview">
-    <li><div class="data">
-      <h4><?php echo anchor('admin/goto_employeeForm', 'Employee Form'); ?></h4>
-      <p><span>Form to add new employee</span></p>
-     </div></li>
      <li><div class="data">
       <h4><?php echo anchor('items/goto_itemForm', 'Item Form'); ?></h4>
       <p>Form to add new item in the stock</p>
