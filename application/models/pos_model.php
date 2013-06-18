@@ -6,7 +6,7 @@ class Pos_model extends CI_Model {
 
 		$this->db->select('*');
 		$this->db->from('accounts');
-		$this->db->where('password', $password);
+		$this->db->where('password', md5($password));
 		$result = $this->db->get();
 
 		if($result->num_rows() == 1) {
@@ -270,51 +270,6 @@ class Pos_model extends CI_Model {
 		$query = $this->db->get();
 
 		return $query->result();
-	}
-
-	function get_search2($search,$mode)
-	{
-		if ($mode == 'itemDSearch'){
-			$this->db->like('item_code',$search);
-			$this->db->or_like('bar_code',$search);
-			$this->db->or_like('desc1',$search);
-			$this->db->or_like('desc2',$search);
-			$this->db->or_like('desc3',$search);
-			$this->db->or_like('desc4',$search);
-			$this->db->or_like('group',$search);
-			$this->db->or_like('class1',$search);
-			$this->db->or_like('class2',$search);
-			$this->db->or_like('cost',$search);
-			$this->db->or_like('retail_price',$search);
-			$this->db->or_like('model_quantity',$search);
-			$this->db->or_like('supplier_code',$search);
-			$this->db->or_like('manufacturer',$search);
-			$this->db->or_like('quantity',$search);
-			$this->db->or_like('reorder_point',$search);
-			$this->db->from('item');
-		}
-		else if($mode == 'priceDSearch'){
-			$this->db->select('desc1, bar_code, retail_price');
-			$this->db->like('bar_code',$search);
-			$this->db->or_like('desc1',$search);
-			$this->db->from('item');
-		}
-		else if($mode == 'custDSearch'){
-			$this->db->like('customer_id',$search);
-			$this->db->or_like('customer_name',$search);
-			$this->db->or_like('contact_number',$search);
-			$this->db->or_like('address',$search);
-			$this->db->from('customers');
-		}
-		$result = $this->db->get();
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
 	}
 
 
@@ -940,6 +895,79 @@ class Pos_model extends CI_Model {
 		 return $result = $this->db->get($table_name);
 		
 	}
+
+	function getload_balance() {
+		/*$this->db->select('wallet');
+		$this->db->from('eload');
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			$last = $query->last_row();
+			$balance = $last->wallet;
+		}
+		else
+			$balance = 0;
+
+		return $balance;*/
+		$query = $this->db->get('eload_wallet');
+
+		if ($query->num_rows() > 0)
+		{
+		   foreach ($query->result() as $row)
+		   {
+		      echo $row->title;
+		      echo $row->name;
+		      echo $row->body;
+		   }
+		}
+	}
+
+	function get_search2($search,$mode)
+	{
+		if ($mode == 'itemDSearch'){
+			$this->db->like('item_code',$search);
+			$this->db->or_like('bar_code',$search);
+			$this->db->or_like('desc1',$search);
+			$this->db->or_like('desc2',$search);
+			$this->db->or_like('desc3',$search);
+			$this->db->or_like('desc4',$search);
+			$this->db->or_like('group',$search);
+			$this->db->or_like('class1',$search);
+			$this->db->or_like('class2',$search);
+			$this->db->or_like('cost',$search);
+			$this->db->or_like('retail_price',$search);
+			$this->db->or_like('model_quantity',$search);
+			$this->db->or_like('supplier_code',$search);
+			$this->db->or_like('manufacturer',$search);
+			$this->db->or_like('quantity',$search);
+			$this->db->or_like('reorder_point',$search);
+			$this->db->from('item');
+		}
+		else if($mode == 'priceDSearch'){
+			$this->db->select('desc1, bar_code, retail_price');
+			$this->db->like('bar_code',$search);
+			$this->db->or_like('desc1',$search);
+			$this->db->from('item');
+		}
+		else if($mode == 'custDSearch'){
+			$this->db->like('customer_id',$search);
+			$this->db->or_like('customer_name',$search);
+			$this->db->or_like('contact_number',$search);
+			$this->db->or_like('address',$search);
+			$this->db->from('customers');
+		}
+		$result = $this->db->get();
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	
 
 }
 ?>
