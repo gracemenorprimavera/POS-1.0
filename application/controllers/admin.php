@@ -352,6 +352,26 @@ class Admin extends CI_Controller {
 			
 	}
 
+
+	function goto_recordsPage() {
+		$data['header'] = 'Administrator';
+		$data['flag']=1;
+		$data['subnav'] = 8; // sub-navigation for records
+		$data['page'] = 'admin/subnav';
+
+		$this->load->view('template2', $data);
+	}
+	function goto_formsPage() {
+		$data['header'] = 'Administrator';
+		$data['flag']=1;
+		$data['subnav'] = 9; // sub-navigation for forms
+		$data['page'] = 'admin/subnav';
+
+		$this->load->view('template2', $data);
+	}
+
+
+
 }
 
 /* End of file pos.php */

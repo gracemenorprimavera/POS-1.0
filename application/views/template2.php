@@ -16,17 +16,18 @@ echo '<div class="navbox">
 		echo '<li>'.anchor('admin', 'Home ').'</li>';
 		echo '<li>'.anchor('admin/password', ' Password ').'</li>';
 		echo '<li>'.anchor('items/goto_itemPage', 'Items ').'</li>';
-		echo '<li>'.anchor('credits/goto_customerPage', 'Credits').'</li>';
-		echo '<li>'.anchor('expenses/goto_expensesPage', 'Expenses ').'</li>';
-		echo '<li>'.anchor('incoming/goto_incomingPage', 'Deliveries').'</li>';
-		echo '<li>'.anchor('outgoing/goto_outgoingPage', 'Pull-outs').'</li>';
-		echo '<li>'.anchor('admin/sales', 'Transactions').'</li>';
-		echo '<li>'.anchor('admin/load', 'E-Load').'</li>';
-		echo '<li>'.anchor('admin/goto_amountPage', 'Opening & Closing Amounts').'</li>';
-		
+		//echo '<li>'.anchor('credits/goto_customerPage', 'Credits').'</li>';
+		//echo '<li>'.anchor('expenses/goto_expensesPage', 'Expenses ').'</li>';
+		//echo '<li>'.anchor('incoming/goto_incomingPage', 'Deliveries').'</li>';
+		//echo '<li>'.anchor('outgoing/goto_outgoingPage', 'Pull-outs').'</li>';
+		//echo '<li>'.anchor('admin/sales', 'Transactions').'</li>';
+		//echo '<li>'.anchor('admin/load', 'E-Load').'</li>';
+		//echo '<li>'.anchor('admin/goto_amountPage', 'Opening & Closing Amounts').'</li>';
+		echo '<li>'.anchor('admin/goto_recordsPage', 'Records');
+		echo '<li>'.anchor('admin/goto_formsPage', 'Forms');
 		echo '<li>'.anchor('admin/reports', ' Reports ').'</li>';
 		echo '<li>'.anchor('admin/inventory', ' Inventory ').'</li>';
-		
+		echo '<li>'.anchor('items/exportExcel', 'Export File').'<li>';
 		echo '<li>'.anchor('pos/do_logout', ' Logout').'</li>';
 	echo'</ul>
 </div>';
@@ -85,7 +86,7 @@ echo'<div class="navbox">
 	
 	echo'</ul>
 </div>';
-}else{
+}else if($flag==3){
 echo'<div class="navbox">
 	<ul id="nav">';
 		echo '<li>'.anchor('manager', ' Home').'</li>';
@@ -95,7 +96,29 @@ echo'<div class="navbox">
 	
 	echo'</ul>
 </div>';
-} ?></div>
+}
+else {
+	echo'<div class="navbox">
+		<ul id="nav">';
+		echo '<li>'.anchor('', 'Item Search').'</li>';
+		echo '<li>'.anchor('', 'Price Search').'</li>';
+		echo '<li>'.anchor('', 'Customer Payment Search').'</li>';
+		echo '<li>'.anchor('', 'New Transaction').'</li>';
+		echo '<li>'.anchor('', 'Cancel Transaction').'</li>';
+		echo '<li>'.anchor('', 'E-Load');
+		echo '<li>'.anchor('', 'Start/End Day').'</li>';
+		echo '<li>'.anchor('', 'Employee Time-in/out').'</li>';
+		echo '<li>'.anchor('', 'Expenses').'</li>';
+		echo '<li>'.anchor('', 'Generate Daily Report').'</li>';
+		echo '<li>'.anchor('', 'Log out').'</li>';
+	
+	echo'</ul>
+	</div>';	
+} 
+
+?>
+
+</div>
 
 	<div id="mainpage">
 
@@ -159,7 +182,7 @@ echo'<div class="navbox">
 	
 	</div> 
 
-	<?php $this->load->view('includes/footer'); ?>
+	<?php //$this->load->view('includes/footer'); ?>
 
 	<?php //$this->load->view('includes/about'); ?> 
 	</div>

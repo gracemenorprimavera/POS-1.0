@@ -6,7 +6,7 @@ class Pos_model extends CI_Model {
 
 		$this->db->select('*');
 		$this->db->from('accounts');
-		$this->db->where('password', $password);
+		$this->db->where('password', md5($password));
 		$result = $this->db->get();
 
 		if($result->num_rows() == 1) {

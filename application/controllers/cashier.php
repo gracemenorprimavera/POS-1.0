@@ -16,6 +16,15 @@ class Cashier extends CI_Controller {
 		}		
     }
 
+    function new_cashier() {
+		$data['message'] = " ";
+		$data['header'] = 'Cashier';
+		
+		$data['page'] = 'forms/sales_form';
+		$data['flag'] = 4;
+		$this->load->view('template2', $data);
+	}
+
 /* CASHIER */
 
     function index() {

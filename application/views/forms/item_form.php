@@ -31,7 +31,7 @@
 				}
 			}	
 			echo '<td>Supplier Code: '.form_dropdown('supplierItem', $data,'','id="supplierItem" autocomplete="off" required');
-			echo '<input type="text" id="addSupplier_input" placeholder="New supplier" /><input type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/></td>';
+			echo '<input type="text" id="addSupplier_input" placeholder="New supplier" /><input class="button" type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/></td>';
 			?>
 		</tr><tr>
 			<td>Manufacturer: <input type="text" name="manufacturer" required></td>

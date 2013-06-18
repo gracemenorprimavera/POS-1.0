@@ -3,6 +3,9 @@
 class Pos extends CI_Controller {
 
 
+
+
+/* ------------------------------- */	
 	public function index()
 	{
 		$data['message'] = " ";
@@ -50,7 +53,7 @@ class Pos extends CI_Controller {
 				$account = $this->session->userdata('role');
 						
 				if($account=='cashier') {
-					redirect('cashier');
+					redirect('cashier/new_cashier');
 				}
 				else if($account=='admin') {
 					redirect('admin');

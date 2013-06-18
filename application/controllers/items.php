@@ -254,7 +254,7 @@ class Items extends CI_Controller {
       //force_download($table . '_csv_file.csv',$table_report);
       //$data = 'Some file data';
       //write_file($url.$table.".php", $table_report);
-      $this->zip->add_data($table.".php",$table_report);
+      $this->zip->add_data($table.".csv",$table_report);
     }
     if(!is_dir($url)){
       mkdir($url, 0777, TRUE);
