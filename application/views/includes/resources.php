@@ -6,11 +6,23 @@
 <script src="<?php echo base_url();?>js/jquery-1.9.1.js"></script>
 <script src="<?php echo base_url();?>js/jquery-ui.js"></script>
 
+<!--for modal-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<!--for modal-->
+
 <script language="javascript" type="text/javascript">
 
  $(document).ready(function() {
   	
   	$("#search_item").keydown(function(e){
+        if(e.which==17 || e.which==74){
+            e.preventDefault();
+        }else{
+            console.log(e.which);
+        }
+    });
+
+    $("#searchDialog").keydown(function(e){
         if(e.which==17 || e.which==74){
             e.preventDefault();
         }else{
@@ -314,7 +326,103 @@
 			$('#' + par + ' input.totalBills').val(billsTotal + coinsTotal);
 			//alert(par);
 	});
+
+
+	 $( "#dialog-form" ).dialog({
+			autoOpen: false,
+			height: 500,
+			width: 850,
+			modal: true,
+			buttons: {
+			"Search": function() {
+				$("#dialog-form table").html("");
+				var mode = $("#hsearchDialog").val();
+				var tag = $('#searchDialog').val();
+				if(tag=="" || tag==null) return;
+				//ajax
+				$.ajax({
+					url: '<?php echo base_url().'index.php/cashier/search2/';?>' + mode,
+					data: {tag: tag},
+					type: "post",
+					success: function(data){
+						//check if data is null
+						//alert(data);
+						if(data == null || data == ''){
+							$("#dialog-form table").html("<tr><td>No items found.</td></tr>");
+							return;
+						}
+						else{
+							var temp = JSON.parse(data);
+							var output = '';
+							for (var i = 0; i < temp.length; i++){
+								output = output + "<tr>";
+								$.each(temp[i], function(key, value) {
+	    							output = output + '<td>' + value + '</td>';
+								});
+								output = output + "</tr>";
+							}
+							$("#dialog-form table").html(output);
+							//alert(output);
+						}
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+					}
+				});
+				//end of ajax
+				//$( this ).dialog( "close" );
+			},
+			Close: function() {
+			$( this ).dialog( "close" );
+			}
+			},
+			close: function() {
+			//allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+	});
+
+	 $( "#dialog-form2" ).dialog({
+			autoOpen: false,
+			height: 500,
+			width: 850,
+			modal: true,
+			buttons: {
+			"Ok": function() {
+				var mode = $("#hsearchDialog2").val();
+				$.ajax({
+					url: '<?php echo base_url().'index.php/cashier/expense_form/';?>',
+					type: "post",
+					dataType: "html",
+					success: function(data){
+						alert(data);
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+					}
+				});
+
+			},
+			Close: function() {
+				$( this ).dialog( "close" );
+			}
+			},
+			close: function() {
+			//allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+	});
+
+
+
+	$( ".dialogThis" ).click(function() {
+		$("#dialog-form table").html("");
+		$("#hsearchDialog").val($(this).attr('id'));
+		$( "#dialog-form" ).dialog( "open" );
+		return false;
+	});
 	
+	$( ".dialogThis2" ).click(function() {
+		$("#hsearchDialog2").val($(this).attr('id'));
+		$( "#dialog-form2" ).dialog( "open" );
+		return false;
+	});
  
 });  //end of document ready
 

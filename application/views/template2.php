@@ -6,6 +6,24 @@
 </head>	
 
 <body>
+
+<div id="dialog-form" title="Search">
+<form>
+<fieldset>
+<label for="name">Search</label>
+<input type="hidden" id="hsearchDialog"/>
+<input type="text" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
+</fieldset>
+<table border = solid 1px black>
+</table>
+</form>
+</div>
+
+<div id="dialog-form2" title="New Form">
+<input type="hidden" id="hsearchDialog2"/>
+</div>
+
+
 <div id="main">
 <div id="navmenu">
 <?php
@@ -100,15 +118,15 @@ echo'<div class="navbox">
 else {
 	echo'<div class="navbox">
 		<ul id="nav">';
-		echo '<li>'.anchor('', 'Item Search').'</li>';
-		echo '<li>'.anchor('', 'Price Search').'</li>';
-		echo '<li>'.anchor('', 'Customer Payment Search').'</li>';
+		echo '<li>'.anchor('#', 'Item Search','class="dialogThis" id="itemDSearch"').'</li>';
+		echo '<li>'.anchor('#', 'Price Search','class="dialogThis" id="priceDSearch"').'</li>';
+		echo '<li>'.anchor('#', 'Customer Payment Search','class="dialogThis" id="custDSearch"').'</li>';
 		echo '<li>'.anchor('', 'New Transaction').'</li>';
 		echo '<li>'.anchor('', 'Cancel Transaction').'</li>';
 		echo '<li>'.anchor('', 'E-Load');
 		echo '<li>'.anchor('', 'Start/End Day').'</li>';
 		echo '<li>'.anchor('', 'Employee Time-in/out').'</li>';
-		echo '<li>'.anchor('', 'Expenses').'</li>';
+		echo '<li>'.anchor('#', 'Expenses', 'class="dialogThis2" id="expenseDialog"').'</li>';
 		echo '<li>'.anchor('', 'Generate Daily Report').'</li>';
 		echo '<li>'.anchor('', 'Log out').'</li>';
 	

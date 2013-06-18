@@ -156,6 +156,19 @@ class Cashier extends CI_Controller {
 				//redirect($this->input->get('last_url', $data));
 		}		
 	}
+
+	function search2($mode) {
+		
+		$search = $this->input->post('tag');
+
+		if($this->pos_model->get_search2($search,$mode)){
+			echo json_encode($this->pos_model->get_search2($search,$mode));
+			//echo 'true';
+		}
+		
+				
+	}
+
 	function goto_search_items() {
 		$search = $this->input->post('search'); // $supplier_name= $this->input->post('supplier_name');
 		$searchin = $this->input->post('search_dropdown');
@@ -276,6 +289,10 @@ class Cashier extends CI_Controller {
 		$this->db->query($query);
 
 		redirect('cashier');
+	}
+
+	function expense_form(){
+			include('forms/expense_form.php');
 	}
 }
 
