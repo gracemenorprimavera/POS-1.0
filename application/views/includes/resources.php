@@ -7,7 +7,7 @@
 <script src="<?php echo base_url();?>js/jquery-ui.js"></script>
 
 <!--for modal-->
-<link rel="stylesheet" href="<?php echo base_url();?>js/jquery-ui.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <!--for modal-->
 
 <script language="javascript" type="text/javascript">
@@ -346,7 +346,6 @@
 					type: "post",
 					success: function(data){
 						//check if data is null
-						//alert(data);
 						if(data == null || data == ''){
 							$("#dialog-form table").html("<tr><td>No items found.</td></tr>");
 							return;
@@ -375,6 +374,16 @@
 			$( this ).dialog( "close" );
 			}
 			},
+			open: function() {
+    			$(this).keypress(function(e) {
+      				if (e.keyCode == $.ui.keyCode.ENTER) {
+        			//$(this).parent().find("button:eq(0)").trigger("click");
+      				$(this).parent('.ui-dialog').find('.ui-dialog-buttonset button:first').click();
+      				e.preventDefault();  
+    				return false;
+      				}
+    			});
+  			},
 			close: function() {
 			$("#dialog-form input").val("");
 			}
@@ -387,7 +396,7 @@
 			modal: true,
 			buttons: {
 			Close: function() {
-				$( this ).dialog( "close" );
+				$( this ).dialog( "Search" );
 			}
 			},
 			close: function() {
@@ -395,11 +404,23 @@
 			}
 	});
 
-
+/*$('#dialog-form').keypress(function(e) {
+    if (e.which == 13) {
+    $( '#dialog-form button').click( "Search" );
+    }
+    e.preventDefault();  
+    return false;
+     
+})*/
 
 	$( ".dialogThis" ).click(function() {
+		var id = $(this).attr('id');
 		$("#dialog-form table").html("");
-		$("#hsearchDialog").val($(this).attr('id'));
+		if(id == 'itemDSearch') $('#searchLabel').html('Item Search');
+		else if(id == 'priceDSearch')  $('#searchLabel').html('Price Search');
+		else if(id == 'custDSearch')  $('#searchLabel').html('Customer Search');
+		else name.innerHTML = 'Search';
+		$("#hsearchDialog").val(id);
 		$( "#dialog-form" ).dialog( "open" );
 		return false;
 	});

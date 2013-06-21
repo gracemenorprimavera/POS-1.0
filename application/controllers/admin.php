@@ -109,6 +109,8 @@ class Admin extends CI_Controller {
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
 		$data['flag'] = 1;
+		$data['report_id'] = $report_id;
+		$data['report_date'] = $report_date;
 		$data['page'] = 'forms/report_form';
 		$this->load->view('template2', $data);
 	}
@@ -322,7 +324,7 @@ class Admin extends CI_Controller {
 	function add_load() {
 		$network = $this->input->post('load_dropdown');
 		$amount = $this->input->post('load_amount');
-		//$balance = $this->input->post('load_balance'); // load wallet
+		//$balance = $this->input->post('load_balance');
 		$date = $this->input->post('loadDate');
 
 		//echo $network.$amount.$balance;
@@ -332,20 +334,16 @@ class Admin extends CI_Controller {
 				'date'=>$date,
 				'status'=>'wallet',
 				'eload'=>0,
-				'wallet'=>$amount,
-				'load_balance'=>0,
-				'load_cash'=>0
+				'wallet'=>$amount
+				//'load_balance'=>0,
+				//'load_cash'=>0
 			));
-		$query = "UPDATE eload_balance set balance=$amount WHERE network=$network";
+		$id = $this->db->insert_id();
+		$query = "UPDATE eload set load_balance=load_balance+$amount WHERE load_id=$id";
 		$this->db->query($query);
-		
-		//$id = $this->db->insert_id();
-		//$query = "UPDATE eload set load_balance=load_balance+$amount WHERE load_id=$id";
-		//$this->db->query($query);
 
 		//$query = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
 		//$this->db->query($query);
-		redirect('admin');
 	}
 
 	function goto_add_category(){
@@ -374,41 +372,23 @@ class Admin extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
+	function pdf($report_id,$report_date)	//fetch the report id and report date
+	{
 
-	/* Employee */
-	
-
-	function goto_employeeForm() {
-		$data['header'] = 'Administrator';
-		$data['flag']=1;
-		
-		$data['page'] = 'forms/employee_form';
-
-		$this->load->view('template2', $data);
+	    $this->load->helper(array('dompdf', 'file')); 		//load the pdf conversion helper
+	    $this->load->helper('download');					//load download helper
+	    $data['report'] = $this->pos_model->get_dailyReport($report_id);	//get report data
+		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
+		$data['report_date'] = $report_date;
+		//$this->load->view('forms/report_form2',$data);
+	   	$html =  $this->load->view('forms/report_form2',$data,true);	//put to html
+	    $data = pdf_create($html, '', false);							//create pdf
+	   	force_download($report_date.'_dsr.pdf', $data); 				//download pdf
+	   	//write_file('name', $data);
 	}
 
-	function view_employee() {
-		$data['detail_flag'] = false; 
-		if($this->pos_model->getAll_credits()) {
-			$data['credits'] = $this->pos_model->getAll_credits();
-			$data['message'] ='';
-		}
-		else
-			$data['message'] = 'No Record of Credit';
-		
-		$data['header'] = 'Credit Record';
-		$data['flag'] = 1;
-		$data['page'] = 'lists/credit_list';
-		$this->load->view('template2', $data);
-	}
 
-	function add_employee() {
 
-		$this->db->insert('employee', array('emp_id'=>NULL,
-			'name'=>$this->input->post('name')
-			));
-		redirect('admin');
-	}
 }
 
 /* End of file pos.php */

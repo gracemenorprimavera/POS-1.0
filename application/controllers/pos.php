@@ -3,12 +3,7 @@
 class Pos extends CI_Controller {
 
 
-	function createPDF() {
-		$this->load->library('pdf');
-		$this->pdf->load_view('forms/item_form');
-		$this->pdf->render();
-		$this->pdf->stream("item.pdf");
-	}
+
 
 /* ------------------------------- */	
 	public function index()
