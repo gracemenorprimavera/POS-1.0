@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 
 	<table>
 	<?php echo form_open('credits/add_customer', array('onsubmit'=>"return confirm('Add New Customer?') ")); ?>	

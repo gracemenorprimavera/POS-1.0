@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 <?php
 $user = $this->session->userdata('role');
 		echo validation_errors();
@@ -24,7 +27,7 @@ $user = $this->session->userdata('role');
               'maxlength'   => '',
               'size'        => '',
               'style'       => '',
-			  //'required'	=> 'required',
+			  'required'	=> 'required',
 			  //'readonly'	=> 'readonly'
 		);
 	}

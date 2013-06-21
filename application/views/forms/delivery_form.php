@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 
 <div id="delivery_form" class="forms">
 <h3> DELIVERY FORM </h3>	

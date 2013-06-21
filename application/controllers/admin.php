@@ -191,7 +191,7 @@ class Admin extends CI_Controller {
 	}
 
 	function goto_amountForm() {
-		$data['header'] = 'Administrator';
+		$data['header'] = 'Amount Form';
 		$data['flag']=1;
 		
 		$data['page'] = 'forms/amount_form';
@@ -243,6 +243,19 @@ class Admin extends CI_Controller {
 			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
 			redirect('cashier/close_store');
 		}	
+	}
+
+	function add_amount() {
+		$open = $this->input->post('openSubTotal');
+		$close = $this->input->post('closeSubTotal');
+		$total = $this->input->post('total');
+		$date = $this->input->post('amountDate');
+
+		//echo $date;
+		$this->pos_model->register_amount('opening',$open,0,0,$date);
+		$this->pos_model->register_amount('closing',$close,0,0,$date);
+		redirect('admin');
+
 	}
 
 	function close_store() {
@@ -324,7 +337,7 @@ class Admin extends CI_Controller {
 	function add_load() {
 		$network = $this->input->post('load_dropdown');
 		$amount = $this->input->post('load_amount');
-		//$balance = $this->input->post('load_balance');
+		//$balance = $this->input->post('load_balance'); // load wallet
 		$date = $this->input->post('loadDate');
 
 		//echo $network.$amount.$balance;
@@ -334,16 +347,20 @@ class Admin extends CI_Controller {
 				'date'=>$date,
 				'status'=>'wallet',
 				'eload'=>0,
-				'wallet'=>$amount
-				//'load_balance'=>0,
-				//'load_cash'=>0
+				'wallet'=>$amount,
+				'load_balance'=>0,
+				'load_cash'=>0
 			));
-		$id = $this->db->insert_id();
-		$query = "UPDATE eload set load_balance=load_balance+$amount WHERE load_id=$id";
+		$query = "UPDATE eload_balance set balance=$amount WHERE network=$network";
 		$this->db->query($query);
+		
+		//$id = $this->db->insert_id();
+		//$query = "UPDATE eload set load_balance=load_balance+$amount WHERE load_id=$id";
+		//$this->db->query($query);
 
 		//$query = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
 		//$this->db->query($query);
+		redirect('admin');
 	}
 
 	function goto_add_category(){
@@ -356,7 +373,7 @@ class Admin extends CI_Controller {
 
 
 	function goto_recordsPage() {
-		$data['header'] = 'Administrator';
+		$data['header'] = 'Records';
 		$data['flag']=1;
 		$data['subnav'] = 8; // sub-navigation for records
 		$data['page'] = 'admin/subnav';
@@ -364,12 +381,47 @@ class Admin extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 	function goto_formsPage() {
-		$data['header'] = 'Administrator';
+		$data['header'] = 'Forms';
 		$data['flag']=1;
 		$data['subnav'] = 9; // sub-navigation for forms
 		$data['page'] = 'admin/subnav';
 
 		$this->load->view('template2', $data);
+	}
+
+
+	/* Employee */
+	
+
+	function goto_employeeForm() {
+		$data['header'] = 'Administrator';
+		$data['flag']=1;
+		$data['page'] = 'forms/employee_form';
+
+		$this->load->view('template2', $data);
+	}
+
+	function view_employee() {
+		$data['detail_flag'] = false; 
+		if($this->pos_model->getAll_credits()) {
+			$data['credits'] = $this->pos_model->getAll_credits();
+			$data['message'] ='';
+		}
+		else
+			$data['message'] = 'No Record of Credit';
+		
+		$data['header'] = 'Credit Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/credit_list';
+		$this->load->view('template2', $data);
+	}
+
+	function add_employee() {
+
+		$this->db->insert('employee', array('emp_id'=>NULL,
+			'name'=>$this->input->post('name')
+			));
+		redirect('admin');
 	}
 
 	function pdf($report_id,$report_date)	//fetch the report id and report date
@@ -386,9 +438,6 @@ class Admin extends CI_Controller {
 	   	force_download($report_date.'_dsr.pdf', $data); 				//download pdf
 	   	//write_file('name', $data);
 	}
-
-
-
 }
 
 /* End of file pos.php */

@@ -1,3 +1,7 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
+
 <?php if(isset($message)) echo $message; ?>
 <?php echo form_open_multipart('items/import_excel') ?>
 	<table border="1" width="40%" align="center">
@@ -16,4 +20,4 @@
 	</table>
 <?php echo form_close(); ?>
 <?php $user = $this->session->userdata('role');
-echo anchor($user, 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>
+//echo anchor($user, 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

@@ -122,9 +122,8 @@ div {
 
 #main_con {
 	text-align: center;
-	height: 605px;
+	height: auto;
 	width: auto;
-	overflow: scroll;
 	margin-top: 20px;
 	margin-left: 20px;
 }
@@ -299,6 +298,17 @@ table {
 
 ul{ list-style: none;}
 
+.navbox{
+	float: left;
+	margin-right: 20px;
+	position: relative;
+	top: 100px;
+}.cashbox{
+	float: left;
+	margin-right: 20px;
+	position: relative;
+}
+
 ul#nav {
     list-style: none;
     margin: 0px;
@@ -463,12 +473,7 @@ ul#nav li a:hover {
 	left:5px;
 }
 
-#navmenu{
-	float: left;
-	margin-right: 20px;
-	position: relative;
-	top: 100px;
-}
+
 
 
 /*GRACE*/
@@ -789,3 +794,85 @@ span a {
 	float:left;
 }
 
+#inside{
+	height: 58px;
+	font-size: 18px;
+}
+.info{
+	font-weight: bold;
+	text-align: left;
+	width: 49%;	
+	float: left;
+}
+
+.who{
+	font-weight: bold;
+	text-align: center;
+	float: right;
+	width: 49%;
+}
+
+
+table {
+	border-collapse: collapse;
+}
+thead {
+	background-color: #DDD;
+}
+td {
+	padding: 2px 4px 2px 4px;
+}
+th {
+	padding: 2px 4px 2px 4px;
+}
+/* Classes used for hiding more detail, by default */
+th.moreDetail {
+	display: none;
+}			
+td.moreDetail {
+	display: none;
+}
+
+/* Classes used for showing more detail */
+table.showDetail th.moreDetail {
+	display: table-cell;
+	background-color: #E4E4A2;
+}
+table.showDetail td.moreDetail {
+	display: table-cell;
+	background-color: #E4E4A2;
+}
+/* Style rule for IE 6 */
+* html table.showDetail .moreDetail {
+	display: block;
+}
+
+.view{
+	overflow: scroll;
+	height: 450px;
+}
+
+#sales{
+	overflow: scroll;
+	height: 180px;
+	margin: 0;
+}
+
+.label,#tc{
+	position: relative;
+	top: 22px;
+	left: 352px;
+	height: 65px;
+	font-size: 25px;
+	width: 325px;
+}
+#total{	
+	font-size: 45px;
+	background-color: white;
+	border: 1px solid black;
+}
+#tc{	
+	font-size: 25px;
+	top: 72px;
+	text-align: left;
+}

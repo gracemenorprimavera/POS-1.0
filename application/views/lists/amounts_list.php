@@ -1,3 +1,7 @@
+<?php
+	if($this->session->userdata('role')=='admin') 
+		echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; 
+?>
 <div id="view_amounts" class="view" >
 
 <?php 
@@ -32,7 +36,7 @@
 
 			foreach($amounts as $d) {
 				echo '<tr>';
-					echo '<td>'.$d->date.'</td>';
+					echo '<td>'.date('F d, Y', strtoTime($d->date)).'</td>';
 					echo '<td>'.$d->opening_bills.'</td>';
 					echo '<td>'.$d->opening_coins.'</td>';
 					if($d->opening_total==0)

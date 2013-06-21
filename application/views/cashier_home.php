@@ -1,4 +1,4 @@
-
+<!--
 <?php //echo '<ul id="otherlinks"><li>'.anchor('cashier/logout', ' Log out ').'</li></ul>'; ?>
 
 	<ul class="listview">
@@ -62,14 +62,16 @@
   </div>
 
 </ul>
+-->
+
 <?php
- if($this->session->userdata('open')) 
+/* if($this->session->userdata('open')) 
     echo '<h2>Cashier is open!</h2>'; 
   else {
     echo '<h2>Cashier is still close! </h2>';
     
   }
-
+*/
 ?>
 
  

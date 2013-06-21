@@ -1,3 +1,7 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
+
 <div id="item_form" class="forms">
 	
 	<?php echo form_open('items/add_item', array('onsubmit'=>"return confirm('Finalize Add Item?') ")); ?>
@@ -30,8 +34,8 @@
 					$data[$row->supplier_name] = $row->supplier_name;
 				}
 			}	
-			echo '<td>Supplier Code: '.form_dropdown('supplierItem', $data,'','id="supplierItem" autocomplete="off" required');
-			echo '<input type="text" id="addSupplier_input" placeholder="New supplier" /><input class="button" type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/></td>';
+			echo '<td>Supplier: '.form_dropdown('supplierItem', $data,'','id="supplierItem" autocomplete="off" required');
+			//echo '<input type="text" id="addSupplier_input" placeholder="New supplier" /><input class="button" type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/></td>';
 			?>
 		</tr><tr>
 			<td>Manufacturer: <input type="text" name="manufacturer" required></td>

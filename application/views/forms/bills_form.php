@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 <?php $user = $this->session->userdata('role'); ?>
 <div id="bills_form" class="forms">
 
@@ -75,4 +78,3 @@
 	<?php echo form_close(); ?>
 </div>
 
-<?php echo anchor('#', 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

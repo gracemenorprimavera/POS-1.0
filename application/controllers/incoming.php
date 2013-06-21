@@ -46,7 +46,7 @@ class Incoming extends CI_Controller {
 
 	function goto_supplierForm() {
 		$user= $this->session->userdata('role');
-		$data['header'] = 'Incoming';
+		$data['header'] = 'Supplier Form';
 		if($user=='manager')
 			$data['flag'] = 3;
 		else if($user=='admin') 

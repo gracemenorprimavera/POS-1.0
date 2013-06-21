@@ -2,9 +2,37 @@
 
 class Pos extends CI_Controller {
 
+function pdf() {
+     $this->load->helper(array('dompdf', 'file'));
+     // page info here, db calls, etc.     
+     $html = $this->load->view('forms/expense_form');
+     pdf_create($html, 'filename');
+    // or
+    // $data = pdf_create($html, '', false);
+    // write_file('name', $data);
+     //if you want to write it to disk and/or send it as an attachment    
+}
+	function createPDF() {
+		$this->load->library('pdf');
+		$this->pdf->load_view('forms/item_form');
+		$this->pdf->render();
+		$this->pdf->stream("item.pdf");
+	}
 
+	function create_PDF() {
+		$data['message'] = " ";
+		$data['header'] = 'P.O.S.';
+		$data['subheader'] = 'Point of Sale';
+		$data['page'] = 'sample_pdf';
+		$data['flag'] = 1;
+		
+		$this->load->view('template2', $data);
+	}
 
-
+	public function download() {
+			$this->load->helper('download');
+			$this->load->view('download_PDF');
+		}
 /* ------------------------------- */	
 	public function index()
 	{
@@ -53,7 +81,7 @@ class Pos extends CI_Controller {
 				$account = $this->session->userdata('role');
 						
 				if($account=='cashier') {
-					redirect('cashier/new_cashier');
+					redirect('cashier');
 				}
 				else if($account=='admin') {
 					redirect('admin');

@@ -18,7 +18,7 @@ class Sales extends CI_Controller {
 
     function index() {
     	
-    	$data['flag'] = 2;   	
+    	  	
 				
 		$is_open = $this->session->userdata('open');
 		if(!isset($is_open) || $is_open != true) {
@@ -26,15 +26,17 @@ class Sales extends CI_Controller {
 			//die();
 			$data['header'] = 'Sales';
 			$data['page'] = 'dummy';
+			$data['flag'] = 2;
 			//$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template2', $data);
 		}	
 		else {
 			$data['header'] = 'New Transaction';
 			$data['message'] = "";
+			$data['flag'] = 2;
 			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 		}
 			
     }
@@ -53,8 +55,9 @@ class Sales extends CI_Controller {
 			$data['header'] = 'New Transaction';
 			//$data['page'] = 'cashier/purchase_main';
 			$data['page'] = 'forms/sales_form';
+			$data['flag'] = 4;
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 		}
 		else {
 			$this->db->from('item');
@@ -92,10 +95,11 @@ class Sales extends CI_Controller {
 		    }
 		   
 			$data['header'] = 'New Transaction';
+			$data['flag'] = 4;
 			//$data['page'] = 'cashier/purchase_main';
 			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template', $data);
+			$this->load->view('template2', $data);
 			
 		}
 	}
@@ -113,8 +117,9 @@ class Sales extends CI_Controller {
 		$data['customer'] = $this->pos_model->getAll_customers();
 		$data['header'] = 'New Transaction';
 		$data['page'] = 'forms/sales_form';
+		$data['flag'] = 4;
 		
-		$this->load->view('template', $data);	
+		$this->load->view('template2', $data);	
 	}
 
 	function do_purchase() {
@@ -122,11 +127,11 @@ class Sales extends CI_Controller {
 		$mode = $this->input->post('paymentChoice');
 
 		$total = $this->cart->total();
-		
+		$date = date('y-m-d'); //'2013-06-20';
 		if($mode=='cash') {	
 				// insert transactions 
 			$this->db->insert('transactions', array('trans_id'=>NULL,  
-				'trans_date'=>date('y-m-d'),
+				'trans_date'=>$date, //date('y-m-d'),
 				'total_amount'=>$total
 				));
 						
@@ -147,7 +152,7 @@ class Sales extends CI_Controller {
 			
 			$this->db->insert('credit', array('credit_id'=>NULL,  
 				'customer_id'=>$customer_id,
-				'date'=>date('y-m-d'),
+				'date'=>$date, //date('y-m-d'),
 				'status'=>'credit',
 				'amount_credit'=>$total,
 				'amount_paid'=>0,
@@ -176,7 +181,7 @@ class Sales extends CI_Controller {
 
 	function cancel_trans() {
 		$this->cart->destroy();
-		redirect('cashier');
+		redirect('cashier/new_cashier');
 	}
 
 	

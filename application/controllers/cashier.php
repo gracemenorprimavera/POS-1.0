@@ -156,19 +156,6 @@ class Cashier extends CI_Controller {
 				//redirect($this->input->get('last_url', $data));
 		}		
 	}
-
-	function search2($mode) {
-		
-		$search = $this->input->post('tag');
-
-		if($this->pos_model->get_search2($search,$mode)){
-			echo json_encode($this->pos_model->get_search2($search,$mode));
-			//echo 'true';
-		}
-		
-				
-	}
-
 	function goto_search_items() {
 		$search = $this->input->post('search'); // $supplier_name= $this->input->post('supplier_name');
 		$searchin = $this->input->post('search_dropdown');
@@ -226,7 +213,7 @@ class Cashier extends CI_Controller {
 			$data['message'] = 'No Reports Found';
  		
 		$data['header'] = 'Reports';
-		$data['flag'] = 2;
+		$data['flag'] = 4;
 		$data['page'] = 'lists/report_list';		
 		$this->load->view('template2', $data);
 	}
@@ -238,7 +225,8 @@ class Cashier extends CI_Controller {
 		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
-		$data['flag'] = 2;
+		$data['flag'] = 4;
+		$data['date'] = $report_date;
 		$data['page'] = 'forms/report_form';
 		$this->load->view('template2', $data);
 	}
@@ -270,6 +258,7 @@ class Cashier extends CI_Controller {
 		$balance = $this->input->post('load_balance');
 		$date = $this->input->post('loadDate');
 
+		$date = date('y-m-d'); //'2013-06-21';
 		//echo $network.$amount.$balance;
 		$this->db->insert('eload',array(
 				'load_id'=>NULL,
@@ -277,20 +266,52 @@ class Cashier extends CI_Controller {
 				'date'=>$date,
 				'status'=>'eload',
 				'eload'=>$amount,
-				'wallet'=>0,
+				'wallet'=>$balance,
 				//'load_balance'=>0,
 				//'load_cash'=>0
 			));
 		$id = $this->db->insert_id();
-		$query = "UPDATE eload set load_balance=$balance WHERE load_id=$id";
+		$query = "UPDATE eload set load_balance=load_balance-$balance WHERE load_id=$id";
 		$this->db->query($query);
 
-		$query = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
-		$this->db->query($query);
+		$query1 = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
+		$this->db->query($query1);
+
+		$this->db->insert('transactions', array('trans_id'=>NULL,  
+				'trans_date'=>$date,
+				'total_amount'=>$amount
+				));
+		$trans_id = $this->db->insert_id();
+		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
+			'item_code'=>'load',
+			'division'=>'load',
+			'quantity'=>0,
+			'price'=>$amount,
+			'date'=>$date
+			));
 
 		redirect('cashier');
 	}
 
+	function view_dtrform() {
+		$data['header'] = 'DTR';
+			$data['flag'] = 2;	
+			$data['employee'] =  $this->pos_model->getAll_employee();
+			$data['page'] = 'forms/dtr_form';
+			$this->load->view('template2', $data);
+	}
+
+	function search2($mode) {
+		
+		$search = $this->input->post('tag');
+
+		if($this->pos_model->get_search2($search,$mode)){
+			echo json_encode($this->pos_model->get_search2($search,$mode));
+			//echo 'true';
+		}
+		
+				
+	}
 	function dialog_show($mode){
 		if($mode == 'expenseDialog')
 			echo $this->load->view('forms/expense_form.php');
@@ -300,8 +321,10 @@ class Cashier extends CI_Controller {
 			echo $this->load->view('forms/bills_form.php');
 		else if($mode == 'endDialog')
 			echo $this->load->view('forms/closing_form.php');
-		else if($mode == 'dtrDialog')
+		else if($mode == 'dtrDialog') {
+			//$data['employee'] =  $this->pos_model->getAll_employee();
 			echo $this->load->view('forms/dtr_form.php');
+		}
 		else return false;	
 	}
 }

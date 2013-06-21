@@ -1,3 +1,7 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
+
 <?php
 $user = $this->session->userdata('role');
 	if($user=='admin') {
@@ -44,13 +48,15 @@ $user = $this->session->userdata('role');
 		<td>Load Balance:</td>
 		<td><input type="text" name="load_balance" required/></td></tr>
 	<tr>
-	<?php } else { ?>
+	<?php } else { 
+		//echo 'Balance: '.$this->pos_model->getload_balance();
+	?>
+
 		<td>Wallet:</td>
 		<td><input type="text" name="load_amount" required/></td></tr>
 	<?php } ?>
 	
 		
-		<td colspan="2"><?php //echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td></tr>
+		<td colspan="2"><?php echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td></tr>
 	<?php echo form_close(); ?>
 	</table>
-<?php echo anchor($user, 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

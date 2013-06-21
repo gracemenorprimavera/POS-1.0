@@ -1,8 +1,14 @@
 
-<?php echo $message; ?>
+<div class="error"><?php echo $message; ?></div>
 <?php echo form_open('sales/add_item'); 
 $this->load->helper('string');
 ?>
+<div id="inside">
+<div class="info">[Date: XXXXX]	[Time: XXXXX] <br>
+[Transaction No.: XXXXX]</div>
+<div class="who">[Customer: XXXXX]</div>
+</div>
+
 	<input type='hidden' class='hItemPurchase' name='hItemPurchase' />
 	<label> Item </label><select name='searchMode'><option value="Barcode">Barcode</option><option value="Itemcode">Item code</option></select>
 	<input type="text" name="search_item" id="search_item" class="tags" tabindex="1" autofocus />
@@ -11,12 +17,12 @@ $this->load->helper('string');
 <?php echo form_close(); ?>
 
 <div id="purchase_list">
-<br><br>
 
 
 <?php echo form_open('sales/do_purchase') ?>
-<table cellpadding="6" cellspacing="1" style="width:100%" border="1px solid black">
-
+<div id="sales">
+<table cellpadding="6" cellspacing="1" style="width:100%;" border="1px solid black">
+<thead >
 <tr>
   <th>QTY</th>
   <th>Item Description</th>
@@ -24,7 +30,8 @@ $this->load->helper('string');
   <th style="text-align:right">Sub-Total</th>
   <th>Action</th>
 </tr>
-
+</thead>
+<tbody>
 <?php $i = 1; ?>
 
 <?php foreach ($this->cart->contents() as $items): ?>
@@ -59,13 +66,20 @@ $this->load->helper('string');
 
 <?php endforeach; ?>
 
-<tr>
+<!--<tr>
   <td colspan="2"></td>
   <td class="right"><strong>Total</strong></td>
   <td class="right" id="totalPurchase">P<?php echo $this->cart->format_number($this->cart->total()); ?></td>
-</tr>
-
+</tr>-->
+</tbody>
 </table>
+</div>
+
+<div class="label">Amount Due:
+	<div id="total">P<?php echo $this->cart->format_number($this->cart->total()); ?></div>
+</div>
+<div id="tc">[Tendered: XXXXX]	<br> [Change: XXXXX] </div>
+
 
 <?php
 	if($this->cart->total_items() > 0) {
@@ -114,12 +128,11 @@ echo form_close();
 
 //echo form_open('cashier/cancel_trans');
  	
-	echo anchor('sales/cancel_trans',' Cancel Transaction',array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")); 
+	echo anchor('sales/cancel_trans',' Cancel Transaction','class="error"',array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")); 
 	
 //echo form_close();
  ?>	
 </div>
-
 
 
 

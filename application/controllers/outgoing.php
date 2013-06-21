@@ -106,9 +106,9 @@ class Outgoing extends CI_Controller {
 			$data['message'] = '';
 		}
 		else
-			$data['message'] = 'No Record of Pull-out';
+			$data['message'] = 'No Record of Outgoing';
 
-		$data['header'] = 'Pull-outs Record';
+		$data['header'] = 'Outgoing Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/outgoing_list';
 		$this->load->view('template2', $data);
@@ -120,7 +120,7 @@ class Outgoing extends CI_Controller {
 		$data['date'] = $date;
 		$data['daily'] = $this->pos_model->getAll_outgoing_byDate($date);
 		$data['message'] = '';
-		$data['header'] = 'Pull-outs Record';
+		$data['header'] = 'Outgoing Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/outgoing_list';
 		$this->load->view('template2', $data);

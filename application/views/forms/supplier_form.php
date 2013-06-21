@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 <?php echo form_open('incoming/add_supplier'); ?>
 
 	<table>

@@ -1,4 +1,4 @@
-
+<!--
 <?php //echo '<ul id="otherlinks"><li>'.anchor('pos/do_logout', ' Log out ','style="right: 170px;"').'</li></ul>'; ?>
   <ul class="listview" >
   <div class="left_list">
@@ -86,3 +86,4 @@
 </div>
   
 </ul>
+-->

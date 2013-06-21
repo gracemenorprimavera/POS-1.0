@@ -30,7 +30,7 @@ class Items extends CI_Controller {
 
         $data['header'] = 'Item Form';
         $data['flag'] = 1;
-		$data['supplier'] = $this->pos_model->getAll_supplier();
+		    $data['supplier'] = $this->pos_model->getAll_supplier();
         $data['page'] = 'forms/item_form';
         $this->load->view('template2', $data);
     }
@@ -66,7 +66,7 @@ class Items extends CI_Controller {
                'cost' => $this->input->post('cost'),
                'retail_price' => $this->input->post('price'),
                'model_quantity' => $this->input->post('m_quantity'),
-               'supplier_code' => $this->input->post('supplier_code'),
+               'supplier_code' => $this->input->post('supplierItem'),
                'manufacturer' => $this->input->post('manufacturer'),
                'quantity' => $this->input->post('quantity'),
                'reorder_point' => $this->input->post('reorder_point')
@@ -80,6 +80,7 @@ class Items extends CI_Controller {
 
         $data['header'] = 'Edit Item Form';
         $data['flag'] = 1;
+        $data['supplier'] = $this->pos_model->getAll_supplier();
         $data['page'] = 'forms/itemEdit_form';
         $data['edit'] = $edit;
         $this->load->view('template2', $data);
@@ -103,7 +104,7 @@ class Items extends CI_Controller {
                'cost' => $this->input->post('cost'),
                'retail_price' => $this->input->post('price'),
                'model_quantity' => $this->input->post('m_quantity'),
-               'supplier_code' => $this->input->post('supplier_code'),
+               'supplier_code' => $this->input->post('supplierItem'),
                'manufacturer' => $this->input->post('manufacturer'),
                'quantity' => $this->input->post('quantity'),
                'reorder_point' => $this->input->post('reorder_point')

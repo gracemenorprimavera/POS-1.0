@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 <?php
 $user = $this->session->userdata('role');
 echo validation_errors();
@@ -13,7 +16,8 @@ echo form_open('incoming/add_incoming', array('onsubmit'=>"return confirm('Final
 	              'size'        => '',
 	              'style'       => '',
 				  'required'	=> 'required',
-				  'readonly'	=> 'readonly'
+				  'readonly'	=> 'readonly',
+				  'min'			=>'0'
 	    );
 	}
 	else {
@@ -26,6 +30,7 @@ echo form_open('incoming/add_incoming', array('onsubmit'=>"return confirm('Final
 	              'size'        => '',
 	              'style'       => '',
 				  'required'	=> 'required',
+				  'min'			=>'0'
 				  //'readonly'	=> 'readonly'
 	    );
 	}

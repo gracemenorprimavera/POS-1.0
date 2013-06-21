@@ -39,4 +39,3 @@
 	
 ?>
 
-<?php echo anchor($user, 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>

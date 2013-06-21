@@ -1,3 +1,6 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?>
 <div id="view_record" class="view" >
 
 <?php 
@@ -6,10 +9,10 @@
 		echo $message;
 	}
 	else {
-		echo '<table border="1px solid brown" cellpadding="6"><tr><th> Date </th></tr>';
+		echo '<table border="0px solid brown" cellpadding="6"><tr><th> Date </th></tr>';
 			foreach ($outgoing as $r) {
 				echo '<tr>';
-					echo '<td>'.anchor('outgoing/view_outgoingDetails/'.$r->date_out, $r->date_out).'</td>';		
+					echo '<td>'.anchor('outgoing/view_outgoingDetails/'.$r->date_out, date('F d, Y', strtoTime($r->date_out))).'</td>';		
 				echo '</tr>';
 			}
 
@@ -22,7 +25,7 @@
 	echo '<div id="view_right" class="view" >';
 
 	if($detail_flag) {
-		echo '<h3>'.$date.'</h3>';
+		echo '<h3>'.date('F d, Y', strtoTime($date)).'</h3>';
 ?>
 	<table border="1px solid brown" cellpadding="6">
 		<tr>

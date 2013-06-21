@@ -1,3 +1,7 @@
+<?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
+
 <div id="item_form" class="forms">
 	<?php echo form_open('items/edit_item', array('onsubmit'=>"return confirm('Finalize Edit Item?') "));
 	
@@ -29,7 +33,19 @@
 			<td>Retail Price: <input type="text" name="price" value="<?php echo $r->retail_price; ?>" required></td>
 		</tr><tr>
 			<td>Model Quantity: <input type="text" value="<?php echo $r->model_quantity; ?>" name="m_quantity"></td>
-			<td>Supplier Code: <input type="text" value="<?php echo $r->supplier_code; ?>" name="supplier_code" required></td>
+			<?php 
+			$data = array();
+			$data[''] = 'Please Select';
+			if(isset($supplier)){
+				foreach($supplier as $row){
+					$data[$row->supplier_name] = $row->supplier_name;
+				}
+			}	
+			echo '<td>Supplier: '.form_dropdown('supplierItem', $data,$r->supplier_code,'id="supplierItem" autocomplete="off" required');
+			//echo '<br><input type="text" id="addSupplier_input" placeholder="New supplier" /><input class="button" type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/></td>';
+			?>
+
+			
 		</tr><tr>
 			<td>Manufacturer: <input type="text" value="<?php echo $r->manufacturer; ?>" name="manufacturer" required></td>
 			<td>Quantity:  <input type="number" value="<?php echo $r->quantity; ?>" name="quantity" min="0" required></td>
