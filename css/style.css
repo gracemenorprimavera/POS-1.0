@@ -172,8 +172,8 @@ textarea {
 }
 
 #search_item {
-	width: 350px;
-	height: 35px;
+	width: 220px;
+	height: 21px;
 	margin:0px; 
 }
 
@@ -794,24 +794,6 @@ span a {
 	float:left;
 }
 
-#inside{
-	height: 58px;
-	font-size: 18px;
-}
-.info{
-	font-weight: bold;
-	text-align: left;
-	width: 49%;	
-	float: left;
-}
-
-.who{
-	font-weight: bold;
-	text-align: center;
-	float: right;
-	width: 49%;
-}
-
 
 table {
 	border-collapse: collapse;
@@ -852,27 +834,76 @@ table.showDetail td.moreDetail {
 	height: 450px;
 }
 
+#cashier{
+	width: auto;
+	height: 480px;
+	margin: 0;
+	padding: 0;
+}
+
 #sales{
-	overflow: scroll;
-	height: 180px;
+	height: inherit;
+	width: 54%;
+	margin: 0;
+	float: left;
+}
+#list{
+	overflow-y: scroll;
+	height: 345px;
 	margin: 0;
 }
 
-.label,#tc{
-	position: relative;
-	top: 22px;
-	left: 352px;
-	height: 65px;
-	font-size: 25px;
+#purchase{
+	height: inherit;
+	width: 45%;
+	margin: 0;
+	float: right;
+}
+
+#inside{
+	height: 58px;
+	font-size: 18px;	
+	font-weight: bold;
+}
+.info{
+	text-align: left;
+	float: left;
+}.who{
+	text-align: center;
+	float: right;
+}
+
+#currentItem{
+	border: 2px solid white;
+	background-color: pink;
+	height: 84px;
+	font-size: 28px;
+	text-align: center;
+	color: white;
+	font-weight: lighter;
+}
+
+.label{
+	font-weight: bold;
+	height: 81px;
+	font-size: 23px;
 	width: 325px;
 }
 #total{	
-	font-size: 45px;
+	font-weight: lighter;
+	font-size: 39px;
 	background-color: white;
 	border: 1px solid black;
 }
 #tc{	
-	font-size: 25px;
-	top: 72px;
-	text-align: left;
+	height: 58px;
+	width: 325px;
+	font-size: 18px;
+	text-align: left;	
+	font-weight: bold;
+}
+
+#cart{
+	position: relative;
+	top: 49px;
 }
