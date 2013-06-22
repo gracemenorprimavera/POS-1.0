@@ -4,6 +4,7 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 
 <?php if(isset($message)) echo $message; ?>
 <?php echo form_open_multipart('items/import_excel') ?>
+<p><span>Include instructions for importing excel here! </span></p>
 	<table border="1" width="40%" align="center">
 		<tr>
 			<td colspan="2" align="center"><strong>Import CSV/Excel file</strong></td>

@@ -110,7 +110,7 @@ else if($flag==2 || $flag==4){
 
 	<div id="mainpage">
 
-	<?php $this->load->view('includes/header'); ?>
+	<?php //$this->load->view('includes/header'); ?>
 	
 	<div id="main_con">
 		<?php /*$class = $this->uri->segment(1); 

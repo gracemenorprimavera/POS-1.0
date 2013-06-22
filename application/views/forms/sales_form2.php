@@ -1,35 +1,27 @@
-<div style="text-align:left">
-	<button style="height:70px; width:100px" class="dialogThis2 buttons" id="customerDialog"> Customers </button>
-	<button style="height:70px; width:100px"> Sales </button>
-	<button style="height:70px; width:100px"> Returns </button>
-	<button style="height:70px; width:100px"> Discount </button>
-	<button style="height:70px; width:100px"> Submit/Save </button>
-	<button style="height:70px; width:100px"> Print </button>
-	<button style="height:70px; width:100px"> Reprint </button>
-	<button style="height:70px; width:100px"> Cancel </button>
-	
 
+<div class="error"><?php echo $message; ?></div>
+<?php echo form_open('sales/add_item'); 
+$this->load->helper('string');
+?>
+<div id="inside">
+<div class="info">
+<?php echo date('F d, Y'); ?>	<?php echo date("G:i:s "); ?> <br>
+Transaction No: XX</div>
+<div class="who">Customer: XX</div>
 </div>
 
-<div class="error" style="font-size: 18px;height: 19px;padding-bottom: 5px;"><b><?php echo $message; ?></b></div>
-
-
-<div id="cashier">
-<div id="sales">
-	<?php echo form_open('sales/add_item'); 
-		$this->load->helper('string');
-		?>
 	<input type='hidden' class='hItemPurchase' name='hItemPurchase' />
-	
-	<select name='searchMode'><option value="Barcode">Barcode</option><option value="Itemcode">Item code</option></select>
-	<input type="search" name="search_item" id="search_item" class="tags" tabindex="1" style="height:20px;width:150px;" autofocus />
-	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2" style="height:20px;width:50px;" >
-	<input class="button" type="submit" name="submit" value="Add Item" />
-	<?php echo form_close(); ?>
+	<label> Item </label><select name='searchMode'><option value="Barcode">Barcode</option><option value="Itemcode">Item code</option></select>
+	<label> Item </label><input type="text" name="search_item" id="search_item" class="tags" tabindex="1" autofocus />
+	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2">
+	<input class="button" type="submit" name="submit" value="Submit" />
+<?php echo form_close(); ?>
 
+<div id="purchase_list">
 
 
 <?php echo form_open('sales/do_purchase') ?>
+<div id="sales">
 <table cellpadding="6" cellspacing="1" style="width:100%;" border="1px solid black">
 <thead >
 <tr>
@@ -40,10 +32,7 @@
   <th>Action</th>
 </tr>
 </thead>
-</table>
-<div id="list">
-<table cellpadding="6" cellspacing="1" style="width:100%;" border="1px solid black">
-<tbody >
+<tbody>
 <?php $i = 1; ?>
 
 <?php foreach ($this->cart->contents() as $items): ?>
@@ -86,54 +75,19 @@
 </tbody>
 </table>
 </div>
-<div id="currentItem">
-	<?php if($this->cart->total_items() > 0) { ?>
-	<?php echo $items['qty'].' '; ?>
-	<?php echo $items['name'].' '; ?>
-	<?php echo $items['price'].' '; ?>
-	<?php echo $items['subtotal'].' '; }?>
-</div>
-</div>
 
-
-<div id="purchase" style="text-align:right">
-
-<div id="inside" style="text-align:right">
-<div class="info" style="text-align:right">
-
-</div>
-
-<div class="who" style="text-align:right">
-	<?php echo date('F d, Y'); ?>	
-	<?php echo date("G:i:s "); ?> <br>
-	[Transaction No.: XXXXX] <br>
-	<?php 
-		$data = array();
-		$data[''] = 'Walk-in';
-		if(isset($customer)){
-			foreach($customer as $row){
-				$data[$row->customer_id] = $row->customer_name;
-			}
-		}
-		echo '<div id="hcustomerName">Customer:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" ')."</div>"; 
-	?> <br><br>
-</div>
-</div>
-<br>
-<br>
-<br>
-<div class="label" style="text-align:right">Amount Due:
-	<div id="total" >P
+<div class="label">Amount Due:
+	<div id="total">P
 		<?php 
 			if($this->cart->format_number($this->cart->total()))
 				echo $this->cart->format_number($this->cart->total());
 			else echo '0.00'; 
 		?>
 	</div>
-</div><br><br>
-<div id="tc" style="text-align:right">[Tendered: XXXXX]	<br> [Change: XXXXX] </div>
+</div>
+<div id="tc">[Tendered: XXXXX]	<br> [Change: XXXXX] </div>
 
-<div id="cart" >
+
 <?php
 	if($this->cart->total_items() > 0) {
 		
@@ -181,11 +135,9 @@ echo form_close();
 
 //echo form_open('cashier/cancel_trans');
  	
-
+	
 //echo form_close();
  ?>	
-</div>
-</div>
 </div>
 
 
@@ -194,4 +146,3 @@ echo form_close();
 
 
 
- 

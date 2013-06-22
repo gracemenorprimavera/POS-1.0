@@ -51,7 +51,7 @@ class Expenses extends CI_Controller {
 		if($user=='cashier' && (!isset($is_open) || $is_open != true)) {
 			$data['message']='Cashier is not yet open. You won\'t be able to record expenses. <br>To open cashier, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
 			//die();
-			$data['header'] = 'Expenses';
+			$data['header'] = 'Cash out';
 			$data['page'] = 'dummy';
 			$data['flag'] = 2;
 			//$data['customer'] = $this->pos_model->getAll_customers();
@@ -59,7 +59,7 @@ class Expenses extends CI_Controller {
 		}
 		else {
 
-	        $data['header'] = 'Expenses';
+	        $data['header'] = 'Cash out';
 	        
 	        if($user=='cashier')
 				$data['flag'] = 2;
@@ -96,7 +96,7 @@ class Expenses extends CI_Controller {
 		else 
 			$data['message'] = 'No Expenses';
 
-		$data['header'] = 'Expenses Record';
+		$data['header'] = 'Cash Out Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/expenses_list';
 		$this->load->view('template2', $data);
@@ -108,7 +108,7 @@ class Expenses extends CI_Controller {
 		$data['date'] = $date;
 		$data['daily'] = $this->pos_model->getAll_expenses_byDate($date);
 		$data['message'] = '';
-		$data['header'] = 'Expenses Record';
+		$data['header'] = 'Cash Out Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/expenses_list';
 		$this->load->view('template2', $data);

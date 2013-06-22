@@ -59,13 +59,16 @@
 		<td>Pet Supply:<input type="text" value="<?php echo $d->div_pet ?>" ></td>
 		<td>Load:<input type="text" value="<?php echo $d->div_load ?>" ></td>
 	</tr>
+	<tr>
+		<td colspan="2" style="text-align:right">
+			<?php echo form_open('admin/pdf/'.$report_id."/".$report_date); ?>
+			<input class="button" type="submit" value="Export PDF" name="exportPDF"></input>
+			</form> 
+		</td> 
+	</tr>
 
 	</table>
 	<?php } }?>
 
 </div>
-<?php echo anchor('pos/cashier_home', 'Home', array('onclick'=>"return confirm('Are you sure you want to cancel?') ")); ?>
 
-<?php echo form_open('admin/pdf/'.$report_id."/".$report_date); ?>
-<input class="button" type="submit" value="Export PDF" name="exportPDF"></input>
-</form>

@@ -45,6 +45,34 @@ class Manager extends CI_Controller {
 		$this->load->view('template', $data);
 	}
 
+	/* INVENTORY */
+	function inventory() {
+		$data['header'] = 'Inventory';
+		$data['flag']=2;
+
+		$data['page'] = 'inventory_main';
+	
+		if($this->pos_model->get_itemsInventory()) {
+			$data['items'] = $this->pos_model->get_itemsInventory();
+			$data['message'] = '';
+
+			$i=1;
+			$price=$this->pos_model->get_inventory($i);
+				foreach($price as $d)
+					$data['price']=round($d->inventory);	
+
+			$i=2;
+			$cost=$this->pos_model->get_inventory($i);
+				foreach($cost as $d)
+					$data['cost']=round($d->inventory);			
+		}
+		else 
+			$data['message'] = 'No Items Found';
+
+		$this->load->view('template2', $data);
+	}
+
+
 }
 
 /* End of file pos.php */

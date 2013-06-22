@@ -325,7 +325,7 @@ class Admin extends CI_Controller {
 		redirect('admin/view_amountPage');
 	}
 
-	function load() {
+	function goto_eloadForm() {
 		
 			$data['header'] = 'E-load';
 			$data['flag'] = 1;	
@@ -337,30 +337,35 @@ class Admin extends CI_Controller {
 	function add_load() {
 		$network = $this->input->post('load_dropdown');
 		$amount = $this->input->post('load_amount');
-		//$balance = $this->input->post('load_balance'); // load wallet
+		$balance = $this->input->post('load_balance'); // load wallet
 		$date = $this->input->post('loadDate');
+		
+		//echo $network.$amount.$balance.$date;
+		$prev_balance = $this->pos_model->getload_balance($network);
+		
+		$query = "UPDATE eload_balance set balance=balance+$balance WHERE network='$network'";
+		$this->db->query($query);
 
-		//echo $network.$amount.$balance;
+		
+		//redirect('admin/goto_eloadForm');
+		
 		$this->db->insert('eload',array(
 				'load_id'=>NULL,
 				'network'=>$network,
 				'date'=>$date,
 				'status'=>'wallet',
-				'eload'=>0,
-				'wallet'=>$amount,
+				'prev_balance'=>$prev_balance,
 				'load_balance'=>0,
-				'load_cash'=>0
+				'amount'=>0,
+				'profit'=>0
+				
+				
 			));
-		$query = "UPDATE eload_balance set balance=$amount WHERE network=$network";
+		$load_id = $this->db->insert_id();
+		$query = "UPDATE eload set load_balance=(SELECT balance from eload_balance where network='$network') WHERE load_id=$load_id";
 		$this->db->query($query);
-		
-		//$id = $this->db->insert_id();
-		//$query = "UPDATE eload set load_balance=load_balance+$amount WHERE load_id=$id";
-		//$this->db->query($query);
 
-		//$query = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
-		//$this->db->query($query);
-		redirect('admin');
+		redirect('admin/view_eload');
 	}
 
 	function goto_add_category(){
@@ -394,14 +399,14 @@ class Admin extends CI_Controller {
 	
 
 	function goto_employeeForm() {
-		$data['header'] = 'Administrator';
+		$data['header'] = 'Employee Form';
 		$data['flag']=1;
 		$data['page'] = 'forms/employee_form';
 
 		$this->load->view('template2', $data);
 	}
 
-	function view_employee() {
+	/*function view_employee() {
 		$data['detail_flag'] = false; 
 		if($this->pos_model->getAll_credits()) {
 			$data['credits'] = $this->pos_model->getAll_credits();
@@ -414,7 +419,7 @@ class Admin extends CI_Controller {
 		$data['flag'] = 1;
 		$data['page'] = 'lists/credit_list';
 		$this->load->view('template2', $data);
-	}
+	}*/
 
 	function add_employee() {
 
@@ -438,6 +443,40 @@ class Admin extends CI_Controller {
 	   	force_download($report_date.'_dsr.pdf', $data); 				//download pdf
 	   	//write_file('name', $data);
 	}
+
+	function view_reportForm2() {
+		$this->load->view('forms/report_form2');
+	}
+
+	function view_eload() {
+
+        if($this->pos_model->getAll_eload()) {
+            $data['eload'] = $this->pos_model->getAll_eload();
+            $data['message'] = '';
+        }
+        else 
+            $data['message'] = 'No E-Load Found';
+        
+        $data['header'] = 'E-Load List';
+        $data['flag'] = 1;
+        $data['page'] = 'lists/eload_list';
+        $this->load->view('template2', $data);
+    }
+
+    function view_emp() {
+
+        if($this->pos_model->getAll_emp()) {
+            $data['emp'] = $this->pos_model->getAll_emp();
+            $data['message'] = '';
+        }
+        else 
+            $data['message'] = 'No Employee Found';
+        
+        $data['header'] = 'Employees';
+        $data['flag'] = 1;
+        $data['page'] = 'lists/emp_list';
+        $this->load->view('template2', $data);
+    }
 }
 
 /* End of file pos.php */

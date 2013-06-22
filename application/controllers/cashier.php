@@ -19,17 +19,17 @@ class Cashier extends CI_Controller {
     function new_cashier() {
 		$data['message'] = " ";
 		$data['header'] = 'Cashier';
-		
+		$data['customer'] = $this->pos_model->getAll_customers();
 		$data['page'] = 'forms/sales_form';
 		$data['flag'] = 4;
-		$this->load->view('template2', $data);
+		$this->load->view('template3', $data);
 	}
 
 /* CASHIER */
 
     function index() {
 		$data['header'] = 'Cashier';
-		$data['flag'] = 2;
+		$data['flag'] = 0;
 		
 		$data['page'] = 'cashier_home';
 		$this->load->view('template2', $data);
@@ -172,32 +172,6 @@ class Cashier extends CI_Controller {
 		echo $output;	
 	}
 
-/* INVENTORY */
-	function inventory() {
-		$data['header'] = 'Inventory';
-		$data['flag']=2;
-
-		$data['page'] = 'inventory_main';
-	
-		if($this->pos_model->get_itemsInventory()) {
-			$data['items'] = $this->pos_model->get_itemsInventory();
-			$data['message'] = '';
-
-			$i=1;
-			$price=$this->pos_model->get_inventory($i);
-				foreach($price as $d)
-					$data['price']=round($d->inventory);	
-
-			$i=2;
-			$cost=$this->pos_model->get_inventory($i);
-				foreach($cost as $d)
-					$data['cost']=round($d->inventory);			
-		}
-		else 
-			$data['message'] = 'No Items Found';
-
-		$this->load->view('template2', $data);
-	}
 
 
 /*REPORTS */
@@ -213,7 +187,7 @@ class Cashier extends CI_Controller {
 			$data['message'] = 'No Reports Found';
  		
 		$data['header'] = 'Reports';
-		$data['flag'] = 4;
+		$data['flag'] = 2;
 		$data['page'] = 'lists/report_list';		
 		$this->load->view('template2', $data);
 	}
@@ -225,7 +199,7 @@ class Cashier extends CI_Controller {
 		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
-		$data['flag'] = 4;
+		$data['flag'] = 2;
 		$data['date'] = $report_date;
 		$data['page'] = 'forms/report_form';
 		$this->load->view('template2', $data);
@@ -258,29 +232,37 @@ class Cashier extends CI_Controller {
 		$balance = $this->input->post('load_balance');
 		$date = $this->input->post('loadDate');
 
-		$date = date('y-m-d'); //'2013-06-21';
-		//echo $network.$amount.$balance;
+		
+		$prev_balance = $this->pos_model->getload_balance($network);
+		
 		$this->db->insert('eload',array(
 				'load_id'=>NULL,
 				'network'=>$network,
 				'date'=>$date,
-				'status'=>'eload',
-				'eload'=>$amount,
-				'wallet'=>$balance,
-				//'load_balance'=>0,
-				//'load_cash'=>0
+				'status'=>'sales',
+				'prev_balance'=>$prev_balance,
+				'load_balance'=>$balance,
+				'amount'=>$amount,
+				'load_cost'=>0,
+				'profit'=>0			
+				
 			));
-		$id = $this->db->insert_id();
-		$query = "UPDATE eload set load_balance=load_balance-$balance WHERE load_id=$id";
+		
+		$load_id = $this->db->insert_id();
+		$query = "UPDATE eload set load_cost=($prev_balance-$balance) WHERE load_id=$load_id";
 		$this->db->query($query);
 
-		$query1 = "UPDATE eload set load_cash=load_cash+$amount WHERE load_id=$id";
-		$this->db->query($query1);
+		$query = "UPDATE eload set profit=amount-load_cost WHERE load_id=$load_id";
+		$this->db->query($query);
+
+		$query = "UPDATE eload_balance set balance=$balance WHERE network='$network'";
+		$this->db->query($query);
 
 		$this->db->insert('transactions', array('trans_id'=>NULL,  
 				'trans_date'=>$date,
 				'total_amount'=>$amount
 				));
+
 		$trans_id = $this->db->insert_id();
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 			'item_code'=>'load',
@@ -321,10 +303,22 @@ class Cashier extends CI_Controller {
 			echo $this->load->view('forms/bills_form.php');
 		else if($mode == 'endDialog')
 			echo $this->load->view('forms/closing_form.php');
-		else if($mode == 'dtrDialog') {
-			//$data['employee'] =  $this->pos_model->getAll_employee();
+		else if($mode == 'dtrDialog') 
 			echo $this->load->view('forms/dtr_form.php');
+		else if($mode == 'customerDialog') {
+			$data['customer_flag'] = false;
+			$data['trans_flag'] = false;
+			$data['message'] = '';
+			$data['customers'] = $this->pos_model->getAll_customers();
+			echo $this->load->view('lists/customer_list2.php', $data);
+		}else if($mode == 'customer2Dialog') {
+			$data['customer_flag'] = true;
+			$data['trans_flag'] = false;
+			$data['customers'] = $this->pos_model->getAll_customers();
+			$data['message'] = '';
+			echo $this->load->view('lists/customer_list2.php', $data);
 		}
+
 		else return false;	
 	}
 }

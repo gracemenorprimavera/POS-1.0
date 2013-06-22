@@ -36,7 +36,7 @@ class Credits extends CI_Controller {
 		else 
 			$data['message'] = 'No Customers Found';
 	 		
-		$data['header'] = 'Credits';			
+		$data['header'] = 'Customers';			
 		$data['page'] = 'lists/customer_list';
 		$this->load->view('template2', $data);
 		
@@ -73,7 +73,7 @@ class Credits extends CI_Controller {
 			$data['message1'] = 'No Details Found';
 			$data['message'] = '';
  		
-		$data['header'] = 'Credits';
+		$data['header'] = 'Customers';
 		$data['page'] = 'lists/customer_list';
 		
 		$this->load->view('template2', $data);

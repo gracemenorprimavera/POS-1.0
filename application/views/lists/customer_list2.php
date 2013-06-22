@@ -11,7 +11,7 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li><
 			echo '<table border="1px solid brown" cellpadding="6"><tr><th> Customer Name</th> <th> Balance </th> </tr>';
 				foreach ($customers as $r) {
 					echo '<tr>';		
-						echo '<td>'.anchor('credits/view_customerDetails/'.$r->customer_id,$r->customer_name,'class="dialogThis2" id="customer2Dialog"').'</td>';
+						echo '<td>'.anchor('#'.$r->customer_id,$r->customer_name,'class="dialogThis2" id="customer2Dialog"').'</td>';
 						echo '<td>'.$r->balance.'</td>';
 					echo '</tr>';
 				}

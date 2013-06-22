@@ -1,6 +1,7 @@
 <?php 
 if($this->session->userdata('role')=='admin') 
 echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?>
+
 <div id="view_record" class="view" >
 <?php 
 	echo '<div id="view_left" class="view">';

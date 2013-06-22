@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2013 at 10:25 AM
+-- Generation Time: Jun 22, 2013 at 12:21 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `amount` (
   `closing_coins` double NOT NULL DEFAULT '0',
   `closing_total` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`amount_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `amount`
@@ -66,7 +66,8 @@ CREATE TABLE IF NOT EXISTS `amount` (
 
 INSERT INTO `amount` (`amount_id`, `date`, `opening_bills`, `opening_coins`, `opening_total`, `closing_bills`, `closing_coins`, `closing_total`) VALUES
 (48, '2013-06-20', 1600, 400, 2000, 2000, 1000, 3000),
-(50, '2013-06-21', 1300, 200, 1500, 1000, 2500, 3500);
+(50, '2013-06-21', 1300, 200, 1500, 1000, 2500, 3500),
+(51, '2013-06-22', 50, 0, 50, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -90,28 +91,41 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
 ('04774ae2105548c07e19e87f0e30241d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371711756, 'a:3:{s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:9:"validated";b:1;}'),
+('05d8de7949631f6db7cba39a316bfff7', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371877557, ''),
 ('09a2b9d705598ad340449eae916370a5', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371206215, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;s:4:"open";b:1;}'),
+('0b98bcf16a45719a34770767ed762881', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371889474, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:4:"open";b:1;s:9:"validated";b:1;}'),
+('0c176f28809909b7f5e757b8a3be65f8', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371877134, ''),
 ('0cd3f4f2ce75108d23a416adcf2e25de', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371183156, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:4:"open";b:1;s:9:"validated";b:1;}'),
 ('0f75df623bb5b2084dae58b37780227c', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371735661, 'a:4:{s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:9:"validated";b:1;s:4:"open";b:1;}'),
 ('0fe2a61c751b697965e92acf848a44ba', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371728239, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:9:"validated";b:1;s:4:"open";b:1;}'),
 ('116351f1c24676218d1dacdf2cf63f44', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0', 1371120713, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"3";s:4:"role";s:7:"manager";s:13:"cart_contents";a:3:{s:32:"c4ca4238a0b923820dcc509a6f75849b";a:6:{s:5:"rowid";s:32:"c4ca4238a0b923820dcc509a6f75849b";s:2:"id";s:1:"1";s:3:"qty";s:1:"1";s:5:"price";s:4:"9.65";s:4:"name";s:8:"Champion";s:8:"subtotal";d:9.6500000000000003552713678800500929355621337890625;}s:11:"total_items";i:1;s:10:"cart_total";d:9.6500000000000003552713678800500929355621337890625;}}'),
-('15903ec5c9f0732991b0009fd8231c31', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0', 1371733792, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:4:"open";b:1;s:9:"validated";b:1;}'),
 ('1bb882c1a5b69058741137c40689c2d2', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371638886, 'a:3:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";}'),
 ('1c4740c5eaa448b5f0deef9fb267a229', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371096160, ''),
 ('1f4986e247add9076f9a7c6623c0963a', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1370942944, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;s:4:"open";b:1;}'),
 ('337aba649d7e7c59a6abd11cc648448c', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371782521, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
-('38e6e89f2aa24800790eaa993d2267d4', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371802610, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
 ('3fb2c181dd0b3b4923b4fe4b8068da1f', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1370939392, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:9:"validated";b:1;s:4:"open";b:1;}'),
+('45b0da8570d4c35efb5cad44d60951d3', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371860989, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:9:"validated";b:1;}'),
 ('6100f02ab842758fdb456119e4a49c76', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371096160, ''),
+('613a0a5d8d5d86d545a4860581039022', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371895767, 'a:3:{s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
 ('6e6312b06e771e27f05c33770117be8d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371096160, ''),
+('6fe5c7f547c5007cb26fd35338f1d9f3', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371877556, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
+('7a2ba9cb319e3a1f2f5c08569637af2c', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371880869, ''),
 ('87ee2795329fdf20b408d885debf47bd', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371096160, ''),
 ('892873faa7698e886b30d58ee9c7932a', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371096160, ''),
+('8b2a5177ec16df884614e6a9afa6cb49', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0', 1371895589, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
 ('8d15ea8e5ab137488b029ea7b1615a6d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1370693363, ''),
+('9af7d52a7397aef6c8163b287826108f', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0', 1371895252, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
+('9eb0e639d5d92b111476412732074583', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371877952, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:9:"validated";b:1;}'),
+('b8c396373cfa81170e3b6cf2ef863df1', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371877134, ''),
 ('b9002ba34c179647ab7e83612abdd4b2', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371096159, 'a:3:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";}'),
 ('b932d4927e30d0297e94d6969a68a9fb', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371638886, ''),
+('b94e8b0a02a41deee1e7f2eb222f7409', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371877557, ''),
+('c7bd56e3036c1c9fc3a2e8ec7974b77e', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371876814, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
+('cc9932fefb03206357c7899c70f26697', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0', 1371893743, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:4:"open";b:1;s:9:"validated";b:1;}'),
 ('d167886edb7d66b41801747a5584b923', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371206519, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
 ('d879362c6318cd29fecafb86a7e47cf9', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371540451, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"1";s:4:"role";s:5:"admin";s:4:"open";b:1;s:9:"validated";b:1;}'),
 ('d9c57363af9257908c2d02827e8c3ddf', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1370691562, 'a:5:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;s:4:"open";b:1;}'),
+('e6f7b5db88363e16b49e88a7bfb8aa80', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36', 1371880868, 'a:4:{s:9:"user_data";s:0:"";s:6:"userid";s:1:"2";s:4:"role";s:7:"cashier";s:9:"validated";b:1;}'),
 ('febcb8a4313ab0994d359137c293deb2', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36', 1371541662, '');
 
 -- --------------------------------------------------------
@@ -129,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `credit` (
   `amount_paid` float NOT NULL,
   `credit_balance` float DEFAULT NULL,
   PRIMARY KEY (`credit_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `credit`
@@ -138,7 +152,10 @@ CREATE TABLE IF NOT EXISTS `credit` (
 INSERT INTO `credit` (`credit_id`, `customer_id`, `date`, `status`, `amount_credit`, `amount_paid`, `credit_balance`) VALUES
 (1, 1, '2013-06-14', 'credit', 9.65, 0, 9.65),
 (2, 1, '2013-06-14', 'payment', 0, 5, 4.65),
-(3, 6, '2013-06-20', 'credit', 36.15, 0, 36.15);
+(3, 6, '2013-06-20', 'credit', 36.15, 0, 36.15),
+(4, 0, '2013-06-22', 'credit', 0, 0, 0),
+(5, 0, '2013-06-22', 'credit', 0, 0, 0),
+(6, 0, '2013-06-22', 'credit', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -275,20 +292,23 @@ CREATE TABLE IF NOT EXISTS `eload` (
   `network` varchar(125) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `status` varchar(125) DEFAULT NULL,
-  `eload` float NOT NULL DEFAULT '0',
-  `wallet` float NOT NULL DEFAULT '0',
-  `load_balance` float DEFAULT '0',
-  `load_cash` float DEFAULT '0',
+  `prev_balance` float NOT NULL DEFAULT '0',
+  `load_balance` float NOT NULL DEFAULT '0',
+  `amount` float DEFAULT '0',
+  `load_cost` float DEFAULT '0',
+  `profit` float DEFAULT NULL,
   PRIMARY KEY (`load_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `eload`
 --
 
-INSERT INTO `eload` (`load_id`, `network`, `date`, `status`, `eload`, `wallet`, `load_balance`, `load_cash`) VALUES
-(14, 'smart', '2013-06-21', 'eload', 12, 150, -150, 12),
-(15, 'tnt', '2013-06-21', 'eload', 10, 120, -120, 10);
+INSERT INTO `eload` (`load_id`, `network`, `date`, `status`, `prev_balance`, `load_balance`, `amount`, `load_cost`, `profit`) VALUES
+(47, 'globe', '2013-06-22', 'wallet', 0, 1500, 0, 0, 0),
+(48, 'sun', '2013-06-22', 'wallet', 0, 1200, 0, 0, 0),
+(49, 'globe', '2013-06-22', 'sales', 1500, 1489.5, 12, 10.5, 1.5),
+(50, 'globe', '2013-06-22', 'sales', 1489.5, 1462, 30, 27.5, 2.5);
 
 -- --------------------------------------------------------
 
@@ -301,14 +321,16 @@ CREATE TABLE IF NOT EXISTS `eload_balance` (
   `network` varchar(125) NOT NULL,
   `balance` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`network_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `eload_balance`
 --
 
 INSERT INTO `eload_balance` (`network_id`, `network`, `balance`) VALUES
-(1, 'globe', 500);
+(1, 'globe', 1462),
+(2, 'smart', 0),
+(3, 'sun', 1200);
 
 -- --------------------------------------------------------
 
@@ -405,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `item` (
 --
 
 INSERT INTO `item` (`item_id`, `item_code`, `bar_code`, `desc1`, `desc2`, `desc3`, `desc4`, `division`, `group`, `class1`, `class2`, `cost`, `retail_price`, `model_quantity`, `supplier_code`, `manufacturer`, `quantity`, `reorder_point`, `active`) VALUES
-(1, 'CHA1', '2910977430008', 'Champion', 'Detergent Powder ', 'Infinity ', '70g', 'pet', 'Non-Food', 'Laundry Products- Detergent Powder', '', 40, 9.65, '', 'Suy Sing', 'Peerless Products Manufacturing Corp.', 240, 55, 1),
+(1, 'CHA1', '4809010343024', 'Champion', 'Detergent Powder ', 'Infinity ', '70g', 'pet', 'Non-Food', 'Laundry Products- Detergent Powder', '', 40, 9.65, '', 'Suy Sing', 'Peerless Products Manufacturing Corp.', 240, 55, 1),
 (2, 'DEL216', '4800047820182', 'Del Monte', 'Pineapple Juice ', 'w/ ACE', '1.36L', 'poultry', 'Food', 'RTD- Juices', '', 55.99, 63.75, '', 'Suy Sing', 'Del Monte Phils. Inc.', 268, 5, 1),
 (3, 'IC1', '4808888413709', 'Fortune ', 'Cigarette', 'Red Soft Pack', '20''s', 'grocery', 'Non-Food', 'Cigarettes', '', 24.5, 26.5, '', 'Suy Sing', 'PMFTC Inc.', 260, 55, 1),
 (4, 'IC2', '48037105', 'Fortune ', 'Cigarette', 'Red Soft Pack', '20''s', 'grocery', 'Non-Food', 'Cigarettes', '', 24.5, 26.5, '', 'PMFTC Inc.', 'PMFTC Inc.', 255, 55, 0),
@@ -519,6 +541,59 @@ INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `manufacturer`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `table 22`
+--
+
+CREATE TABLE IF NOT EXISTS `table 22` (
+  `COL 1` varchar(10) DEFAULT NULL,
+  `COL 2` varchar(10) DEFAULT NULL,
+  `COL 3` varchar(11) DEFAULT NULL,
+  `COL 4` varchar(19) DEFAULT NULL,
+  `COL 5` varchar(7) DEFAULT NULL,
+  `COL 6` varchar(10) DEFAULT NULL,
+  `COL 7` varchar(7) DEFAULT NULL,
+  `COL 8` varchar(14) DEFAULT NULL,
+  `COL 9` varchar(13) DEFAULT NULL,
+  `COL 10` varchar(6) DEFAULT NULL,
+  `COL 11` varchar(10) DEFAULT NULL,
+  `COL 12` varchar(10) DEFAULT NULL,
+  `COL 13` varchar(10) DEFAULT NULL,
+  `COL 14` varchar(10) DEFAULT NULL,
+  `COL 15` varchar(8) DEFAULT NULL,
+  `COL 16` varchar(10) DEFAULT NULL,
+  `COL 17` varchar(7) DEFAULT NULL,
+  `COL 18` int(1) DEFAULT NULL,
+  `COL 19` int(1) DEFAULT NULL,
+  `COL 20` varchar(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `table 22`
+--
+
+INSERT INTO `table 22` (`COL 1`, `COL 2`, `COL 3`, `COL 4`, `COL 5`, `COL 6`, `COL 7`, `COL 8`, `COL 9`, `COL 10`, `COL 11`, `COL 12`, `COL 13`, `COL 14`, `COL 15`, `COL 16`, `COL 17`, `COL 18`, `COL 19`, `COL 20`) VALUES
+('', '', 'BOOSTINA ', 'BOOSTINA ', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 90.00 ', ' 100.00 ', '', 'AGRICONS', '', ' 1.00 ', 0, 1, ''),
+('', '', 'BIO 800', 'BIO 800', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 50.60 ', ' 54.00 ', '', 'AGRICONS', '', ' 29.00 ', 0, 1, ''),
+('', '', 'B-100', 'B-100', '', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 1,710.00 ', ' 1,790.00 ', '', 'AGRICONS', '', '', 0, 1, ''),
+('', '', 'B-100', 'B-100', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 34.20 ', ' 37.00 ', '', 'AGRICONS', '', '', 0, 1, ''),
+('', '', 'B-200', 'B-200', '', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 1,653.00 ', ' 1,735.00 ', '', 'AGRICONS', '', ' 2.00 ', 0, 1, ''),
+('', '', 'B-200', 'B-200', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 33.06 ', ' 36.00 ', '', 'AGRICONS', '', ' 22.50 ', 0, 1, ''),
+('', '', 'B-300', 'B-300', '', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 1,610.00 ', ' 1,690.00 ', '', 'AGRICONS', '', ' 4.00 ', 0, 1, ''),
+('', '', 'B-300', 'B-300', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'PURINA', '', ' 32.20 ', ' 35.50 ', '', 'AGRICONS', '', ' 49.00 ', 0, 1, ''),
+('', '', 'HPSP/P-BMEG', 'PRE STARTER', 'PREMIUM', '', '25 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 1,077.00 ', ' 1,160.00 ', '', 'JHK', '', ' 1.00 ', 0, 1, ''),
+('', '', 'HPSP/P-BMEG', 'PRE STARTER', 'PREMIUM', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 43.08 ', ' 48.00 ', '', 'JHK', '', ' 27.00 ', 0, 1, ''),
+('', '', 'HSP/P-BMEG', 'HOG STARTER PELLETS', 'PREMIUM', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 1,315.00 ', ' 1,415.00 ', '', 'JHK', '', ' 4.00 ', 0, 1, ''),
+('', '', 'HSP/P-BMEG', 'HOG STARTER PELLETS', 'PREMIUM', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 26.30 ', ' 30.50 ', '', 'JHK', '', ' 38.00 ', 0, 1, ''),
+('', '', 'HGP/P-BMEG', 'HOG GROWER PELLETS', 'PREMIUM', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 1,229.00 ', ' 1,320.00 ', '', 'JHK', '', ' 3.00 ', 0, 1, ''),
+('', '', 'HGP/P-BMEG', 'HOG GROWER PELLETS', 'PREMIUM', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 24.58 ', ' 28.50 ', '', 'JHK', '', ' 3.50 ', 0, 1, ''),
+('', '', 'PIGEON-BMEG', 'PIGEON PELLETS', '', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 1,098.00 ', ' 1,180.00 ', '', 'JHK', '', ' 5.00 ', 0, 1, ''),
+('', '', 'PIGEON-BMEG', 'PIGEON PELLETS', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 21.96 ', ' 25.00 ', '', 'JHK', '', ' 43.00 ', 0, 1, ''),
+('', '', 'INT 1K-BMEG', 'INTEGRA 1000', '', '', '50 KGS.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 1,443.00 ', ' 1,510.00 ', '', 'JHK', '', ' 4.00 ', 0, 1, ''),
+('', '', 'INT 1K-BMEG', 'INTEGRA 1000', '', '', 'KG.', 'POULRTY SUPPLY', 'FEEDS-GENERAL', 'BMEG', '', ' 28.86 ', ' 32.00 ', '', 'JHK', '', ' 51.50 ', 0, 1, '1');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `transactions`
 --
 
@@ -527,7 +602,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `trans_date` date NOT NULL,
   `total_amount` float DEFAULT NULL,
   PRIMARY KEY (`trans_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=48 ;
 
 --
 -- Dumping data for table `transactions`
@@ -538,7 +613,24 @@ INSERT INTO `transactions` (`trans_id`, `trans_date`, `total_amount`) VALUES
 (20, '2013-06-20', 10),
 (21, '2013-06-20', 17),
 (22, '2013-06-21', 342),
-(30, '2013-06-21', 10);
+(30, '2013-06-21', 10),
+(31, '2013-06-22', 15),
+(32, '2013-06-22', 15),
+(33, '2013-06-22', 12),
+(34, '2013-06-22', 12),
+(35, '2013-06-22', 12),
+(36, '2013-06-22', 9),
+(37, '2013-06-22', 1),
+(38, '2013-06-22', 12),
+(39, '2013-06-22', 12),
+(40, '2013-06-22', 10),
+(41, '2013-06-22', 30),
+(42, '2013-06-22', 30),
+(43, '2013-06-22', 30),
+(44, '2013-06-22', 150),
+(45, '2013-06-22', 12),
+(46, '2013-06-22', 12),
+(47, '2013-06-22', 30);
 
 -- --------------------------------------------------------
 
@@ -571,7 +663,24 @@ INSERT INTO `trans_details` (`trans_id`, `item_code`, `division`, `quantity`, `p
 (20, 'load', 'load', 0, 10, '2013-06-20'),
 (21, 'load', 'load', 0, 17, '2013-06-20'),
 (22, '7', 'grocery', 2, 342, '2013-06-21'),
-(30, 'load', 'load', 0, 10, '2013-06-21');
+(30, 'load', 'load', 0, 10, '2013-06-21'),
+(31, 'load', 'load', 0, 15, '2013-06-22'),
+(32, 'load', 'load', 0, 15, '2013-06-22'),
+(33, 'load', 'load', 0, 12, '2013-06-22'),
+(34, 'load', 'load', 0, 12, '2013-06-22'),
+(35, 'load', 'load', 0, 12, '2013-06-22'),
+(36, 'load', 'load', 0, 9, '2013-06-22'),
+(37, 'load', 'load', 0, 1, '2013-06-22'),
+(38, 'load', 'load', 0, 12, '2013-06-22'),
+(39, 'load', 'load', 0, 12, '2013-06-22'),
+(40, 'load', 'load', 0, 10, '2013-06-22'),
+(41, 'load', 'load', 0, 30, '2013-06-22'),
+(42, 'load', 'load', 0, 30, '2013-06-22'),
+(43, 'load', 'load', 0, 30, '2013-06-22'),
+(44, 'load', 'load', 0, 150, '2013-06-22'),
+(45, 'load', 'load', 0, 12, '2013-06-22'),
+(46, 'load', 'load', 0, 12, '2013-06-22'),
+(47, 'load', 'load', 0, 30, '2013-06-22');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

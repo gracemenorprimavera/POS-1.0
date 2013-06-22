@@ -4,19 +4,8 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 
 <?php
 $user = $this->session->userdata('role');
-	if($user=='admin') {
-			$data1 = array(
-	              'name'        => 'loadDate',
-	              'id'          => '',
-	              'type'		=> 'date',
-	              //'value'       => date('m/d/Y'),
-	              'maxlength'   => '',
-	              'size'        => '',
-	              'style'       => '',
-				  'required'	=> 'required'
-	    	);
-	    }
-	    else {
+	
+	    
 	    	$data1 = array(
 	              'name'        => 'loadDate',
 	              'id'          => '',
@@ -27,19 +16,46 @@ $user = $this->session->userdata('role');
 				  'required'	=> 'required',
 				  'readonly'	=> 'readonly'
 	    	);
-	    }
+	    
 
 ?>
+	<?php $result = $this->db->get('eload_balance'); ?>
+	<?php
+		$load = array();
+		foreach($result->result() as $d) {
+			$load[] = $d->balance;
+		}
+	?>
+	<table border="1px solid black" cellpadding="6">
+		<tr>
+			<th colspan="2">Load Balance</th>
+		</tr>
+		<tr>
+			<td>Globe/TM</td>
+			<td><?php echo $load[0]; ?></td>
+		</tr>
+		<tr>
+			<td>Smart/TNT</td>
+			<td><?php echo $load[1]; ?></td>
+		</tr>
+		<tr>
+			<td>Sun</td>
+			<td><?php echo $load[2]; ?></td>
+		</tr>
+	</table>
+<br><br>
 	<table>
 	<?php echo form_open($user.'/add_load', array('onsubmit'=>"return confirm('Record E-load?') ")); ?>	
+
+
 	<tr>
 		<td>Date: </td>
 		<td ><?php echo form_input($data1); ?></td>
 	</tr>
 	<tr>
 		<td>Network:</td>
-		<td><?php echo form_dropdown('load_dropdown', array(''=>'Select',
-		'globe'=>'Globe', 'tm'=>'TM', 'smart'=>'Smart', 'tnt'=>'Talk N Text', 'sun'=>'Sun', 'other'=>'Other Network'),'','required'		); ?></td></tr>
+		<td><?php echo form_dropdown('load_dropdown', array(''=>'Select Network',
+		'globe'=>'Globe/TM', 'smart'=>"Smart/Talk N' Text", 'sun'=>'Sun', 'other'=>'Other Network'),'','required'		); ?></td></tr>
 	<tr>
 	<?php if($user=='cashier') {?>
 		<td>Amount:</td>
@@ -52,11 +68,11 @@ $user = $this->session->userdata('role');
 		//echo 'Balance: '.$this->pos_model->getload_balance();
 	?>
 
-		<td>Wallet:</td>
-		<td><input type="text" name="load_amount" required/></td></tr>
+		<td>Incoming Balance:</td>
+		<td><input type="text" name="load_balance" required/></td></tr>
 	<?php } ?>
 	
 		
-		<td colspan="2"><?php echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td></tr>
+		<td colspan="2" style="text-align:right"><?php echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td></tr>
 	<?php echo form_close(); ?>
 	</table>

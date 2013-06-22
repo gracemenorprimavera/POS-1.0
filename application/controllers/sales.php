@@ -36,7 +36,7 @@ class Sales extends CI_Controller {
 			$data['flag'] = 2;
 			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template2', $data);
+			$this->load->view('template3', $data);
 		}
 			
     }
@@ -57,7 +57,7 @@ class Sales extends CI_Controller {
 			$data['page'] = 'forms/sales_form';
 			$data['flag'] = 4;
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template2', $data);
+			$this->load->view('template3', $data);
 		}
 		else {
 			$this->db->from('item');
@@ -99,7 +99,7 @@ class Sales extends CI_Controller {
 			//$data['page'] = 'cashier/purchase_main';
 			$data['page'] = 'forms/sales_form';
 			$data['customer'] = $this->pos_model->getAll_customers();
-			$this->load->view('template2', $data);
+			$this->load->view('template3', $data);
 			
 		}
 	}

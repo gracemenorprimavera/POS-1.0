@@ -9,9 +9,14 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 		echo form_open('expenses/add_expense/'.$user, array('onsubmit'=>"return confirm('Finalize Record?') "));
 		$options = array(
 				'' => 'Please Select',
-				'salary' => "Employee's Salary",
-				'remittance' => "Remitted Cash",
-				'operationals' => "Operationals",
+				'DELIVERY' => "Delivery Payment",
+				'SUPPLIES' => "Supplies",
+				'SALARY' => "Salary",
+				'RENT'=>"Rent",
+				'EMPLOYEE_ALLOWANCE'=>"Employee Fare Allowance",
+				'COMMUNICATION_ALLOWANCE'=>"Store Communication Allowance",
+				'FOOD_ALLOWANCE'=>"Store Food Allowance",
+				'MAINTENANCE'=>"Store Maintenance/Repairs",
 				'other' => 'Others'
 			);
 		if($user=='admin') {
@@ -39,8 +44,8 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 	    	);
 	    }
 		echo '<table  cellpadding="10px">';
-		echo '<tr><th>Expense <br>'.form_dropdown('expenses_dropdown', $options,'','id="expense" autocomplete="off" required').'</th>';
-		echo '<th>Expense Description <br>'.form_textarea(array('rows' => '5', 'cols'=>'20', 'name' => 'exp_desc')).'</th>';
+		echo '<tr><th>Cash Out <br>'.form_dropdown('expenses_dropdown', $options,'','id="expense" autocomplete="off" required').'</th>';
+		echo '<th>Description <br>'.form_textarea(array('rows' => '5', 'cols'=>'20', 'name' => 'exp_desc')).'</th>';
 
 		echo '<th><label for="expenseDate">Date </label><br>';	//delivery date
 		echo form_input($data1).'</th></tr>';

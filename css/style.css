@@ -843,7 +843,7 @@ table.showDetail td.moreDetail {
 
 #sales{
 	height: inherit;
-	width: 54%;
+	width: 64%;
 	margin: 0;
 	float: left;
 }
@@ -855,7 +855,7 @@ table.showDetail td.moreDetail {
 
 #purchase{
 	height: inherit;
-	width: 45%;
+	width: 35%;
 	margin: 0;
 	float: right;
 }
@@ -874,13 +874,13 @@ table.showDetail td.moreDetail {
 }
 
 #currentItem{
-	border: 2px solid white;
-	background-color: pink;
-	height: 84px;
-	font-size: 28px;
+	border: 2px solid brown;
+	color:black;
+	height: 50px;
+	font-size: 20px;
 	text-align: center;
-	color: white;
-	font-weight: lighter;
+	color: black;
+	font-weight: bold;
 }
 
 .label{

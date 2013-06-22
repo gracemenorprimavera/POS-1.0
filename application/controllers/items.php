@@ -213,7 +213,8 @@ class Items extends CI_Controller {
                      'supplier_code' => $emapData[13],
                      'manufacturer' => $emapData[14],
                      'quantity' => 0,
-                     'reorder_point' => 0
+                     'reorder_point' => 0,
+                     'active'=>0
                   );
                   $this->db->insert('item', $data);
                  }
@@ -238,6 +239,14 @@ class Items extends CI_Controller {
         $this->load->view('template2', $data);
   } //end of import_excel
 
+  function view_exportPage() {
+      $data['header'] = 'Export Database';
+      $data['page'] = 'forms/export_excel';
+      $data['flag']=1;
+      $this->load->view('template2', $data);
+
+  }
+
   function exportExcel() {
 
     $tables = $this->db->list_tables();
@@ -260,13 +269,13 @@ class Items extends CI_Controller {
     if(!is_dir($url)){
       mkdir($url, 0777, TRUE);
     }
-    $this->zip->archive($url.'backup_sql.zip');
-    $this->zip->download('backup_sql.zip');
+    $this->zip->archive($url.'POS_backup.zip');
+    $this->zip->download('POS_backup.zip');
     
     $data['header'] = 'Administrator';
         $data['flag']=1;
         $data['subnav'] = 1; // sub-navigation for items
-        $data['page'] = 'admin/subnav';
+        $data['page'] = 'admin';
 
         $this->load->view('template2', $data);
     

@@ -136,18 +136,18 @@
     </div></li>
      
 <li><div class="data">
-      <h4><?php echo anchor('', 'View E-Load Transactions'); ?></h4>
-      <p><span>View credits recoreded</span></p>
+      <h4><?php echo anchor('admin/view_eload', 'View E-Load Transactions'); ?></h4>
+      <p>View credits recoreded</p>
     </div></li>
 
      <li><div class="data">
-      <h4><?php echo anchor('', 'View Employee'); ?></h4>
-      <p><span>Record of customers with credits</span></p>
+      <h4><?php echo anchor('admin/view_emp', 'View Employee'); ?></h4>
+      <p>Record of customers with credits</p>
     </div></li>   
   </div>
   <div class="right_list">
      <li><div class="data">
-      <h4><?php echo anchor('expenses/view_expenses', 'View Expenses'); ?></h4>
+      <h4><?php echo anchor('expenses/view_expenses', 'View Cash Out'); ?></h4>
       <p>Record of all expenses</p>
     </div></li>
 
@@ -186,14 +186,24 @@
       <p>Form to record opening and closing amount</p>
      </div>
    </li>
-   <li><div class="data"><h4><?php echo anchor('admin/sales', 'Credit Form'); ?></h4>
+  <!-- <li><div class="data"><h4><?php //echo anchor('admin/sales', 'Credit Form'); ?></h4>
       <p><span>Add Sales not recorded in the cashier</span></p>
     </div>
-  </li>
+  </li> -->
+
+  <li><div class="data">
+      <h4><?php echo anchor('expenses/goto_expensesForm/1', 'Cash Out Form'); ?></h4>
+      <p>Form to record expenses</p>
+     </div></li>
 
   <li><div class="data">
       <h4><?php echo anchor('incoming/goto_incomingForm', 'Delivery Form'); ?></h4>
       <p>Form to record incoming products</p>
+     </div></li>
+
+     <li><div class="data">
+      <h4><?php echo anchor('admin/goto_eloadForm', 'E-load Form'); ?></h4>
+      <p>Form to add new employee</p>
      </div></li>
 
     <li><div class="data">
@@ -201,24 +211,18 @@
       <p>Form to add new employee</p>
      </div></li>
 
-     <li><div class="data">
-      <h4><?php echo anchor('expenses/goto_expensesForm/1', 'Expenses Form'); ?></h4>
-      <p>Form to record</p>
-     </div></li>
+      
+     
+   </div><div class="right_list">
 
      <li><div class="data">
       <h4><?php echo anchor('items/goto_itemForm', 'Item Form'); ?></h4>
       <p>Form to add new item in the stock</p>
      </div></li>
-     
-      
-     
-   </div><div class="right_list">
 
-   
      <li><div class="data">
       <h4><?php echo anchor('items/importExcel', 'Import Excel'); ?></h4>
-      <p><span>Import excel file to add item in the stock</span></p>
+      <p>Import excel file to add item in the stock</p>
      </div></li>
      <li><div class="data">
       <h4><?php echo anchor('credits/goto_customerForm', 'New Customer Form'); ?></h4>
@@ -228,11 +232,11 @@
       <h4><?php echo anchor('outgoing/goto_outGoingForm', 'Outgoing Form'); ?></h4>
       <p>Form to record pull-out products</p>
      </div></li>
-     
+     <!--
       <li><div class="data">
-      <h4><?php echo anchor('admin/sales', 'Sales Form'); ?></h4>
+      <h4><?php //echo anchor('admin/sales', 'Sales Form'); ?></h4>
       <p><span>Add Sales not recorded in the cashier.</span></p>
-    </div></li>
+    </div></li>-->
 
      <li><div class="data">
       <h4><?php echo anchor('incoming/goto_supplierForm', 'Supplier Form'); ?></h4>

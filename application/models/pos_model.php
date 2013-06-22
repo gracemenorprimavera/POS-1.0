@@ -911,30 +911,25 @@ class Pos_model extends CI_Model {
 		
 	}
 
-	function getload_balance() {
-		/*$this->db->select('wallet');
-		$this->db->from('eload');
+	function getload_balance($network) {
+		$this->db->select('balance');
+		$this->db->where('network', $network);
+		$this->db->from('eload_balance');
 		$query = $this->db->get();
 
+
+		/*$this->db->select('load_balance');
+		$this->db->from('eload');
+		$query = $this->db->get();*/
+
 		if ($query->num_rows() > 0) {
-			$last = $query->last_row();
-			$balance = $last->wallet;
+			foreach ($query->result() as $r)
+				$balance = $r->balance;
 		}
 		else
 			$balance = 0;
 
-		return $balance;*/
-		$query = $this->db->get('eload_wallet');
-
-		if ($query->num_rows() > 0)
-		{
-		   foreach ($query->result() as $row)
-		   {
-		      echo $row->title;
-		      echo $row->name;
-		      echo $row->body;
-		   }
-		}
+		return $balance;
 	}
 
 	function get_search2($search,$mode)
@@ -972,6 +967,37 @@ class Pos_model extends CI_Model {
 			$this->db->from('customers');
 		}
 		$result = $this->db->get();
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function getAll_eload() {
+
+		$this->db->from('eload');
+		$this->db->order_by('date');
+		$result = $this->db->get();
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function getAll_emp() {
+
+		$this->db->select('name');
+		$result = $this->db->get('employee');
+		
 		if($result->num_rows() > 0) {
 			foreach ($result->result() as $row) {
 				$data[] = $row;
