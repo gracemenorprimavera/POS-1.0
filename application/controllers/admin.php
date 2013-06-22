@@ -329,7 +329,7 @@ class Admin extends CI_Controller {
 		
 			$data['header'] = 'E-load';
 			$data['flag'] = 1;	
-			$data['page'] = 'forms/load_form';
+			$data['page'] = 'forms/load_form2';
 			$this->load->view('template2', $data);
 	}
 	

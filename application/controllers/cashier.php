@@ -283,6 +283,14 @@ class Cashier extends CI_Controller {
 			$this->load->view('template2', $data);
 	}
 
+	function view() {
+		$data['header'] = 'Return Item';
+		$data['flag'] = 2;	
+		//$data['employee'] =  $this->pos_model->getAll_employee();
+		$data['page'] = 'forms/return_form';
+		$this->load->view('template2', $data);
+	}
+
 	function search2($mode) {
 		
 		$search = $this->input->post('tag');
@@ -305,6 +313,10 @@ class Cashier extends CI_Controller {
 			echo $this->load->view('forms/closing_form.php');
 		else if($mode == 'dtrDialog') 
 			echo $this->load->view('forms/dtr_form.php');
+		else if($mode == 'returnDialog') 
+			echo $this->load->view('forms/return_form.php');
+		else if($mode == 'cashDialog') 
+			echo $this->load->view('forms/cash_form.php');
 		else if($mode == 'customerDialog') {
 			$data['customer_flag'] = false;
 			$data['trans_flag'] = false;
@@ -320,6 +332,63 @@ class Cashier extends CI_Controller {
 		}
 
 		else return false;	
+	}
+
+	function add_return(){
+		$user = $this->session->userdata('role');
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('outgoingDate', 'Date', 'required');				//require date
+		$this->form_validation->set_rules('outgoing' ,'Status', 'required');					//require supplier
+		$this->form_validation->set_rules('outgoingItem', 'Item code' , 'required');					//require item code
+		$this->form_validation->set_rules('outgoingQty', 'Item quantity' , 'required');				//require item quantity
+		$this->form_validation->set_rules('outgoingPrice', 'Item price' , 'required');				//require	item price
+		$this->form_validation->set_rules('outgoingAmt', 'Item amount' , 'required');				//require item amount
+
+		if ($this->form_validation->run() === FALSE)
+		{
+			$data['header'] = 'Outgoing';
+			$data['flag'] = 2;
+			$data['page'] = 'forms/return_form';
+			//$data['supplier'] = $this->pos_model->getAll_supplier();
+			$this->load->view('template2', $data);
+		}
+		else
+		{	
+			$status = $this->input->post('outgoing');
+			$desc = $this->input->post('out_desc');
+			$item = $this->input->post('outgoingItem');
+			$qty = $this->input->post('outgoingQty');
+			$price = $this->input->post('outgoingAmt');
+			$total = $this->input->post('outTotalPrice');
+			$date = $this->input->post('outgoingDate');
+				
+				// create outgoing 
+			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
+				'date_out'=>$date,
+				'description'=>$desc,
+				'amount'=>$total,
+				'status'=>'return'
+				));
+				 
+			$outgoing_id = $this->db->insert_id();	// get outgoing ID
+
+				// insert out_items 
+			$i = 0;
+			foreach($item as $d): 
+				$this->pos_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
+				$this->pos_model->add_item($items['id'], $items['qty']);
+				$this->pos_model->subtract_cash();
+				$i++;
+
+			endforeach;
+
+			if($user=='admin') // return to admin home
+        		redirect('outgoing/goto_outgoingPage');
+       	 	else 	// return to manager home
+        		redirect('manager');
+		}
 	}
 }
 

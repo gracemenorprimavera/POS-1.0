@@ -41,7 +41,7 @@ class Sales extends CI_Controller {
 			
     }
 
-		function add_item() {
+	function add_item() {
 		$item_id = $this->input->post('hItemPurchase');
 		$qty = $this->input->post('quantity');
 
@@ -119,7 +119,7 @@ class Sales extends CI_Controller {
 		$data['page'] = 'forms/sales_form';
 		$data['flag'] = 4;
 		
-		$this->load->view('template2', $data);	
+		$this->load->view('template3', $data);	
 	}
 
 	function do_purchase() {
@@ -182,6 +182,20 @@ class Sales extends CI_Controller {
 	function cancel_trans() {
 		$this->cart->destroy();
 		redirect('cashier/new_cashier');
+	}
+
+	function enter_cash() {
+		$data['message'] = '';	
+		$cash = $this->input->post('cash');
+		$cust = $this->input->post('customerName');
+		$data['customer'] = $this->pos_model->getAll_customers();
+		$data['header'] = 'New Transaction';
+		$data['page'] = 'forms/sales_form';
+		$data['flag'] = 4;
+		$data['cash'] = $cash;
+		$data['cust'] = $cust;
+		
+		$this->load->view('template3', $data);	
 	}
 
 	

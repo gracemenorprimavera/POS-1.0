@@ -935,6 +935,7 @@ class Pos_model extends CI_Model {
 	function get_search2($search,$mode)
 	{
 		if ($mode == 'itemDSearch'){
+			$this->db->select('desc1,desc2,desc3,desc4, quantity');
 			$this->db->like('item_code',$search);
 			$this->db->or_like('bar_code',$search);
 			$this->db->or_like('desc1',$search);
@@ -1008,6 +1009,67 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+	function get_transID() {
+		$this->db->select('trans_id');
+		//$this->db->where('network', $network);
+		$this->db->from('transactions');
+		$query = $this->db->get();
+
+
+		/*$this->db->select('load_balance');
+		$this->db->from('eload');
+		$query = $this->db->get();*/
+
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $r)
+				$balance = $r->trans_id;
+		}
+		else
+			$balance = 0;
+
+		return $balance;
+	}
+	function get_customerBalance($customer) {
+		$this->db->select('balance');
+		$this->db->where('customer_id', $customer);
+		$this->db->from('customers');
+		$query = $this->db->get();
+
+
+		/*$this->db->select('load_balance');
+		$this->db->from('eload');
+		$query = $this->db->get();*/
+
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $r)
+				$balance = $r->balance;
+		}
+		else
+			$balance = 0;
+
+		return $balance;
+	}
+
+	function get_customerName($customer) {
+		$this->db->select('customer_name');
+		$this->db->where('customer_id', $customer);
+		$this->db->from('customers');
+		$query = $this->db->get();
+
+
+		/*$this->db->select('load_balance');
+		$this->db->from('eload');
+		$query = $this->db->get();*/
+
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $r)
+				$balance = $r->customer_name;
+		}
+		else
+			$balance = 0;
+
+		return $balance;
+	}
 	
 
 }

@@ -885,9 +885,10 @@ table.showDetail td.moreDetail {
 
 .label{
 	font-weight: bold;
-	height: 81px;
-	font-size: 23px;
-	width: 325px;
+	height: 200px;
+	font-size: 20px;
+	width: 350px;
+	margin-top: 10px;
 }
 #total{	
 	font-weight: lighter;

@@ -1,7 +1,7 @@
 <div style="text-align:left">
 	<button style="height:70px; width:100px" class="dialogThis2 buttons" id="customerDialog"> Customers </button>
-	<button style="height:70px; width:100px"> Sales </button>
-	<button style="height:70px; width:100px"> Returns </button>
+	<button style="height:70px; width:100px" > Sales </button>
+	<button style="height:70px; width:100px" class="dialogThis2 buttons" id="returnDialog"> Returns </button>
 	<button style="height:70px; width:100px"> Discount </button>
 	<button style="height:70px; width:100px"> Submit/Save </button>
 	<button style="height:70px; width:100px"> Print </button>
@@ -11,7 +11,6 @@
 
 </div>
 
-<div class="error" style="font-size: 18px;height: 19px;padding-bottom: 5px;"><b><?php echo $message; ?></b></div>
 
 
 <div id="cashier">
@@ -22,7 +21,7 @@
 	<input type='hidden' class='hItemPurchase' name='hItemPurchase' />
 	
 	<select name='searchMode'><option value="Barcode">Barcode</option><option value="Itemcode">Item code</option></select>
-	<input type="search" name="search_item" id="search_item" class="tags" tabindex="1" style="height:20px;width:150px;" autofocus />
+	<input type="text" name="search_item" id="search_item" class="tags" tabindex="1" style="height:20px;width:150px;" autofocus />
 	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2" style="height:20px;width:50px;" >
 	<input class="button" type="submit" name="submit" value="Add Item" />
 	<?php echo form_close(); ?>
@@ -93,6 +92,8 @@
 	<?php echo $items['price'].' '; ?>
 	<?php echo $items['subtotal'].' '; }?>
 </div>
+<div class="error" style="font-size: 18px;height: 19px;padding-bottom: 5px;"><b><?php echo $message; ?></b></div>
+
 </div>
 
 
@@ -103,10 +104,11 @@
 
 </div>
 
-<div class="who" style="text-align:right">
+<div class="who" style="text-align:left">
 	<?php echo date('F d, Y'); ?>	
 	<?php echo date("G:i:s "); ?> <br>
-	[Transaction No.: XXXXX] <br>
+	<?php echo 'Transaction No:' ?>
+	<?php echo $this->pos_model->get_transID()+1; ?> <br>
 	<?php 
 		$data = array();
 		$data[''] = 'Walk-in';
@@ -115,27 +117,57 @@
 				$data[$row->customer_id] = $row->customer_name;
 			}
 		}
-		echo '<div id="hcustomerName">Customer:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" ')."</div>"; 
+		if(isset($cust) && $cust!="") {
+			$name = $this->pos_model->get_customerName($cust);
+			$data = array(
+					'name'=>'customerName',
+					'value'=>$name
+				);
+			echo '<div id="hcustomerName">Customer:'.form_input($data).'<br>';
+			echo 'Balance: '.$this->pos_model->get_customerBalance($cust)."</div>";
+		} 
+		else {
+			$data = array(
+					'name'=>'customerName',
+					'value'=>'Walk-In',
+					'readonly'	=> 'readonly'
+				);
+			echo '<div id="hcustomerName">Customer: '.form_input($data)."</div>";
+			} 
 	?> <br><br>
 </div>
 </div>
 <br>
 <br>
 <br>
-<div class="label" style="text-align:right">Amount Due:
-	<div id="total" >P
+<div class="label" style="text-align:right">
+	Amount Due:
+	<div id="total" style="text-align:right" >
+		
+		P
 		<?php 
 			if($this->cart->format_number($this->cart->total()))
 				echo $this->cart->format_number($this->cart->total());
 			else echo '0.00'; 
 		?>
+	
+	
 	</div>
-</div><br><br>
-<div id="tc" style="text-align:right">[Tendered: XXXXX]	<br> [Change: XXXXX] </div>
-
+	<br>
+	<button style="height:50px; width:70px" class="dialogThis2 buttons" id="cashDialog"> Enter Cash </button>
+</div><br>
+<div id="tc" style="text-align:right">
+	<?php if(isset($cash) && $cash>0) { ?>
+		[Tendered: <?php echo $this->cart->format_number($cash); ?>]	<br> 
+		[Change: <?php echo $this->cart->format_number(($cash-$this->cart->format_number($this->cart->total()))) ?>] 
+	<?php } else { ?>
+		[Tendered: 0.00]	<br> 
+		[Change: 0.00] 
+	<?php } ?>
+	</div>
 <div id="cart" >
 <?php
-	if($this->cart->total_items() > 0) {
+	/*if($this->cart->total_items() > 0) {
 		
 		$data = array(
 			'name'        => 'paymentChoice',
@@ -176,7 +208,7 @@
 
 		echo '<div style="display:none" id="hcustomerName">Customer name:'.form_dropdown('customerName', $data,'','id="customerName" autocomplete="off" ')."<button >RECORD</button></div>"; 		//incoming from
 		echo '<br><br>';
-	}
+	}*/
 echo form_close();
 
 //echo form_open('cashier/cancel_trans');
