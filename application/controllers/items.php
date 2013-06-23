@@ -194,8 +194,12 @@ class Items extends CI_Controller {
             $this->db->trans_start();
                  while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
                  {
-                if($emapData[1] == '') $emapData[1] = NULL;
-                if($emapData[0] == '') $emapData[0] = NULL;
+                if($i++ == 0) continue; 
+                if($emapData[1] == '') $emapData[1] = NULL;  //item code
+                if($emapData[0] == '') $emapData[0] = NULL;   //bar code
+                if($emapData[16] == '') $emapData[16] = 0;    // reorder point
+                if($emapData[15] == '') $emapData[15] = 0;    //quantity
+
                    $data = array(
                      'item_code' => $emapData[1],
                      'bar_code' => $emapData[0],
@@ -207,19 +211,24 @@ class Items extends CI_Controller {
                      'group' => $emapData[7],
                      'class1' => $emapData[8],
                      'class2' => $emapData[9],
-                     'cost' => $emapData[10],
-                     'retail_price' => $emapData[11],
+                     'cost' => number_format((float)str_replace(',','',$emapData[10]),2,'.',''),
+                     'retail_price' => number_format((float)str_replace(',','',$emapData[11]),2,'.',''),
                      'model_quantity' => $emapData[12],
                      'supplier_code' => $emapData[13],
                      'manufacturer' => $emapData[14],
-                     'quantity' => 0,
-                     'reorder_point' => 0,
-                     'active'=>0
+                     'quantity' => number_format((float)str_replace(',','',$emapData[15]),2,'.',''),
+                     'reorder_point' => $emapData[16],
+                     'active' => 1
                   );
                   $this->db->insert('item', $data);
+                // print_r($data);echo '<br>';
+                  //$this->db->query('INSERT INTO item values($emapData[1],$emapData[0]), $emapData[2],$emapData[3],$emapData[4],$emapData[5],$emapData[6], $emapData[7],$emapData[8], $emapData[9], "number_format((float)$emapData[10],2,'.',',')",$emapData[12],$emapData[13], $emapData[14],number_format((float)$emapData[15], 2, '.', ','), $emapData[16],1'); 
+                //  if($this->db->affected_rows() == 1) echo 'true<br>';
+                //  else echo 'false<br>';
                  }
             $this->db->trans_complete();
             fclose($file);
+           
             if ($this->db->trans_status() === FALSE){
               $data['message']="CSV File not Imported";
               $data['page'] = 'forms/import_excel';

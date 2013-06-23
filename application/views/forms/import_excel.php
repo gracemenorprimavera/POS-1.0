@@ -8,7 +8,7 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 <table border = 1 cellpadding =5>
 <tr><th>Attribute</th><th>Barcode</th><th>Itemcode</th><th>Desc1</th><th>Desc2</th><th>Desc3</th><th>Units</th><th>Division</th><th>Group</th><th>Class1</th><th>Class2</th><th>Cost</th><th>Selling Price</th><th>Model Qty</th><th>Supplier code</th><th>Manufacturer</th><th>Qty</th><th>Reorder Pt</th></tr>
 <tr><td>Can be Empty?</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>No</td><td>No</td><td></td><td></td><td></td><td>No</td><td></td></tr>
-<tr><td>Type?</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>number</td><td>number</td><td>any</td><td>any</td><td>any</td><td>whole number</td><td>whole number</td></tr>
+<tr><td>Type?</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>any</td><td>number</td><td>number</td><td>any</td><td>any</td><td>any</td><td>number</td><td>whole number</td></tr>
 </table>
 <p><span>*Barcode (Column A) should be formatted in excel (Format Cell)to number with no decimal places</span></p>
 <p><span>*number ( eg. 1,500 , 1.55 , 24 )</span></p>
