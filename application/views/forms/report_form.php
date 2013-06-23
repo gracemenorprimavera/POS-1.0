@@ -61,7 +61,8 @@
 	</tr>
 	<tr>
 		<td colspan="2" style="text-align:right">
-			<?php echo form_open('admin/pdf/'.$report_id."/".$report_date); ?>
+			<?php $user=$this->session->userdata('role'); ?>
+			<?php echo form_open($user.'/pdf/'.$report_id."/".$report_date); ?>
 			<input class="button" type="submit" value="Export PDF" name="exportPDF"></input>
 			</form> 
 		</td> 

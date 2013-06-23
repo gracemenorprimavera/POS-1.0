@@ -13,7 +13,8 @@
 
 CASH <input type="text" name="cash" value="0.00"><br>
 <span>Other mode of payment</span><br>
-<?php echo form_checkbox('check', 'Check', FALSE); ?>Check<br>
+<?php echo form_checkbox('check', 'check', FALSE); ?>Check<br>
+<?php echo form_checkbox('credit', 'credit', FALSE); ?>Credit<br>
 
 <?php echo form_submit(array('name'=>'cash_button', 'class'=>'button'), 'Continue'); ?>
 <?php echo form_close(); ?>

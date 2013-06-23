@@ -24,6 +24,29 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+	function check_emp($username, $password) {
+		$this->db->select('*');
+		$this->db->from('employee');
+		$this->db->where('username', $username);
+		$this->db->where('password', $password);
+
+		$result = $this->db->get();
+
+		if($result->num_rows() == 1) {
+			$row = $result->row();
+            $data = array(
+                    'empid' => $row->emp_id,
+                    'empname'=>$row->name,
+                    'emp_login'=>TRUE
+                    );
+            $this->session->set_userdata($data);
+			//return $result->row(0)->role;
+			return true;
+		}
+		else
+			return false;
+	}
+
 	function change_password($role, $old_pwd, $new_pwd) {
 
 		$this->db->where('role', $role);

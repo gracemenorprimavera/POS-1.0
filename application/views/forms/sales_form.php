@@ -105,8 +105,8 @@
 </div>
 
 <div class="who" style="text-align:left">
-	<?php echo date('F d, Y'); ?>	
-	<?php echo date("G:i:s "); ?> <br>
+	<?php //echo date('F d, Y'); ?>	
+	<?php echo date("D M d, Y G:i a"); ?> <br>
 	<?php echo 'Transaction No:' ?>
 	<?php echo $this->pos_model->get_transID()+1; ?> <br>
 	<?php 

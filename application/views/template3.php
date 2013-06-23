@@ -95,7 +95,7 @@ else if($flag==2 || $flag==4){
 		echo '<li>'.anchor('#', 'E-Load','class="dialogThis2" id="loadDialog"');
 		echo '<li>'.anchor('#', 'Start Day','class="dialogThis2" id="startDialog"').'</li>';
 		echo '<li>'.anchor('#', 'End Day','class="dialogThis2" id="endDialog"').'</li>';
-		echo '<li>'.anchor('#', 'Employee Time-in/out','class="dialogThis2" id="dtrDialog"').'</li>';
+		echo '<li>'.anchor('cashier/employee_time', 'Employee Time-in/out'/*,'class="dialogThis2" id="dtrDialog"'*/).'</li>';
 		echo '<li>'.anchor('#', 'Cash Out', 'class="dialogThis2" id="expenseDialog"').'</li>';
 		echo '<li>'.anchor('cashier/reports', 'Generate Daily Report').'</li>';
 		echo '<li>'.anchor('pos/do_logout', 'Log out').'</li>';

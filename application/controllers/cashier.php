@@ -175,10 +175,8 @@ class Cashier extends CI_Controller {
 
 
 /*REPORTS */
-
 	function reports() {
-		$is_open = $this->session->userdata('open');
-		
+
 		if($this->pos_model->getAll_reports()) {
 			$data['report'] = $this->pos_model->getAll_reports();
 			$data['message'] = '';
@@ -193,17 +191,33 @@ class Cashier extends CI_Controller {
 	}
 
 	function view_daily_report($report_id, $report_date) {
-		
 
 		$data['report'] = $this->pos_model->get_dailyReport($report_id);
 		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
 		$data['flag'] = 2;
-		$data['date'] = $report_date;
+		$data['report_id'] = $report_id;
+		$data['report_date'] = $report_date;
 		$data['page'] = 'forms/report_form';
 		$this->load->view('template2', $data);
 	}
+	
+	function pdf($report_id,$report_date)	//fetch the report id and report date
+	{
+
+	    $this->load->helper(array('dompdf', 'file')); 		//load the pdf conversion helper
+	    $this->load->helper('download');					//load download helper
+	    $data['report'] = $this->pos_model->get_dailyReport($report_id);	//get report data
+		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
+		$data['report_date'] = $report_date;
+		//$this->load->view('forms/report_form2',$data);
+	   	$html =  $this->load->view('forms/report_form2',$data,true);	//put to html
+	    $data = pdf_create($html, '', false);							//create pdf
+	   	force_download($report_date.'_dsr.pdf', $data); 				//download pdf
+	   	//write_file('name', $data);
+	}
+
 /* Load */
 
 	function load() {
@@ -281,6 +295,43 @@ class Cashier extends CI_Controller {
 			$data['employee'] =  $this->pos_model->getAll_employee();
 			$data['page'] = 'forms/dtr_form';
 			$this->load->view('template2', $data);
+	}
+
+	function employee_time() {
+		if($this->input->post('username') != "") {
+			$uname = $this->input->post('username');
+			$pwd = $this->input->post('password');
+			$this->pos_model->check_emp($uname, $pwd);
+			$data['header'] = 'DTR';
+			$data['flag'] = 2;	
+			$data['employee'] =  $this->pos_model->getAll_employee();
+			$data['page'] = 'forms/dtr_form';
+			$this->load->view('template2', $data);
+			//echo 'yes';
+		}
+		else { 
+			//echo 'no';
+			$data['header'] = 'DTR';
+			$data['flag'] = 2;	
+			$data['employee'] =  $this->pos_model->getAll_employee();
+			$data['page'] = 'forms/dtr_form';
+			$this->load->view('template2', $data);
+		}
+
+		/*$data['header'] = 'DTR';
+		$data['flag'] = 2;	
+		$data['employee'] =  $this->pos_model->getAll_employee();
+		$data['page'] = 'forms/dtr_form';
+		$this->load->view('template2', $data);*/
+	}
+
+	function employee_logout() {
+		$this->session->unset_userdata('emp_login');
+		$this->session->unset_userdata('empname');
+		$this->session->unset_userdata('empid');
+
+		redirect('cashier/employee_time');
+
 	}
 
 	function view() {
