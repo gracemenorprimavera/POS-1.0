@@ -234,6 +234,21 @@ class Pos_model extends CI_Model {
 		else 
 				return false;
 	}
+
+	function get_item_byId($item_id){
+		$this->db->select('*');
+		$this->db->from('item');
+		$this->db->where('item_id',$item_id);
+		$result = $this->db->get();
+		 if($result->num_rows() > 0) {
+				foreach ($result->result() as $row) {
+					$data = $row;
+				}
+				return $data;
+		}
+		else 
+				return false;
+	}
 	
 	function getAll_employee() {
 
@@ -528,7 +543,7 @@ class Pos_model extends CI_Model {
 
 	function getAll_items2() {
 
-		$this->db->select('desc1 as label,item_code as item_code');
+		$this->db->select('concat(desc1," ",desc2," ",desc3," ",desc4) as label,item_code as item_code,item_id',false);
 		$this->db->from('item');
 		$result = $this->db->get();
 		if($result->num_rows() > 0) {
@@ -558,8 +573,8 @@ class Pos_model extends CI_Model {
 
 	function getAll_items3($mode) {
 
-		if($mode == 'Barcode') $query = $this->db->query('select CONCAT(COALESCE(item.bar_code,"")," ",COALESCE(item.desc1,"")) as label, item.bar_code as value ,item.item_id from item');
-		else if($mode == 'Itemcode') $query = $this->db->query('select CONCAT(COALESCE(item.desc1,"")," ",COALESCE(item.bar_code,"")) as label, item.desc1 as value ,item.item_id from item');
+		if($mode == 'Barcode') $query = $this->db->query('select CONCAT(COALESCE(item.bar_code,"")," ",COALESCE(item.desc1,"")," ",desc2," ",desc3," ",desc4) as label, item.bar_code as value ,item.item_id from item');
+		else if($mode == 'Itemcode') $query = $this->db->query('select CONCAT(COALESCE(item.desc1,"")," ",COALESCE(item.bar_code,"")," ",desc2," ",desc3," ",desc4)) as label, item.desc1 as value ,item.item_id from item');
 
 		//if($mode == 'Barcode') $this->db->select("CONCAT(COALESCE(item.bar_code,'None'),' ',COALESCE(item.desc1,'None') as label,item.bar_code as value ,item.item_id",false);
 		//else if($mode == 'Itemcode')$this->db->select("CONCAT(COALESCE(item.desc1,'None'),' ',item.COALESCE(bar_code,'None') as label,item.desc1 as value,item.item_id",false);

@@ -87,6 +87,17 @@ class Admin extends CI_Controller {
 		
 	}
 
+	function goto_view_items_byId() {
+
+		$item_id= $this->input->post('item_id');
+		$output = "";
+		if($this->pos_model->get_item_byId($item_id)) {
+			$data = $this->pos_model->get_item_byId($item_id);				
+		}
+		echo json_encode($data); //get item by item code
+		
+	}
+
 	function reports() {
 
 		if($this->pos_model->getAll_reports()) {

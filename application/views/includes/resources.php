@@ -139,6 +139,30 @@
       }
 	});
   });
+
+//automatic computation of opening and closing bills
+  $('#openingBills input[type=number],#closingBills input[type=number] ').on('keyup mouseup',function(){
+				 
+				var total = 0, billsTotal = 0, coinsTotal = 0;
+				var val = '';
+				var par = $(this).parent().parent().parent().parent().parent().attr('id');
+						//loop through the form and add the sum
+						$('#' + par + ' input[type=number]').each(function(){
+							val = $(this).val();
+							if(!isNaN(val) && val != ''){
+								//total = total + (val*$(this).attr('name'));
+								if($(this).attr('class') == 'bills')
+									billsTotal = billsTotal + (val*$(this).attr('name'));
+								else if($(this).attr('class') == 'coins')
+									coinsTotal = coinsTotal + (val*$(this).attr('name'));
+							}
+						});
+						
+						$('#' + par + ' input[name=billsTotal]').val(billsTotal);
+						$('#' + par + ' input[name=coinsTotal]').val(coinsTotal);
+						$('#' + par + ' input.totalBills').val(billsTotal + coinsTotal);
+						//alert(par);
+				});
   
  
 /*
@@ -275,10 +299,10 @@
 				select: function(event, ui){
 				//if outgoing, update the price input field
 					if(source_id == 'outgoingItem'){
-						row.id = ui.item.item_code;
+						row.id = ui.item.item_id;
 						$.ajax({
-							url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
-							data: {item_code: row.id},
+							url: '<?php echo base_url().'index.php/pos/goto_view_items_byId';?>',
+							data: {item_id: row.id},
 							type: "post",
 							success: function(data){
 								var temp = JSON.parse(data);
@@ -300,32 +324,6 @@
 				minLength:0
 			});
 		
-	});
-
-	
-	//automatic computation of opening and closing bills
-	
-	$('#openingBills input[type=number],#closingBills input[type=number] ').on('keyup mouseup',function(){
-	 
-	var total = 0, billsTotal = 0, coinsTotal = 0;
-	var val = '';
-	var par = $(this).parent().parent().parent().parent().parent().attr('id');
-			//loop through the form and add the sum
-			$('#' + par + ' input[type=number]').each(function(){
-				val = $(this).val();
-				if(!isNaN(val) && val != ''){
-					//total = total + (val*$(this).attr('name'));
-					if($(this).attr('class') == 'bills')
-						billsTotal = billsTotal + (val*$(this).attr('name'));
-					else if($(this).attr('class') == 'coins')
-						coinsTotal = coinsTotal + (val*$(this).attr('name'));
-				}
-			});
-			
-			$('#' + par + ' input[name=billsTotal]').val(billsTotal);
-			$('#' + par + ' input[name=coinsTotal]').val(coinsTotal);
-			$('#' + par + ' input.totalBills').val(billsTotal + coinsTotal);
-			//alert(par);
 	});
 
 
@@ -400,6 +398,37 @@
 				$( this ).dialog( "Search" );
 			}
 			},
+			open: function(){
+					//automatic computation of opening and closing bills
+	  				$('#openingBills input[type=number],#closingBills input[type=number] ').on('keyup mouseup',function(){
+					 
+					var total = 0, billsTotal = 0, coinsTotal = 0;
+					var val = '';
+					var par = $(this).parent().parent().parent().parent().parent().attr('id');
+							//loop through the form and add the sum
+							$('#' + par + ' input[type=number]').each(function(){
+								val = $(this).val();
+								if(!isNaN(val) && val != ''){
+									//total = total + (val*$(this).attr('name'));
+									if($(this).attr('class') == 'bills')
+										billsTotal = billsTotal + (val*$(this).attr('name'));
+									else if($(this).attr('class') == 'coins')
+										coinsTotal = coinsTotal + (val*$(this).attr('name'));
+								}
+							});
+							
+							$('#' + par + ' input[name=billsTotal]').val(billsTotal);
+							$('#' + par + ' input[name=coinsTotal]').val(coinsTotal);
+							$('#' + par + ' input.totalBills').val(billsTotal + coinsTotal);
+							//alert(par);
+					});
+
+					$("#addOutgoingRow").click(function () {
+					var newRow = '<tr><td><input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty[]" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  /></td><td><input type="text" name="outgoingPrice[]" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt[]" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input class="button" type="button" style="margin-bottom:23px;" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
+					$('table#outgoingTable').append(newRow);
+   					}); 
+				
+			},
 			close: function() {
 			 	
 			}
@@ -437,13 +466,13 @@
 			dataType: "html",
 			success: function(data){
 				$("#dialog-form2").html(data);
+				$( "#dialog-form2" ).dialog( "open" );
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 			}
 		});
-
-		$( "#dialog-form2" ).dialog( "open" );
 		return false;
+		
 	});
  
 });  //end of document ready
