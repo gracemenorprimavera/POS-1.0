@@ -10,8 +10,8 @@
 		echo '<br>TIME: '.date("G:i:s ");;
 		echo '<br><br>';
 		//echo $emp_id.$emp_name;
-		echo '<button style="height:70px; width:100px"> In </button>';
-		echo '<button style="height:70px; width:100px"> Out </button>';
+		echo '<button style="height:70px; width:100px" id="inEmp"> In </button>';
+		echo '<button style="height:70px; width:100px" id="outEmp"> Out </button>';
 		echo '<br><br><br>';
 
 		$this->db->select('*');
@@ -44,19 +44,16 @@
 	</table>
 
 <?php } ?>
-	<?php echo form_open('cashier/employee_logout'); ?><br>
 	
-	<?php echo form_submit(array('name'=>'logout_emp','class'=>'button'), 'Logout'); ?>
-	<?php echo form_close(); ?>
- 
+	<input type='button' id='logoutEmp' value='Log-out' class='button' />
+	
 
 <?php } else { ?>
 	Employee Log-in<br>
-	<?php echo form_open('cashier/employee_time'); ?><br>
-	Username <input type="text" name="username"><br>
-	Password <input type="password" name="password"><br>
-	<?php echo form_submit(array('name'=>'login_emp','class'=>'button'), 'Login'); ?>
-	<?php echo form_close(); ?>
+	
+	Username <input type="text" name="username" id="empuName" /><br>
+	Password <input type="password" name="password" id="empPwd" /><br>
+	<input type='button' id='loginEmp' value='Log-in' class='button' />
 
 <?php } ?>
 

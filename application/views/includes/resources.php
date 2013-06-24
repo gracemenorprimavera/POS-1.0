@@ -427,12 +427,44 @@
 					var newRow = '<tr><td><input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty[]" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  /></td><td><input type="text" name="outgoingPrice[]" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt[]" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input class="button" type="button" style="margin-bottom:23px;" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
 					$('table#outgoingTable').append(newRow);
    					}); 
+
+   					//on employee login (DTR)
+					$(document).on('click','#loginEmp',function() {
+						var username = $("#empuName").val();
+						var password = $("#empPwd").val();
+
+
+						$.ajax({
+							url: '<?php echo base_url().'index.php/cashier/employee_time/';?>',
+							data: {username:username,password:password},
+							type: "post",
+							success: function(data){
+									$("#dialog-form2").html(data);
+							},
+							error: function (xhr, ajaxOptions, thrownError) {
+							}
+						});
+					});
+
+					//on employee login (DTR)
+					$(document).on('click','#logoutEmp',function() {
+					
+						$.ajax({
+							url: '<?php echo base_url().'index.php/cashier/employee_logout/';?>',
+							success: function(data){
+									$('#dialog-form2').dialog( "close" );
+							},
+							error: function (xhr, ajaxOptions, thrownError) {
+							}
+						});
+					});
 				
 			},
 			close: function() {
 			 	
 			}
 	});
+
 
 /*$('#dialog-form').keypress(function(e) {
     if (e.which == 13) {

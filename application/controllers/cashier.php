@@ -306,7 +306,7 @@ class Cashier extends CI_Controller {
 			$data['flag'] = 2;	
 			$data['employee'] =  $this->pos_model->getAll_employee();
 			$data['page'] = 'forms/dtr_form';
-			$this->load->view('template2', $data);
+			echo $this->load->view('forms/dtr_form',$data);
 			//echo 'yes';
 		}
 		else { 
@@ -315,7 +315,7 @@ class Cashier extends CI_Controller {
 			$data['flag'] = 2;	
 			$data['employee'] =  $this->pos_model->getAll_employee();
 			$data['page'] = 'forms/dtr_form';
-			$this->load->view('template2', $data);
+			echo $this->load->view('forms/dtr_form',$data);
 		}
 
 		/*$data['header'] = 'DTR';
@@ -329,8 +329,6 @@ class Cashier extends CI_Controller {
 		$this->session->unset_userdata('emp_login');
 		$this->session->unset_userdata('empname');
 		$this->session->unset_userdata('empid');
-
-		redirect('cashier/employee_time');
 
 	}
 
