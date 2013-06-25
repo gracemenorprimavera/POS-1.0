@@ -574,7 +574,7 @@ class Pos_model extends CI_Model {
 	function getAll_items3($mode) {
 
 		if($mode == 'Barcode') $query = $this->db->query('select CONCAT(COALESCE(item.bar_code,"")," ",COALESCE(item.desc1,"")," ",desc2," ",desc3," ",desc4) as label, item.bar_code as value ,item.item_id from item');
-		else if($mode == 'Itemcode') $query = $this->db->query('select CONCAT(COALESCE(item.desc1,"")," ",COALESCE(item.bar_code,"")," ",desc2," ",desc3," ",desc4)) as label, item.desc1 as value ,item.item_id from item');
+		else if($mode == 'Itemcode') $query = $this->db->query('select CONCAT(COALESCE(item.desc1,"")," ",COALESCE(item.bar_code,"")," ",desc2," ",desc3," ",desc4) as label, item.desc1 as value ,item.item_id from item');
 
 		//if($mode == 'Barcode') $this->db->select("CONCAT(COALESCE(item.bar_code,'None'),' ',COALESCE(item.desc1,'None') as label,item.bar_code as value ,item.item_id",false);
 		//else if($mode == 'Itemcode')$this->db->select("CONCAT(COALESCE(item.desc1,'None'),' ',item.COALESCE(bar_code,'None') as label,item.desc1 as value,item.item_id",false);
