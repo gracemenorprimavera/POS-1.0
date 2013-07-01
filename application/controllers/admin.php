@@ -61,7 +61,7 @@ class Admin extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
-	
+/* AJAX */	
 	function goto_view_items_supplier() {
 
 		$supplier_name= $this->input->post('supplier_name');
@@ -70,7 +70,7 @@ class Admin extends CI_Controller {
 			$data['items'] = $this->pos_model->getAll_items_bySupplier($supplier_name);	
 			
 			foreach($data['items'] as $row){
-				$output .= "<option value='".$row->item_code."'>".$row->desc1."</option>";
+				$output .= "<option value='".$row->item_id."'>".$row->desc1."</option>";
 			}			
 		}
 		echo $output;	 //get item by supplier
@@ -78,10 +78,10 @@ class Admin extends CI_Controller {
 			
 	function goto_view_items_byCode() {
 
-		$item_code= $this->input->post('item_code');
+		$item_id= $this->input->post('item_id');
 		$output = "";
-		if($this->pos_model->get_item_byCode($item_code)) {
-			$data = $this->pos_model->get_item_byCode($item_code);				
+		if($this->pos_model->get_item_byCode($item_id)) {
+			$data = $this->pos_model->get_item_byCode($item_id);				
 		}
 		echo json_encode($data); //get item by item code
 		
@@ -201,14 +201,7 @@ class Admin extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
-	function goto_amountForm() {
-		$data['header'] = 'Amount Form';
-		$data['flag']=1;
-		
-		$data['page'] = 'forms/amount_form';
 
-		$this->load->view('template2', $data);
-	}
 
 	function view_amounts() {
 		if($this->pos_model->getAll_amounts()) {
@@ -239,6 +232,32 @@ class Admin extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
+/* AMOUNT FORM */
+	function goto_amountForm($msg = NULL) {
+		if($msg == NULL) $data['msg'] = '';
+		else if($msg) $data['msg'] = 'Amount successfully recorded!';
+		else $data['msg'] = 'Failed to record amount!';
+			
+		$data['header'] = 'Amount Form';
+		$data['flag']=1;
+		$data['page'] = 'forms/amount_form';
+		$this->load->view('template2', $data);
+	}
+
+	function add_amount() {
+		$this->load->model('pos2_model');
+		$open = $this->input->post('openSubTotal');
+		$close = $this->input->post('closeSubTotal');
+		$date = $this->input->post('amountDate');
+
+		//echo $date;
+		if($this->pos2_model->register_adminAmount($date, $open, $close))
+			$msg = true;
+		
+		redirect('admin/goto_amountForm/'.$msg);
+
+	}
+
 	function register_amount() {
 
 		$mode =  $this->input->post('registerMode');
@@ -247,27 +266,17 @@ class Admin extends CI_Controller {
 		$date = $this->input->post('date');
 		
 		if($mode == 'opening'){
-			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
-			redirect('cashier');
+			if($this->pos2_model->register_amount($mode,$bills + $coins,$bills,$coins,$date)) {
+				$msg = true;	
+				redirect('admin/goto_amountForm/'.$msg);
+			}
 		}
 		else if($mode == 'closing'){
-			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins);
+			$this->pos2_model->register_amount($mode,$bills + $coins,$bills,$coins,$date);
 			redirect('cashier/close_store');
 		}	
 	}
 
-	function add_amount() {
-		$open = $this->input->post('openSubTotal');
-		$close = $this->input->post('closeSubTotal');
-		$total = $this->input->post('total');
-		$date = $this->input->post('amountDate');
-
-		//echo $date;
-		$this->pos_model->register_amount('opening',$open,0,0,$date);
-		$this->pos_model->register_amount('closing',$close,0,0,$date);
-		redirect('admin');
-
-	}
 
 	function close_store() {
 		
@@ -336,48 +345,91 @@ class Admin extends CI_Controller {
 		redirect('admin/view_amountPage');
 	}
 
-	function goto_eloadForm() {
-		
-			$data['header'] = 'E-load';
-			$data['flag'] = 1;	
-			$data['page'] = 'forms/load_form2';
-			$this->load->view('template2', $data);
+/* E-LOAD FORM */
+	function goto_eloadForm($msg = NULL) {		
+		if($msg == NULL) $data['msg'] = '';
+		else if($msg) $data['msg'] = 'Load successfully updated!';
+		else $data['msg'] = 'Load not successfully updated';
+
+		$data['header'] = 'E-load';
+		$data['flag'] = 1;	
+		$data['page'] = 'forms/load_form2';
+		$this->load->view('template2', $data);
 	}
 	
-
 	function add_load() {
 		$network = $this->input->post('load_dropdown');
-		$amount = $this->input->post('load_amount');
 		$balance = $this->input->post('load_balance'); // load wallet
 		$date = $this->input->post('loadDate');
 		
-		//echo $network.$amount.$balance.$date;
-		$prev_balance = $this->pos_model->getload_balance($network);
-		
-		$query = "UPDATE eload_balance set balance=balance+$balance WHERE network='$network'";
-		$this->db->query($query);
-
-		
-		//redirect('admin/goto_eloadForm');
-		
-		$this->db->insert('eload',array(
+		if($this->db->insert('eload',array(
 				'load_id'=>NULL,
 				'network'=>$network,
 				'date'=>$date,
 				'status'=>'wallet',
-				'prev_balance'=>$prev_balance,
-				'load_balance'=>0,
-				'amount'=>0,
-				'profit'=>0
-				
-				
-			));
+				'amount'=>$balance,							
+			)))
+			$msg = true;
+		else
+			$msg = false;
 		$load_id = $this->db->insert_id();
-		$query = "UPDATE eload set load_balance=(SELECT balance from eload_balance where network='$network') WHERE load_id=$load_id";
-		$this->db->query($query);
-
-		redirect('admin/view_eload');
+		redirect('admin/goto_eloadForm/'.$msg);
 	}
+
+	function view_eload() {
+		$this->load->model('load_model');
+		$data['detail_flag'] = false; 
+		$data['network_flag'] = false;
+
+		if($this->load_model->getAll_load()) {
+			$data['load'] = $this->load_model->getAll_load();
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Load Record';
+		$data['message1'] = '';
+		$data['header'] = 'E-Load Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/eload_list';
+		$this->load->view('template2', $data);
+	}
+
+	function view_loadDetails($date) {
+		$this->load->model('load_model');
+		$data['detail_flag'] = true;
+		$data['network_flag'] = false; 
+		$data['load'] = $this->load_model->getAll_load();
+		$data['date'] = $date;
+		//$data['daily'] = $this->load_model->getAll_load_byDate($date, $network);
+		$data['message'] = '';
+		$data['message1'] = '';
+		$data['header'] = 'E-Load Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/eload_list';
+		$this->load->view('template2', $data);
+	}
+
+	function view_loadnetwork($date, $network) {
+		$this->load->model('load_model');
+		$data['detail_flag'] = true; 
+		$data['network_flag'] = true; 
+		$data['load'] = $this->load_model->getAll_load();
+		$data['date'] = $date;
+		if( $this->load_model->getAll_load_byDate($date, $network)) {
+			$data['message1'] = '';
+			$data['daily'] = $this->load_model->getAll_load_byDate($date, $network);
+		}
+		else
+			$data['message1'] = 'No Details Found!';
+		$data['message'] = '';
+		$data['header'] = 'E-Load Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/eload_list';
+		$this->load->view('template2', $data);
+	}
+
+
+
 
 	function goto_add_category(){
 			$cat_name =  $this->input->post('cat_name');
@@ -458,21 +510,6 @@ class Admin extends CI_Controller {
 	function view_reportForm2() {
 		$this->load->view('forms/report_form2');
 	}
-
-	function view_eload() {
-
-        if($this->pos_model->getAll_eload()) {
-            $data['eload'] = $this->pos_model->getAll_eload();
-            $data['message'] = '';
-        }
-        else 
-            $data['message'] = 'No E-Load Found';
-        
-        $data['header'] = 'E-Load List';
-        $data['flag'] = 1;
-        $data['page'] = 'lists/eload_list';
-        $this->load->view('template2', $data);
-    }
 
     function view_emp() {
 

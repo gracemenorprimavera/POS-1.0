@@ -17,9 +17,6 @@ class Sales extends CI_Controller {
     }
 
     function index() {
-    	
-    	  	
-				
 		$is_open = $this->session->userdata('open');
 		if(!isset($is_open) || $is_open != true) {
 			$data['message']='Cashier is not yet open. You won\'t be able to record transactions.<br> To open, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
@@ -83,7 +80,7 @@ class Sales extends CI_Controller {
 			               'id'      => $r->item_id,
 			               'qty'     => $qty,
 			               'price'   => $r->retail_price,
-			               'name'    => str_replace("'", "",$r->desc1)
+			               'name'    => str_replace("'", "",$r->desc1.$r->desc2.$r->desc3.$r->desc4)
 			            );
 			            $this->cart->insert($data);
 			        }

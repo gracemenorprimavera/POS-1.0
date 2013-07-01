@@ -1,17 +1,3 @@
-<div style="text-align:left">
-	<button style="height:70px; width:100px" class="dialogThis2 buttons" id="customerDialog"> Customers </button>
-	<button style="height:70px; width:100px" > Sales </button>
-	<button style="height:70px; width:100px" class="dialogThis2 buttons" id="returnDialog"> Returns </button>
-	<button style="height:70px; width:100px"> Discount </button>
-	<button style="height:70px; width:100px"> Submit/Save </button>
-	<button style="height:70px; width:100px"> Print </button>
-	<button style="height:70px; width:100px"> Reprint </button>
-	<button style="height:70px; width:100px"> Cancel </button>
-	
-
-</div>
-
-
 
 <div id="cashier">
 <div id="sales">
@@ -41,7 +27,7 @@
 </thead>
 </table>
 <div id="list">
-<table cellpadding="6" cellspacing="1" style="width:100%;" border="1px solid black">
+<table cellpadding="6" cellspacing="1" style="width:100%;text-align:left;" border="1px solid black">
 <tbody >
 <?php $i = 1; ?>
 
@@ -109,10 +95,11 @@
 	<?php echo date("D M d, Y G:i a"); ?> <br>
 	<?php echo 'Transaction No:' ?>
 	<?php echo $this->pos_model->get_transID()+1; ?> <br>
+	<?php echo 'Personnel: '.$this->session->userdata('name'); ?> 
 	<?php 
 		$data = array();
 		$data[''] = 'Walk-in';
-		if(isset($customer)){
+		if($customer){
 			foreach($customer as $row){
 				$data[$row->customer_id] = $row->customer_name;
 			}
@@ -134,7 +121,9 @@
 				);
 			echo '<div id="hcustomerName">Customer: '.form_input($data)."</div>";
 			} 
-	?> <br><br>
+	?>
+
+	<br><br>
 </div>
 </div>
 <br>
@@ -154,7 +143,9 @@
 	
 	</div>
 	<br>
-	<button style="height:50px; width:70px" class="dialogThis2 buttons" id="cashDialog"> Enter Cash </button>
+	<button style="height:50px; width:70px" class="dialogThis2 button" id=""> Discount </button>
+	<button style="height:50px; width:70px" class="dialogThis2 button" id=""> Print </button>
+	<button style="height:50px; width:70px" class="dialogThis2 button" id="cashDialog"> Enter Cash </button>
 </div><br>
 <div id="tc" style="text-align:right">
 	<?php if(isset($cash) && $cash>0) { ?>
@@ -162,8 +153,10 @@
 		[Change: <?php echo $this->cart->format_number(($cash-$this->cart->format_number($this->cart->total()))) ?>] 
 	<?php } else { ?>
 		[Tendered: 0.00]	<br> 
-		[Change: 0.00] 
+		[Change: 0.00] <br><br>
 	<?php } ?>
+		<button style="height:50px; width:200px" class="dialogThis2 button" id=""> Save </button>
+
 	</div>
 <div id="cart" >
 <?php

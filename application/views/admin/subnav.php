@@ -120,39 +120,47 @@
 <?php if($subnav==8) { ?>
   <ul class="listview">
     <div class="left_list">
+
  <li><div class="data">
-      <h4><?php echo anchor('admin/view_credits', 'View Credits'); ?></h4>
+      <h4><?php echo anchor('expenses/view_cashout', 'Cash Out'); ?></h4>
+      <p>Record of all expenses</p>
+    </div></li>  
+
+ <li><div class="data">
+      <h4><?php echo anchor('admin/view_credits', 'Credits'); ?></h4>
       <p>View credits recoreded</p>
     </div></li>
 
     <li><div class="data">
-      <h4><?php echo anchor('credits/index', 'View Customers'); ?></h4>
+      <h4><?php echo anchor('credits/index', 'Customers'); ?></h4>
       <p>Record of customers with credits</p>
     </div></li>
 
      <li><div class="data">
-      <h4><?php echo anchor('incoming/view_incoming', 'View Deliveries'); ?></h4>
+      <h4><?php echo anchor('incoming/view_incoming', 'Deliveries'); ?></h4>
       <p>Record of deliveries </p>
     </div></li>
      
 <li><div class="data">
-      <h4><?php echo anchor('admin/view_eload', 'View E-Load Transactions'); ?></h4>
+      <h4><?php echo anchor('admin/view_eload', 'E-Load Transactions'); ?></h4>
       <p>View credits recoreded</p>
     </div></li>
 
      <li><div class="data">
-      <h4><?php echo anchor('admin/view_emp', 'View Employee'); ?></h4>
+      <h4><?php echo anchor('admin/view_emp', 'Employee'); ?></h4>
       <p>Record of customers with credits</p>
-    </div></li>   
+    </div></li> 
+
+   
   </div>
   <div class="right_list">
      <li><div class="data">
-      <h4><?php echo anchor('expenses/view_expenses', 'View Cash Out'); ?></h4>
+      <h4><?php echo anchor('expenses/view_expenses', 'Expenses'); ?></h4>
       <p>Record of all expenses</p>
     </div></li>
 
        <li><div class="data">
-      <h4><?php echo anchor('items/view_items', 'View Items'); ?></h4>
+      <h4><?php echo anchor('items/view_items', 'Items'); ?></h4>
       <p>
         Record of items in the stock <br>
       </p>
@@ -160,15 +168,15 @@
     
 
     <li><div class="data">
-      <h4><?php echo anchor('outgoing/view_outgoing', 'View Outgoing'); ?></h4>
+      <h4><?php echo anchor('outgoing/view_outgoing', 'Outgoing'); ?></h4>
       <p>Record of pull-out products</p>
     </div></li>
     <li><div class="data">
-      <h4><?php echo anchor('admin/view_amounts', 'View Registered Amounts'); ?></h4>
+      <h4><?php echo anchor('admin/view_amounts', 'Registered Amounts'); ?></h4>
       <p>Records of opening and closing amounts</p>
     </div></li>
      <li><div class="data">
-      <h4><?php echo anchor('admin/view_sales', 'View Sales'); ?></h4>
+      <h4><?php echo anchor('admin/view_sales', 'Sales'); ?></h4>
       <p>View all transactions recorded</p>
     </div></li>
    
@@ -182,7 +190,28 @@
   <ul class="listview">
     <div class="left_list">
 
-    <li><div class="data"><h4><?php echo anchor('admin/goto_amountForm', 'Amounts Form'); ?></h4>
+    <li><div class="data">
+      <h4><?php echo anchor('credits/goto_customerForm', 'Add New Customer'); ?></h4>
+      <p>Form to add customer</p>
+     </div></li>
+
+    <li><div class="data">
+      <h4><?php echo anchor('admin/goto_employeeForm', 'Add New Employee'); ?></h4>
+      <p>Form to add new employee</p>
+     </div></li>
+
+     <li><div class="data">
+      <h4><?php echo anchor('items/goto_itemForm', 'Add New Item'); ?></h4>
+      <p>Form to add new item in the stock</p>
+     </div></li>
+
+    <li><div class="data">
+      <h4><?php echo anchor('incoming/goto_supplierForm', 'Add New Supplier'); ?></h4>
+      <p>Form to add supplier</p>
+     </div></li>
+
+
+    <li><div class="data"><h4><?php echo anchor('admin/goto_amountForm', 'Amounts'); ?></h4>
       <p>Form to record opening and closing amount</p>
      </div>
    </li>
@@ -191,45 +220,36 @@
     </div>
   </li> -->
 
-  <li><div class="data">
-      <h4><?php echo anchor('expenses/goto_expensesForm/1', 'Cash Out Form'); ?></h4>
-      <p>Form to record expenses</p>
+    <li><div class="data">
+      <h4><?php echo anchor('expenses/goto_cashoutForm', 'Cash Out'); ?></h4>
+      <p>Form to record cash out</p>
      </div></li>
 
-  <li><div class="data">
-      <h4><?php echo anchor('incoming/goto_incomingForm', 'Delivery Form'); ?></h4>
+
+   </div><div class="right_list">
+
+     <li><div class="data">
+      <h4><?php echo anchor('incoming/goto_incomingForm', 'Delivery'); ?></h4>
       <p>Form to record incoming products</p>
      </div></li>
 
      <li><div class="data">
-      <h4><?php echo anchor('admin/goto_eloadForm', 'E-load Form'); ?></h4>
+      <h4><?php echo anchor('admin/goto_eloadForm', 'E-load'); ?></h4>
       <p>Form to add new employee</p>
      </div></li>
 
-    <li><div class="data">
-      <h4><?php echo anchor('admin/goto_employeeForm', 'Employee Form'); ?></h4>
-      <p>Form to add new employee</p>
-     </div></li>
-
-      
-     
-   </div><div class="right_list">
-
-     <li><div class="data">
-      <h4><?php echo anchor('items/goto_itemForm', 'Item Form'); ?></h4>
-      <p>Form to add new item in the stock</p>
+      <li><div class="data">
+      <h4><?php echo anchor('expenses/goto_expensesForm', 'Expenses'); ?></h4>
+      <p>Form to record expenses</p>
      </div></li>
 
      <li><div class="data">
       <h4><?php echo anchor('items/importExcel', 'Import Excel'); ?></h4>
       <p>Import excel file to add item in the stock</p>
      </div></li>
-     <li><div class="data">
-      <h4><?php echo anchor('credits/goto_customerForm', 'New Customer Form'); ?></h4>
-      <p>Form to add customer</p>
-     </div></li>
+    
 <li><div class="data">
-      <h4><?php echo anchor('outgoing/goto_outGoingForm', 'Outgoing Form'); ?></h4>
+      <h4><?php echo anchor('outgoing/goto_outGoingForm', 'Outgoing'); ?></h4>
       <p>Form to record pull-out products</p>
      </div></li>
      <!--
@@ -238,10 +258,7 @@
       <p><span>Add Sales not recorded in the cashier.</span></p>
     </div></li>-->
 
-     <li><div class="data">
-      <h4><?php echo anchor('incoming/goto_supplierForm', 'Supplier Form'); ?></h4>
-      <p>Form to add supplier</p>
-     </div></li>
+     
      
      
     </div>

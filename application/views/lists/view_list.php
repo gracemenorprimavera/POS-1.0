@@ -31,21 +31,21 @@
 				<thead>
 				<tr>
 					<th colspan="2"> Action </th>
-					<th> Item ID </th>
-					<th> Bar Code </th>
-					<th> Item Code</th>
-					<th> Item Description</th>
-					<th> Division </th>
-					<th> Group </th>
-					<th> Classification 1 </th>
-					<th class="moreDetail"> Classification 2 </th>
-					<th> Cost </th>
-					<th> Retail Price </th>
-					<th class="moreDetail"> Model Quantity </th>
-					<th class="moreDetail"> Supplier Code</th>
-					<th class="moreDetail"> Manufacturer</th>
-					<th> Quantity </th>
-					<th class="moreDetail"> Reorder Point </th>
+					<th><?php $order=1; echo anchor('items/orderbyID/'.$order, 'Item ID') ?></th>
+					<th><?php $order=2; echo anchor('items/orderbyID/'.$order, 'Bar Code') ?></th>
+					<th><?php $order=3; echo anchor('items/orderbyID/'.$order, 'Item Code') ?></th>
+					<th><?php $order=4; echo anchor('items/orderbyID/'.$order, 'Item Description') ?></th>
+					<th><?php $order=5; echo anchor('items/orderbyID/'.$order, 'Division') ?></th>
+					<th><?php $order=6; echo anchor('items/orderbyID/'.$order, 'Group') ?></th>
+					<th><?php $order=7; echo anchor('items/orderbyID/'.$order, 'Classification 1') ?></th>
+					<th class="moreDetail"><?php $order=8; echo anchor('items/orderbyID/'.$order, 'Classification 2') ?></th>
+					<th><?php $order=9; echo anchor('items/orderbyID/'.$order, 'Cost') ?> </th>
+					<th><?php $order=10; echo anchor('items/orderbyID/'.$order, 'Retail Price') ?></th>
+					<th class="moreDetail"><?php $order=11; echo anchor('items/orderbyID/'.$order, 'Model Quantity') ?></th>
+					<th class="moreDetail"><?php $order=12; echo anchor('items/orderbyID/'.$order, 'Supplier Code') ?></th>
+					<th class="moreDetail"><?php $order=13; echo anchor('items/orderbyID/'.$order, 'Manufacturer') ?></th>
+					<th><?php $order=14; echo anchor('items/orderbyID/'.$order, 'Quantity') ?></th>
+					<th class="moreDetail"><?php $order=15; echo anchor('items/orderbyID/'.$order, 'Reorder Point') ?></th>
 					
 				</tr></thead>
 

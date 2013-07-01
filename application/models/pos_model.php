@@ -14,6 +14,7 @@ class Pos_model extends CI_Model {
             $data = array(
                     'userid' => $row->account_id,
                     'role' => $row->role,
+                    'name' => $row->name,
                     'validated' => true
                     );
             $this->session->set_userdata($data);
@@ -111,6 +112,58 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+
+	function getAll_credits() {
+		$this->db->select('*');
+		$this->db->group_by('date');
+		$result = $this->db->get('credit');
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function getAll_credits_byDate($date) {
+		/*$this->db->select('*');
+		$this->db->where('date', $date);
+		$result = $this->db->get('credit'); */
+		$this->db->from('credit');
+		$this->db->where('date', $date);
+		$this->db->join('customers', 'customers.customer_id = credit.customer_id');
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_creditDetails_byDate($date) {
+		
+		$this->db->from('credit_details');
+		$this->db->where('credit_details.date', $date);
+		$this->db->join('item', 'credit_details.item_id = item.item_id');
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
 
 	function get_customerDetails($customer_id) {
 		
@@ -220,10 +273,11 @@ class Pos_model extends CI_Model {
 							
 	}
 
-	function get_item_byCode($item_code){
+/* AJAX */
+	function get_item_byCode($item_id){
 		$this->db->select('*');
 		$this->db->from('item');
-		$this->db->where('item_code',$item_code);
+		$this->db->where('item_code',$item_id);
 		$result = $this->db->get();
 		 if($result->num_rows() > 0) {
 				foreach ($result->result() as $row) {
@@ -264,6 +318,7 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+/* for incoming */
 	function getAll_supplier() {
 
 		$result = $this->db->get('supplier');
@@ -352,16 +407,6 @@ class Pos_model extends CI_Model {
 	}
 
 
-	function store_deliveredItem($delivery_id, $item_id, $qty, $amount, $price ) {
-		$this->db->insert('delivered_item', array('delivery_id'=>$delivery_id,
-			'item_code'=>$item_id,
-			'quantity'=>$qty,
-			'price'=>$amount
-			));
-		$this->db->where('item_code', $item_id);	// should be item_id
-		$this->db->update('item', array('cost'=>$price));
-	}
-
 	function store_outItem($outgoing_id, $item_id, $qty, $price ) {
 		$this->db->insert('out_item', array('outgoing_id'=>$outgoing_id,
 			'item_code'=>$item_id,
@@ -370,6 +415,7 @@ class Pos_model extends CI_Model {
 			));
 	}
 
+/*	
 	function store_expenses($status, $date, $desc, $amount) {
 		//echo $date;
 		$this->db->insert('expenses', array('expense_id'=>NULL,
@@ -380,6 +426,7 @@ class Pos_model extends CI_Model {
 			));
 
 	}
+*/
 
 	function subtract_item($item_code, $qty) {
 		
@@ -390,14 +437,6 @@ class Pos_model extends CI_Model {
 		//$this->db->update('item', array('quantity'=>'quantity'-$qty));
 	}
 
-	function add_item($item_code, $qty) {
-		
-		$query = "UPDATE item set quantity=quantity+$qty WHERE item_code='$item_code'";
-		$this->db->query($query);
-		//$this->db->where('item_code',$item_code);
-			
-		//$this->db->update('item', array('quantity'=>'quantity'-$qty));
-	}
 
 	function get_group() {
 
@@ -540,7 +579,6 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
-
 	function getAll_items2() {
 
 		$this->db->select('concat(desc1," ",desc2," ",desc3," ",desc4) as label,item_code as item_code,item_id',false);
@@ -555,6 +593,7 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+
 
 	function getAll_customers2() {
 	
@@ -590,6 +629,7 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+
 
 
 	function register_amount($mode,$amount,$bills,$coins,$date) {
@@ -732,37 +772,8 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
-	function getAll_credits() {
-		$this->db->select('*');
-		$this->db->group_by('date');
-		$result = $this->db->get('credit');
-
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-	}
-
-	function getAll_credits_byDate($date) {
-		$this->db->select('*');
-		$this->db->where('date', $date);
-		$result = $this->db->get('credit');
-
-
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-	}
-
+	
+/*	
 	function getAll_incoming() {
 		$this->db->select('*');
 		$this->db->group_by('date_delivered');
@@ -782,6 +793,10 @@ class Pos_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->where('date_delivered', $date);
 		$result = $this->db->get('delivery');
+		$this->db->from('delivery');
+		$this->db->where('date_delivered', $date);
+		$this->db->join('supplier', 'supplier.supplier_id = delivery.supplier_id');
+		$result = $this->db->get();		
 
 
 		if($result->num_rows() > 0) {
@@ -793,6 +808,7 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+*/
 
 	function getAll_outgoing() {
 		$this->db->select('*');
@@ -1072,6 +1088,7 @@ class Pos_model extends CI_Model {
 
 		return $balance;
 	}
+
 	function get_customerBalance($customer) {
 		$this->db->select('balance');
 		$this->db->where('customer_id', $customer);
@@ -1113,6 +1130,8 @@ class Pos_model extends CI_Model {
 
 		return $balance;
 	}
+
+
 	
 
 }

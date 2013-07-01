@@ -31,6 +31,7 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li><
 		<tr>
 			<th> Credit ID </th>
 			<th> Customer ID</th>
+			<th> Customer Name </th>
 			<th> Status</th>
 			<th> Amount </th>
 			<th> Balance</th>
@@ -41,6 +42,7 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li><
 		if($r->status=='credit') {
 				echo '<td>'.$r->credit_id.'</td>';
 				echo '<td>'.$r->customer_id.'</td>';
+				echo '<td>'.$r->customer_name.'</td>';
 				echo '<td>'.$r->status.'</td>';
 				echo '<td>'.$r->amount_paid.'</td>';
 				echo '<td>'.$r->credit_balance.'</td>';

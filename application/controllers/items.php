@@ -10,43 +10,19 @@ class Items extends CI_Controller {
     private function check_isvalidated(){
         $is_logged_in = $this->session->userdata('validated');
         $user= $this->session->userdata('role');
-		if(!isset($is_logged_in) || $is_logged_in != true || ($user!='cashier' && $user!='admin')) {
-			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as '.$user);	
-			die();
-		}		
+    		if(!isset($is_logged_in) || $is_logged_in != true || ($user!='cashier' && $user!='admin')) {
+    			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as '.$user);	
+    			die();
+    	   	}		
     }
 
-    function goto_itemPage() {
-
-        $data['header'] = 'Administrator';
-        $data['flag']=1;
-        $data['subnav'] = 1; // sub-navigation for items
-        $data['page'] = 'admin/subnav';
-
-        $this->load->view('template2', $data);
-    }
-
+/* ITEM FORM */
     function goto_itemForm() {
 
         $data['header'] = 'Item Form';
         $data['flag'] = 1;
 		    $data['supplier'] = $this->pos_model->getAll_supplier();
         $data['page'] = 'forms/item_form';
-        $this->load->view('template2', $data);
-    }
-
-    function view_items() {
-
-        if($this->pos_model->getAll_items()) {
-            $data['items'] = $this->pos_model->getAll_items();
-            $data['message'] = '';
-        }
-        else 
-            $data['message'] = 'No Items Found';
-        
-        $data['header'] = 'Item List';
-        $data['flag'] = 1;
-        $data['page'] = 'lists/view_list';
         $this->load->view('template2', $data);
     }
 
@@ -75,6 +51,33 @@ class Items extends CI_Controller {
         $this->db->insert('item', $data); 
         redirect('items/goto_itemPage');
     }
+
+    function goto_itemPage() {
+
+        $data['header'] = 'Administrator';
+        $data['flag']=1;
+        $data['subnav'] = 1; // sub-navigation for items
+        $data['page'] = 'admin/subnav';
+
+        $this->load->view('template2', $data);
+    }
+
+/* VIEW ITEMS */
+    function view_items() {
+
+        if($this->pos_model->getAll_items()) {
+            $data['items'] = $this->pos_model->getAll_items();
+            $data['message'] = '';
+        }
+        else 
+            $data['message'] = 'No Items Found';
+        
+        $data['header'] = 'Item List';
+        $data['flag'] = 1;
+        $data['page'] = 'lists/view_list';
+        $this->load->view('template2', $data);
+    }
+
 
     function goto_editItemForm($edit) {
 
@@ -180,7 +183,7 @@ class Items extends CI_Controller {
       $this->load->view('template2', $data);
     }
 
-    function import_excel(){
+     function import_excel(){
 
         echo $this->db->_error_message();
         if(isset($_POST["Import"]))
@@ -290,7 +293,20 @@ class Items extends CI_Controller {
     
     }
     
-
+    function orderbyID($order) {
+        $this->load->model('item_model');
+        if($this->item_model->getAll_items()) {
+            $data['items'] = $this->item_model->orderbyID($order);
+            $data['message'] = '';
+        }
+        else 
+            $data['message'] = 'No Items Found';
+        
+        $data['header'] = 'Item List';
+        $data['flag'] = 1;
+        $data['page'] = 'lists/view_list';
+        $this->load->view('template2', $data);
+  }
 
 }
 ?>

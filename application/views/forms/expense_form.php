@@ -1,23 +1,16 @@
 <?php 
 if($this->session->userdata('role')=='admin') 
-echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
-<?php 
-	$user = $this->session->userdata('role'); 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; 
+$user = $this->session->userdata('role'); 
 ?>
 <div id="expense_form" class="forms">
+	<span><?php echo $msg; ?></span>
 	<?php 
-		echo form_open('expenses/add_expense/'.$user, array('onsubmit'=>"return confirm('Finalize Record?') "));
+		echo form_open('expenses/add_expense', array('onsubmit'=>"return confirm('Finalize Record?') "));
 		$options = array(
 				'' => 'Please Select',
-				'DELIVERY' => "Delivery Payment",
-				'SUPPLIES' => "Supplies",
-				'SALARY' => "Salary",
-				'RENT'=>"Rent",
-				'EMPLOYEE_ALLOWANCE'=>"Employee Fare Allowance",
-				'COMMUNICATION_ALLOWANCE'=>"Store Communication Allowance",
-				'FOOD_ALLOWANCE'=>"Store Food Allowance",
-				'MAINTENANCE'=>"Store Maintenance/Repairs",
-				'other' => 'Others'
+				'expense' => "Expenses",
+				
 			);
 		if($user=='admin') {
 			$data1 = array(
