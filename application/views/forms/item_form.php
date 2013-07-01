@@ -17,7 +17,20 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 			<td>Description 4 (size, packaging): <input type="text" name="desc4"></td>
 		</tr><tr>
 			<td>Group: <input type="text" name="group" required></td>
-			<td>Division: <?php echo form_dropdown('division', array('' => 'Select Division','grocery'=>'Grocery', 'poultry'=> 'Poultry', 'pet'=>'Pet Supply'), '', 'required') ?></td>
+			<td>Division:
+			<?php 
+				$division = $this->pos_model->getAll_division_cat();
+				$options = array();
+				$options[''] = 'Select one';
+				if(isset($division)){
+					foreach($division as $row){
+						$options[$row->div_id] = $row->division;
+					}
+				}
+				$options['add'] = "Add division...";
+			echo form_dropdown('division', $options, '', 'id="addDivision" required')
+			?>
+			</td>
 		</tr><tr>
 			<td>Classification 1: <input type="text" name="class1" required></td>
 			<td>Classification 2: <input type="text" name="class2"></td>

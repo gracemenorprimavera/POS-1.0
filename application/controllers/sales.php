@@ -17,6 +17,9 @@ class Sales extends CI_Controller {
     }
 
     function index() {
+    	
+    	  	
+				
 		$is_open = $this->session->userdata('open');
 		if(!isset($is_open) || $is_open != true) {
 			$data['message']='Cashier is not yet open. You won\'t be able to record transactions.<br> To open, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
@@ -41,6 +44,9 @@ class Sales extends CI_Controller {
 	function add_item() {
 		$item_id = $this->input->post('hItemPurchase');
 		$qty = $this->input->post('quantity');
+		//get search mode
+		$searchMode = $this->input->post('searchMode');
+		if($searchMode == '' || !isset($searchMode)) $searchMode = 'Barcode';
 
 		$this->form_validation->set_rules('search_item','Barcode/ Itemcode', 'required');
 		$this->form_validation->set_rules('quantity', 'Quantity', 'required');
@@ -54,6 +60,7 @@ class Sales extends CI_Controller {
 			$data['page'] = 'forms/sales_form';
 			$data['flag'] = 4;
 			$data['customer'] = $this->pos_model->getAll_customers();
+			$data['searchMode'] = $searchMode;
 			$this->load->view('template3', $data);
 		}
 		else {
@@ -80,7 +87,7 @@ class Sales extends CI_Controller {
 			               'id'      => $r->item_id,
 			               'qty'     => $qty,
 			               'price'   => $r->retail_price,
-			               'name'    => str_replace("'", "",$r->desc1.$r->desc2.$r->desc3.$r->desc4)
+			               'name'    => str_replace("'", "",$r->desc1)
 			            );
 			            $this->cart->insert($data);
 			        }
@@ -95,6 +102,7 @@ class Sales extends CI_Controller {
 			$data['flag'] = 4;
 			//$data['page'] = 'cashier/purchase_main';
 			$data['page'] = 'forms/sales_form';
+			$data['searchMode'] = $searchMode;
 			$data['customer'] = $this->pos_model->getAll_customers();
 			$this->load->view('template3', $data);
 			

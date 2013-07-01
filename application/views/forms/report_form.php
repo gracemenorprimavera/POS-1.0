@@ -14,61 +14,11 @@
 	</tr>
 	<tr>
 		<td>Discrepancy: <input type="text" value="<?php echo $d->discrepancy ?>" ></td>
-	</tr>
-	<tr>
 		<td>Sales on Credit: <input type="text" value="<?php echo $d->credit ?>" ></td>
-		<td>
-			<?php 
-			$credit = $this->pos_model->get_creditDetails_byDate($this->uri->segment(4)); 
-			if($credit) {
-			?>
-			<table border="1px solid black">
-				<tr>
-					<th> Credit ID </th>
-					<th> Item </th>
-					<th> Price </th>
-				</tr>
-				<?php
-			
-				foreach($credit as $r) {
-					echo '<tr>';
-					echo '<td>'.$r->credit_id.'</td><td>'.$r->item_code.'</td><td>'.$r->price.'</td>';
-					echo '</tr>';
-				}
-			
-				?>
-			</table>
-			<?php } //end if($credit) ?>
-		</td>
 	</tr>
 		
 	<tr>
 		<td>Incoming Stocks Amount:<input type="text" value="<?php echo $d->in_amount ?>" ></td>
-		<td>
-			<?php 
-			$incoming = $this->pos_model->getAll_incoming_byDate($this->uri->segment(4)); 
-			if($incoming) {
-			?>
-			<table border="1px solid black">
-				<tr>
-					<th> Supplier </th>
-					<th> Amount </th>
-				</tr>
-				<?php
-			
-				foreach($incoming as $r) {
-					echo '<tr>';
-					echo '<td>'.$r->supplier_name.'</td><td>'.$r->total_amount.'</td>';
-					echo '</tr>';
-				}
-			
-				?>
-			</table>
-			<?php } //end if($incoming) ?>
-		</td>
-		
-	</tr>
-	<tr>
 		<td>Outgoing Stocks Amount: <input type="text" value="<?php echo $d->out_amount ?>" ></td>
 	</tr>
 	<tr>
@@ -86,7 +36,7 @@
 			
 				foreach($expenses as $r) {
 					echo '<tr>';
-					echo '<td>'.$r->status.'</td><td>'.$r->description.'</td><td>'.$r->amount.'</td>';
+					echo '<td>'.$r->status.'</td><td>'.$r->description.'</td><td>'.$r->amount.'</td><br>';
 					echo '</tr>';
 				}
 			

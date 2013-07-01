@@ -3,6 +3,7 @@
 <head>
 	<title> POS </title>
 	<?php $this->load->view('includes/resources'); ?>
+
 </head>	
 
 <body>

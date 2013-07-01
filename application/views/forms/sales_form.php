@@ -1,3 +1,15 @@
+<!--
+<div style="text-align:left">
+
+	<button style="height:70px; width:100px" class="button"> Discount </button>
+	<button style="height:70px; width:100px" class="button"> Submit/Save </button>
+	<button style="height:70px; width:100px" class="button"> Print </button>
+	<button style="height:70px; width:100px" class="button"> Reprint </button>
+	
+
+</div>
+-->
+
 
 <div id="cashier">
 <div id="sales">
@@ -6,7 +18,7 @@
 		?>
 	<input type='hidden' class='hItemPurchase' name='hItemPurchase' />
 	
-	<select name='searchMode'><option value="Barcode">Barcode</option><option value="Itemcode">Item code</option></select>
+	<select name='searchMode'><option value="Barcode" <?php if($searchMode == 'Barcode') echo 'selected'; ?> >Barcode</option><option value="Itemcode" <?php if($searchMode == 'Itemcode') echo 'selected'; ?>>Item code</option></select>
 	<input type="text" name="search_item" id="search_item" class="tags" tabindex="1" style="height:20px;width:150px;" autofocus />
 	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2" style="height:20px;width:50px;" >
 	<input class="button" type="submit" name="submit" value="Add Item" />
@@ -27,7 +39,7 @@
 </thead>
 </table>
 <div id="list">
-<table cellpadding="6" cellspacing="1" style="width:100%;text-align:left;" border="1px solid black">
+<table cellpadding="6" cellspacing="1" style="width:100%;" border="1px solid black">
 <tbody >
 <?php $i = 1; ?>
 
@@ -95,11 +107,10 @@
 	<?php echo date("D M d, Y G:i a"); ?> <br>
 	<?php echo 'Transaction No:' ?>
 	<?php echo $this->pos_model->get_transID()+1; ?> <br>
-	<?php echo 'Personnel: '.$this->session->userdata('name'); ?> 
 	<?php 
 		$data = array();
 		$data[''] = 'Walk-in';
-		if($customer){
+		if(isset($customer)){
 			foreach($customer as $row){
 				$data[$row->customer_id] = $row->customer_name;
 			}
@@ -121,9 +132,7 @@
 				);
 			echo '<div id="hcustomerName">Customer: '.form_input($data)."</div>";
 			} 
-	?>
-
-	<br><br>
+	?> <br><br>
 </div>
 </div>
 <br>

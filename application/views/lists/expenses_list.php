@@ -1,55 +1,52 @@
 <?php 
-	if($this->session->userdata('role')=='admin') 	
-?>
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?>
 <div id="view_record" class="view" >
-	<div style="border:0px solid brown;height:30px;"><?php echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?></div>
- 
-	<div id="view_left" class="view" >
-		<?php
-			if($message) {
-				echo $message;
-			}
-			else {
-		?>
-				<table border="0px solid brown" cellpadding="6">
-					<tr>
-						<th> Date </th>
-					</tr>
-					<?php foreach ($expenses as $r) { ?>
-					<tr>
-						<td><?php echo anchor('expenses/view_expensesDetails/'.$r->date_expense, date('F d, Y', strtoTime($r->date_expense))); ?></td>
-					</tr>
-					<?php } // end foreach ($expenses as $r) ?>
-				</table>
-			<?php } // end of else	?>
-	</div>
 
+<?php 
+	echo '<div id="view_left" class="view" >';
+	if($message) {
+		echo $message;
+	}
+	else {
+		echo '<table border="0px solid brown" cellpadding="6"><tr><th> Date </th></tr>';
+		
+		foreach ($expenses as $r) {
+			echo '<tr>';
+				echo '<td>'.anchor('expenses/view_expensesDetails/'.$r->date_expense, date('F d, Y', strtoTime($r->date_expense))).'</td>';
+			echo '</tr>';
+		}
+		echo '</table>';
+	}
+	echo '</div>';
+?>
 
-	<div id="view_right" class="view" >
-		<?php
-			if($detail_flag) {
-				$mydate = strtoTime($date);
-		?>
-				<div style="text-align:left;font-size:20px;margin-bottom:10px;"><?php echo date('F d, Y', $mydate); ?></div>
-				<table border="1px solid brown" cellpadding="6" >
-					<thead>
-					<tr>
-						<th> Expense ID </th>
-						<th> Status </th>
-						<th> Description </th>
-						<th> Amount </th>
-					</tr>
-					</thead>
-						<?php foreach ($daily as $d) { ?>	
-							<tr>
-								<td><?php echo $d->expense_id; ?> </td>
-								<td><?php echo $d->status; ?> </td>
-								<td><?php echo $d->description; ?> </td>
-								<td><?php echo $d->amount; ?> </td>
-							</tr>			
-						<?php } // end foreach ?>
-				</table>
-			<?php } // end if	?>
+<?php
+	echo '<div id="view_right" class="view" >';
+
+	if($detail_flag) {
+		$mydate = strtoTime($date);
+		echo '<h3>'.date('F d, Y', $mydate).'</h3>';
+?>
+	<table border="1px solid brown" cellpadding="6">
+		<tr>
+			<th> Expense ID </th>
+			<th> Status </th>
+			<th> Description </th>
+			<th> Amount </th>
+		</tr>
+<?php foreach ($daily as $d) { ?>
 			
+		<tr>
+			<td><?php echo $d->expense_id; ?> </td>
+			<td><?php echo $d->status; ?> </td>
+			<td><?php echo $d->description; ?> </td>
+			<td><?php echo $d->amount; ?> </td>
+		</tr>			
+<?php				
+		} // end foreach
+	} // end if	
+?>
+	</table>
 	</div>
 </div>

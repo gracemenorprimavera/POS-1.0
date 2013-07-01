@@ -21,6 +21,7 @@ class Cashier extends CI_Controller {
 		$data['header'] = 'Cashier';
 		$data['customer'] = $this->pos_model->getAll_customers();
 		$data['page'] = 'forms/sales_form';
+		$data['searchMode'] = 'Barcode';
 		$data['flag'] = 4;
 		$this->load->view('template3', $data);
 	}
@@ -30,7 +31,6 @@ class Cashier extends CI_Controller {
     function index() {
 		$data['header'] = 'Cashier';
 		$data['flag'] = 0;
-		
 		$data['page'] = 'cashier_home';
 		$this->load->view('template2', $data);
 		
@@ -240,20 +240,29 @@ class Cashier extends CI_Controller {
 		}
 	}
 
-	function add_load_sales() {
+	function add_load() {
 		$network = $this->input->post('load_dropdown');
 		$amount = $this->input->post('load_amount');
+		$balance = $this->input->post('load_balance');
 		$date = $this->input->post('loadDate');
+
+		
+		$prev_balance = $this->pos_model->getload_balance($network);
 		
 		$this->db->insert('eload',array(
 				'load_id'=>NULL,
 				'network'=>$network,
 				'date'=>$date,
 				'status'=>'sales',
-				'amount'=>$amount				
+				'prev_balance'=>$prev_balance,
+				'load_balance'=>$balance,
+				'amount'=>$amount,
+				'load_cost'=>0,
+				'profit'=>0			
+				
 			));
 		
-		/*$load_id = $this->db->insert_id();
+		$load_id = $this->db->insert_id();
 		$query = "UPDATE eload set load_cost=($prev_balance-$balance) WHERE load_id=$load_id";
 		$this->db->query($query);
 
@@ -262,7 +271,6 @@ class Cashier extends CI_Controller {
 
 		$query = "UPDATE eload_balance set balance=$balance WHERE network='$network'";
 		$this->db->query($query);
-		*/
 
 		$this->db->insert('transactions', array('trans_id'=>NULL,  
 				'trans_date'=>$date,
@@ -270,7 +278,6 @@ class Cashier extends CI_Controller {
 				));
 
 		$trans_id = $this->db->insert_id();
-		
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 			'item_code'=>'load',
 			'division'=>'load',
@@ -279,42 +286,9 @@ class Cashier extends CI_Controller {
 			'date'=>$date
 			));
 
-		redirect('cashier/new_cashier');
+		redirect('cashier');
 	}
 
-	function goto_eloadForm($msg = NULL) {		
-		if($msg == NULL) $data['msg'] = '';
-		else if($msg) $data['msg'] = 'Load successfully updated!';
-		else $data['msg'] = 'Load not successfully updated';
-
-		$data['header'] = 'E-load';
-		$data['flag'] = 2;	
-		$data['page'] = 'forms/load_form2';
-		$this->load->view('template2', $data);
-	}
-	
-	function add_load() {
-		$network = $this->input->post('load_dropdown');
-		$balance = $this->input->post('load_balance'); // load wallet
-		$date = $this->input->post('loadDate');
-		
-		if($this->db->insert('eload',array(
-				'load_id'=>NULL,
-				'network'=>$network,
-				'date'=>$date,
-				'status'=>'wallet',
-				'amount'=>$balance,							
-			)))
-			$msg = true;
-		else
-			$msg = false;
-		$load_id = $this->db->insert_id();
-		redirect('cashier/new_cashier');
-	}
-
- 
-
-/* EMPLOYEE */
 	function view_dtrform() {
 		$data['header'] = 'DTR';
 			$data['flag'] = 2;	
@@ -324,6 +298,19 @@ class Cashier extends CI_Controller {
 	}
 
 	function employee_time() {
+		if($this->input->post('username') != "") {
+			$uname = $this->input->post('username');
+			$pwd = $this->input->post('password');
+			$this->pos_model->check_emp($uname, $pwd);
+			$data['header'] = 'DTR';
+			$data['flag'] = 2;	
+			$data['employee'] =  $this->pos_model->getAll_employee();
+			$data['page'] = 'forms/dtr_form';
+			//$this->load->view('template2', $data);
+			echo $this->load->view('forms/dtr_form',$data);
+			//echo 'yes';
+		}
+		else { 
 			//echo 'no';
 			$data['header'] = 'DTR';
 			$data['flag'] = 2;	
@@ -331,7 +318,7 @@ class Cashier extends CI_Controller {
 			$data['page'] = 'forms/dtr_form';
 			//$this->load->view('template2', $data);
 			echo $this->load->view('forms/dtr_form',$data);
-		
+		}
 
 		/*$data['header'] = 'DTR';
 		$data['flag'] = 2;	
@@ -364,22 +351,17 @@ class Cashier extends CI_Controller {
 		if($this->pos_model->get_search2($search,$mode)){
 			echo json_encode($this->pos_model->get_search2($search,$mode));
 			//echo 'true';
-		}
+	}
 		
 				
 	}
 	function dialog_show($mode){
-		if($mode == 'expenseDialog') {
-			$data['msg'] = '';
-			echo $this->load->view('forms/cashout_form.php', $data);
-		}
-		else if($mode == 'loadDialog') {
-			echo $this->load->view('forms/load_form.php', $data);
-		}
-		else if($mode == 'incomingloadDialog') {
-			$data['msg'] = '';
-			echo $this->load->view('forms/load_form2.php', $data);
-		}
+		if($mode == 'expenseDialog')
+			echo $this->load->view('forms/expense_form.php');
+		else if($mode == 'loadDialog')
+			echo $this->load->view('forms/load_form.php');
+		else if($mode == 'incomingloadDialog')
+			echo $this->load->view('forms/load_form2.php');
 		else if($mode == 'startDialog')
 			echo $this->load->view('forms/bills_form.php');
 		else if($mode == 'endDialog')

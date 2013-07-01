@@ -76,21 +76,19 @@
 		}
    });
    
-   $('#expense option[value=other]').click(function(){
-		var opt = '';
-		while(opt == '' || opt== 'Others') opt=prompt("Please specify","Others");
-			if(opt == null) return;
-			$("#expense option:first-child").after('<option value="' + opt + '" >' + opt + '</option>');
-			$("#expense").prop("selectedIndex", '1');
-   });
-   
-   $('#outgoingDd option[value=other]').click(function(){
+   //add cashout
+	$('#expense option[value=add], #addDivision option[value=add], #outgoingDd option[value=add]').click(function(){
+		var id = $(this).parent().attr('id');
+		addCategory(id);
+	});
+   /*
+   $('#outgoingDd option[value=add]').click(function(){
 		var opt = '';
 		while(opt == ''|| opt== 'Others') opt=prompt("Please specify","Others");
 			if(opt == null) return;
 			$("#outgoingDd option:first-child").after('<option value="' + opt + '" >' + opt + '</option>');
 			$("#outgoingDd").prop("selectedIndex", '1');
-   });
+   });*/
    
   /*
 	Add new row to outgoing table on button click
@@ -127,12 +125,12 @@
 		var row = $(this).parent().parent();
 		$(this).parent().parent().find(":input[type='text'],:input[type='number']").val('');
 		$.ajax({
-        url: '<?php echo base_url().'index.php/admin/goto_view_items_byId';?>',
-        data: {item_id: $(this).val()},
+        url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
+        data: {item_code: $(this).val()},
         type: "post",
         success: function(data){
 		var temp = JSON.parse(data);
-		$("td:nth-child(3) input.invoicePrice", row).val(temp['retail_price']);
+		$("td:nth-child(3) input.invoicePrice", row).val(temp['cost']);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 
@@ -242,23 +240,7 @@
 			$('#paymentDetails').html(div);
 		}
 	});*/
-	
-	$('#purchase_list input[type=radio]').click(function(){
 
-		if($(this).attr('id') == 'cashChoice'){
-			$('#customerName').removeAttr("required");
-			$('#customerCash')[0].setAttribute("required", true);
-			$('div#hcustomerName').css('display','none');
-			$('div#hcustomerCash').css('display','inline-block');
-		}
-		else if($(this).attr('id') == 'creditChoice'){
-			$('#customerName')[0].setAttribute("required", true);
-			$('#customerCash').removeAttr("required");
-			$('div#hcustomerCash').css('display','none');
-			$('div#hcustomerName').css('display','inline-block');
-			
-		}
-	});
 
 	$('#pay_credit').click(function(){		
 		$('div#hcustomerName').css('display','none');
@@ -352,12 +334,35 @@
 						else{
 							var temp = JSON.parse(data);
 							var output = '';
+							var temp2;
 							for (var i = 0; i < temp.length; i++){
-								output = output + "<tr>";
+								output = output + "<tr style='background-color:gray;'>";
 								$.each(temp[i], function(key, value) {
 	    							output = output + '<td>' + value + '</td>';
+	    							if(key == 'customer_id'){
+	    								$.ajax({
+											url: '<?php echo base_url().'index.php/credits/view_customerDetails2';?>',
+											data: {customer_id: value},
+											type: "post",
+											async: false,
+											success: function(data2){
+												temp2 = JSON.parse(data2);
+											},
+											error: function (xhr, ajaxOptions, thrownError) {
+											}
+										});
+	    							}
 								});
-								output = output + "</tr>";
+								output = output + "<td><input type='number' /></td><td><input type='button' value='Pay' class='button' /></td></tr>";
+								if(temp2.length>0){
+									for (var i = 0; i < temp2.length; i++){
+										output = output + '<tr>'; 
+										$.each(temp2[i], function(key, value) {
+			    							output = output + '<td>' + value + '</td>';
+			    						});
+			    						output = output + '</tr>';
+									}
+								}
 							}
 							$("#dialog-form table").html(output);
 							//alert(output);
@@ -458,6 +463,46 @@
 							}
 						});
 					});
+
+					//on other payment
+					$('input[name=paymentChoice]').click(function(){
+						if($(this).attr('id') == 'cashChoice'){
+							$('#hcustomerCash input')[0].setAttribute("required", true);
+							$('#hcustomerCash input').removeAttr("disabled");
+							$('#customerName').removeAttr("required");
+							$('#hcustomerCheck input').removeAttr("required");
+							$('div#hcustomerName').css('display','none');
+							$('div#hcustomerCheck').css('display','none');
+						}
+						else{
+
+							$('#hcustomerCash input').removeAttr("required");
+							$('#hcustomerCash input')[0].setAttribute("disabled", true);
+
+							if($(this).attr('id') == 'checkChoice'){
+								$('#customerName').removeAttr("required");
+								//$('#customerCash')[0].setAttribute("required", true);
+								$('#hcustomerCheck input')[0].setAttribute("required", true);
+								$('#hcustomerCheck input')[1].setAttribute("required", true);
+								$('#hcustomerCheck input')[2].setAttribute("required", true);
+								$('div#hcustomerName').css('display','none');
+								$('div#hcustomerCheck').css('display','inline-block');
+							}
+							else if($(this).attr('id') == 'creditChoice'){
+								$('#customerName')[0].setAttribute("required", true);
+								//$('#customerCash').removeAttr("required");
+								$('#hcustomerCheck input').removeAttr("required");
+								$('div#hcustomerCheck').css('display','none');
+								$('div#hcustomerName').css('display','inline-block');
+								
+							}
+						}
+					});
+
+			//add cashout
+					$('#expense option[value=add]').click(function(){
+							addCategory('#expense');
+				   });
 				
 			},
 			close: function() {
@@ -506,8 +551,129 @@
 		return false;
 		
 	});
+
+
+	$(document).on('click', function (event) {
+		  //var esc = event.which == 27, nl = event.which == 13, el = event.target, input = el.nodeName != 'INPUT' && el.nodeName != 'TEXTAREA', data = {};
+		var el = event.target; //get element that trigger the click 
+		var input = el.nodeName;	//get kind element
+		var text = $(event.target).text();	//get inner html of element
+		var cl = (el.className).split(" ",1);		//get class	
+		var val = $('#hEditableValue').val();
+		var name = el.getAttribute('name');
+		var mode = '';
+
+		if(el.parentNode.getAttribute('id') == 'activeEditable' && (input=='INPUT' || input=='SELECT' )) {return;}
+		else if(el.parentNode.parentNode.getAttribute('id') == 'activeEditable' && input=='OPTION') {return;}
+
+		if( el.getAttribute('id') == 'activeEditable') return;
+
+		$('#activeEditable').html(val);
+		$('#activeEditable').removeAttr('id');
+
+	 
+
+		if(cl == 'edit'){
+			el.setAttribute("id","activeEditable");
+			$('#hEditableValue').val(text);
+			el.innerHTML = "<input type='text' value='"+ text +"' /><input type='button' value='Ok' id='changeEditable' />";
+
+		}
+		else if(cl == 'dd_edit'){
+			var output = '<select>';
+			el.setAttribute("id","activeEditable");
+			$('#hEditableValue').val(text);
+			//el.innerHTML = "<select><option>"+ text +"</option></select><input type='button' value='Ok' />";
+			if(name == 'division') mode =  'get_division_cat';
+			else if(name == 'supplier_code') mode = 'get_supplier_cat';
+			$.ajax({
+				url: '<?php echo base_url().'index.php/admin/';?>'+ mode,
+				async: false,
+				success: function(data){
+					var temp2 = JSON.parse(data);
+					for (var i = 0; i < temp2.length; i++){
+						//output = output + "<option value='"; 
+							$.each(temp2[i], function(key, value) {
+			    					//if(key == 'div_id' || key == 'supplier_id') output = output + value + "'>";
+			    					//if(key == 'division' || key == 'supplier_name') output = output + value + "</option>";
+			    					if(key == 'division' || key == 'supplier_name'){
+			    						output = output + "<option value='"+value+"'>"+value+"</option>";
+			    					}
+			    			});
+					}
+					output = output + '</select><input type="button" value="Ok"  id="changeEditable" />';
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				}
+			});
+			//alert(output);
+			el.innerHTML = output;
+		}
+
+	});
+
+	$(document).on('click','#changeEditable',function(){
+		var val = $('#activeEditable input , #activeEditable select').val();	//get value
+		var name = $('#activeEditable').attr('name');
+		var old_val = $('#hEditableValue').val();							//get what attribute of item to change
+		//var el = $('#activeEditable').parent().index();
+		var el = document.getElementById('activeEditable');
+		var row = el.parentNode;		//get row
+		var id = row.cells[1].innerHTML; //get id
+		//alert(el.rowIndex);
+		$.ajax({
+				url: '<?php echo base_url().'index.php/admin/updateItem';?>',
+				data: {id:id,key:name,value:val},
+				type: "post",
+				success: function(data){
+					if(data){
+						alert('Table updated!');
+						$('#activeEditable').html(val);
+						$('#activeEditable').removeAttr('id');
+					}
+					else{
+						alert('Fail to update table.');
+						$('#activeEditable').html(old_val);
+						$('#activeEditable').removeAttr('id');
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				}
+			});
+	});
  
 });  //end of document ready
+
+
+	function addCategory(dd_id){
+			var opt = '';
+			if(dd_id == 'expense') mode = 'addCashout';
+			else if(dd_id == 'addDivision') mode = 'addDivision';
+			else if(dd_id == 'outgoingDd') mode = 'addOutgoing';
+			while(opt == '' || opt== 'Add new') opt=prompt("Please specify","Add new");
+			if(opt == null){
+				$('#' + dd_id).prop("selectedIndex", '0');
+				return;
+			}
+			else{
+				$.ajax({
+					url: '<?php echo base_url().'index.php/pos/goto_add_category';?>',
+					data: {cat_name: opt,mode:mode},
+					type: "post",
+					success: function(data){
+						if(data!='' && !isNaN(data)){
+							alert('New Category added.');
+							$("#" + dd_id + " option:first-child").after('<option value="' + data + '" >' + opt + '</option>');
+							$("#" + dd_id).prop("selectedIndex", '1');
+						}
+						else alert('New category not inserted. Try again');
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+
+					}
+				});
+			}
+	}
 
 
 	function alertChange()

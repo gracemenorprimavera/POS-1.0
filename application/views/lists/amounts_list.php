@@ -3,7 +3,6 @@
 		echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; 
 ?>
 <div id="view_amounts" class="view" >
-	<div style="border:0px solid brown;height:30px;"><?php echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?></div>
 
 <?php 
 
@@ -13,12 +12,11 @@
 		else {
 ?>
 			<table border="1px solid brown" cellpadding="5px">
-				<thead>
 				<tr>
 					<th> </th>
 					<th colspan="3"> Opening </th>
 					<th colspan="3"> Closing </th>
-					<th colspan="3"> Action</th>
+					<th colspan="2"> Action</th>
 				</tr>
 				<tr>
 					<th> Date </th>
@@ -28,11 +26,10 @@
 					<td> Bills </td>
 					<td> Coins </td>
 					<th> Total Amount </th>
-					<th> Personnel </th>
 					<th> Edit </th>
-					<th> Delete </th>	
+					<th> Delete </th>
+					
 				</tr>
-			</thead>
 			
 
 <?php
@@ -52,7 +49,6 @@
 						echo '<th><span>'.$d->closing_total.'</span></th>';
 					else 
 						echo '<th>'.$d->closing_total.'</th>';
-					echo '<td>'.$d->personnel.'</td>';
 					echo '<td>*Edit</td>'; //echo '<td>'.anchor('admin', 'Edit').'</td>';	// parang edit item lang din ito
 					echo '<td>*Delete</td>'; //echo '<td>'.anchor('admin/delete_amount/'.$d->amount_id, 'Delete', array('onclick'=>'return confirm("Delete this record?")')).'</td>';
 				echo '</tr>';

@@ -38,36 +38,11 @@ class Credits extends CI_Controller {
 	 		
 		$data['header'] = 'Customers';			
 		$data['page'] = 'lists/customer_list';
-		$this->load->view('template2', $data);		
-	}
-
-/* CUSTOMER FORM */
-	function goto_customerForm($msg = NULL) {
-		if($msg == NULL) $data['msg'] = '';
-		else if($msg) $data['msg'] = 'Customer successfully added!';
-		else $data['msg'] = 'Customer not successfully added';
-		
-		$data['header'] = 'Customer Form';
-		$data['flag'] = 1;
-		$data['page'] = 'forms/customer_form';
 		$this->load->view('template2', $data);
+		
+
+		
 	}
-
-	function add_customer() {
-
-		$name = $this->input->post('customerName');
-		$contact = $this->input->post('customerNum');
-		$add = $this->input->post('customerAdd');
-
-		$this->db->insert('customers', array('customer_id'=>NULL,
-				'customer_name'=>$name,
-				'balance'=>0
-			));
-		$msg = true;
-		redirect('credits/goto_customerForm/'.$msg);
-	}
-
-
 
 	function pay_credit() {
 		
@@ -76,30 +51,6 @@ class Credits extends CI_Controller {
 		$this->pos_model->record_payment($customer_id, $amount);	// record payment_details
 		//$this->pos_model->update_credit($customer_id, $amount);
 		redirect('credits/view_customerDetails/'.$customer_id);
-	}
-
-	function view_customers() {
-		$is_open = $this->session->userdata('open');
-		$user = $this->session->userdata('role');
-	
-		if($user=='cashier')
-			$data['flag'] = 2;
-		else if($user=='admin') 
-			$data['flag'] = 1;
-			
-		$data['customer_flag'] = false;
-		$data['trans_flag'] = false;
-		
-		if($this->pos_model->getAll_customers()) {
-			$data['customers'] = $this->pos_model->getAll_customers();
-			$data['message'] = '';
-		}
-		else 
-			$data['message'] = 'No Customers Found';
-	 		
-		$data['header'] = 'Customers';			
-		$data['page'] = 'lists/customer_list';
-		$this->load->view('template2', $data);		
 	}
 
 	function view_customerDetails($customer_id) {
@@ -126,6 +77,17 @@ class Credits extends CI_Controller {
 		$data['page'] = 'lists/customer_list';
 		
 		$this->load->view('template2', $data);
+	}
+
+	function view_customerDetails2() {
+		
+		$customer_id = $this->input->post('customer_id');
+		$data = '';
+		if($this->pos_model->get_customerDetails2($customer_id)){
+			$data = $this->pos_model->get_customerDetails2($customer_id);
+			//echo 'true';
+		}
+		echo json_encode($data);
 	}
 
 	function view_transDetails($trans_id, $customer_id) {
@@ -166,6 +128,28 @@ class Credits extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
+	function goto_customerForm() {
+
+		$data['header'] = 'Customer Form';
+		$data['flag'] = 1;
+		$data['page'] = 'forms/customer_form';
+		$this->load->view('template2', $data);
+	}
+
+	function add_customer() {
+
+		$name = $this->input->post('customerName');
+		$contact = $this->input->post('customerNum');
+		$add = $this->input->post('customerAdd');
+
+		$this->db->insert('customers', array('customer_id'=>NULL,
+				'customer_name'=>$name,
+				'contact_number'=>$contact,
+				'address'=>$add,
+				'balance'=>0
+			));
+		redirect('credits/goto_customerPage');
+	}
 
 }
 

@@ -131,24 +131,13 @@ function pdf() {
 		$this->load->view('template', $data);
 	}
 
-	/* AJAX */
+	/* Nicole */
 	public function get_all_items() {
 		
 		if($this->pos_model->getAll_items2()) {
 			$data = $this->pos_model->getAll_items2();
 		}
 		echo json_encode($data);
-	}
-
-	function goto_view_items_byId() {
-
-		$item_id= $this->input->post('item_id');
-		$output = "";
-		if($this->pos_model->get_item_byId($item_id)) {
-			$data = $this->pos_model->get_item_byId($item_id);				
-		}
-		echo json_encode($data); //get item by item code
-		
 	}
 
 	public function customers2() {
@@ -167,6 +156,30 @@ function pdf() {
 		echo json_encode($data);
 	}
 
+	function goto_view_items_byId() {
+
+		$item_id= $this->input->post('item_id');
+		$output = "";
+		if($this->pos_model->get_item_byId($item_id)) {
+			$data = $this->pos_model->get_item_byId($item_id);				
+		}
+		echo json_encode($data); //get item by item code
+		
+	}
+
+	function goto_add_category(){
+			$cat_name =  $this->input->post('cat_name');
+			$mode = $this->input->post('mode');
+			if($mode == 'addSupplier')
+				echo $this->pos_model->add_supplier($cat_name);
+			else if($mode == 'addCashout')
+				echo $this->pos_model->add_cashout($cat_name);
+			else if($mode == 'addDivision')
+				echo $this->pos_model->add_division($cat_name);
+			else if($mode == 'addOutgoing')
+				echo $this->pos_model->add_outgoing($cat_name);
+			
+	}
 }
 
 /* End of file pos.php */

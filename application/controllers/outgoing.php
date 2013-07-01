@@ -16,82 +16,6 @@ class Outgoing extends CI_Controller {
 		}		
     }
 
-/* OUTGOING FORM */
-	function goto_outgoingForm($msg = NULL) {
-		if($msg == NULL) $data['msg'] = '';
-		else if($msg) $data['msg'] = 'Delivery successfully recorded!';
-		else $data['msg'] = 'Failed to record delivery!';
-
-		$user= $this->session->userdata('role');
-		$data['header'] = 'Outgoing';
-		if($user=='manager')
-			$data['flag'] = 3;
-		else if($user=='admin') 
-			$data['flag'] = 1;	
-		$data['page'] = 'forms/outgoing_form';
-		$this->load->view('template2', $data);
-	}
-
-	function add_outgoing(){
-		$this->load->model('outgoing_model');
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-
-		$user = $this->session->userdata('role');
-			
-		$this->form_validation->set_rules('outgoingDate', 'Date', 'required');				//require date
-		$this->form_validation->set_rules('outgoing' ,'Status', 'required');					//require supplier
-		$this->form_validation->set_rules('outgoingItem', 'Item code' , 'required');					//require item code
-		$this->form_validation->set_rules('outgoingQty', 'Item quantity' , 'required');				//require item quantity
-		$this->form_validation->set_rules('outgoingPrice', 'Item price' , 'required');				//require	item price
-		$this->form_validation->set_rules('outgoingAmt', 'Item amount' , 'required');				//require item amount
-
-		if ($this->form_validation->run() === FALSE)
-		{
-			$data['header'] = 'Outgoing';
-			$data['flag'] = 2;
-			$data['page'] = 'forms/outgoing_form';
-			$this->load->view('template2', $data);
-		}
-		else
-		{	
-			$status = $this->input->post('outgoing');
-			$desc = $this->input->post('out_desc');
-			$date = $this->input->post('outgoingDate');
-
-			$item = $this->input->post('outgoingItem');
-			$qty = $this->input->post('outgoingQty');
-			$price = $this->input->post('outgoingAmt');
-			$total = $this->input->post('outTotalPrice');
-			
-				
-				// create outgoing 
-			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
-				'date_out'=>$date,
-				'description'=>$desc,
-				'amount'=>$total,
-				'status'=>$status
-				));
-				 
-			$outgoing_id = $this->db->insert_id();	// get outgoing ID
-
-				// insert out_items 
-			$i = 0;
-			foreach($item as $d):
-				echo "$outgoing_id, $item[$i], $qty[$i], $price[$i]"; 
-				//$this->outgoing_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
-				//$this->outgoing_model->subtract_item($items['id'], $items['qty']);
-				$i++;
-			endforeach;
-			/*
-			$msg = true;
-			if($user=='admin') // return to admin home
-        		redirect('outgoing/goto_outgoingForm/'.$msg);
-       	 	else 	// return to manager home
-        		redirect('manager');*/
-		}
-	}
-
     function goto_outgoingPage() {
 		$is_logged_in = $this->session->userdata('validated');
         $user= $this->session->userdata('role');
@@ -107,7 +31,74 @@ class Outgoing extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
-/* VIEW OUTGOING */
+	function goto_outgoingForm() {
+		$user= $this->session->userdata('role');
+		$data['header'] = 'Outgoing';
+		if($user=='manager')
+			$data['flag'] = 3;
+		else if($user=='admin') 
+			$data['flag'] = 1;	
+		$data['page'] = 'forms/outgoing_form';
+		$this->load->view('template2', $data);
+	}
+
+	function add_outgoing(){
+		$user = $this->session->userdata('role');
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('outgoingDate', 'Date', 'required');				//require date
+		$this->form_validation->set_rules('outgoing' ,'Status', 'required');					//require supplier
+		//$this->form_validation->set_rules('outgoing','Supplier name', 'callback_supplier_check');	//check if supplier is not ''
+		$this->form_validation->set_rules('outgoingItem', 'Item code' , 'required');					//require item code
+		$this->form_validation->set_rules('outgoingQty', 'Item quantity' , 'required');				//require item quantity
+		$this->form_validation->set_rules('outgoingPrice', 'Item price' , 'required');				//require	item price
+		$this->form_validation->set_rules('outgoingAmt', 'Item amount' , 'required');				//require item amount
+
+		if ($this->form_validation->run() === FALSE)
+		{
+			$data['header'] = 'Outgoing';
+			$data['flag'] = 2;
+			$data['page'] = 'forms/outgoing_form';
+			$data['supplier'] = $this->pos_model->getAll_supplier();
+			$this->load->view('template2', $data);
+		}
+		else
+		{	
+			$status = $this->input->post('outgoing');
+			$desc = $this->input->post('out_desc');
+			$item = $this->input->post('outgoingItem');
+			$qty = $this->input->post('outgoingQty');
+			$price = $this->input->post('outgoingAmt');
+			$total = $this->input->post('outTotalPrice');
+			$date = $this->input->post('outgoingDate');
+				
+				// create outgoing 
+			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
+				'date_out'=>$date,
+				'description'=>$desc,
+				'amount'=>$total,
+				'status'=>$status
+				));
+				 
+			$outgoing_id = $this->db->insert_id();	// get outgoing ID
+
+				// insert out_items 
+			$i = 0;
+			foreach($item as $d): 
+				$this->pos_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
+				$this->pos_model->subtract_item($items['id'], $items['qty']);
+				$i++;
+
+			endforeach;
+
+			if($user=='admin') // return to admin home
+        		redirect('outgoing/goto_outgoingPage');
+       	 	else 	// return to manager home
+        		redirect('manager');
+		}
+	}
+
 	function view_outgoing() {
 		$data['detail_flag'] = false;
 		if($this->pos_model->getAll_outgoing()) {

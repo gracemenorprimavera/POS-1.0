@@ -1,4 +1,0 @@
-Notes:
-
-Daily Report
-- sales by division should be dynamic since users can add division

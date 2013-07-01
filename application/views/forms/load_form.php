@@ -22,9 +22,25 @@ $load = array();
 	}
 */
 ?>
-
+<!--	<table border="1px solid black" cellpadding="6">
+		<tr>
+			<th colspan="2">Load Balance</th>
+		</tr>
+		<tr>
+			<td>Globe/TM</td>
+			<td><?php echo $load[0]; ?></td>
+		</tr>
+		<tr>
+			<td>Smart/TNT</td>
+			<td><?php echo $load[1]; ?></td>
+		</tr>
+		<tr>
+			<td>Sun</td>
+			<td><?php echo $load[2]; ?></td>
+		</tr>
+	</table>-->
 <table>
-	<?php echo form_open('cashier/add_load_sales', array('onsubmit'=>"return confirm('Record E-load?') ")); ?>	
+	<?php echo form_open('cashier/add_load', array('onsubmit'=>"return confirm('Record E-load?') ")); ?>	
 
 
 	<tr>
