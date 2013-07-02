@@ -2,7 +2,9 @@
 	if($this->session->userdata('role')=='admin') 	
 ?>
 <div id="view_record" class="view" >
-	<div style="border:0px solid brown;height:30px;"><?php echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?></div>
+	<div style="border:0px solid brown;height:30px;">
+		<?php echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; ?>
+	</div>
  
 	<div id="view_left" class="view" >
 		<?php

@@ -19,7 +19,12 @@ $user = $this->session->userdata('role');
 ?>
 <span><?php echo $msg; ?></span>
 <table>
-	<?php echo form_open('admin/add_load', array('onsubmit'=>"return confirm('Record E-load?') ")); ?>	
+	<?php 
+	if($this->session->userdata('role')=='admin') 
+		echo form_open('admin/add_load', array('onsubmit'=>"return confirm('Record E-load?') "));
+	else // cashier 	
+		echo form_open('cashier/add_load', array('onsubmit'=>"return confirm('Record E-load?') "));
+	?>
 
 	<tr>
 		<td>Date: </td>
@@ -35,7 +40,8 @@ $user = $this->session->userdata('role');
 		<td><input type="text" name="load_balance" required/></td>
 	</tr>
 	<tr>
-		<td colspan="2" style="text-align:right"><?php echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td>
+		<td colspan="2" style="text-align:right">
+			<?php echo form_submit(array('name'=>'add_load', 'class'=>'button'), 'Record'); ?></td>
 	</tr>
 	<?php echo form_close(); ?>
 </table>

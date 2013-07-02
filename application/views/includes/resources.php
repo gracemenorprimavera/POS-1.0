@@ -501,7 +501,7 @@
 
 			//add cashout
 					$('#expense option[value=add]').click(function(){
-							addCategory('#expense');
+							addCategory('expense');
 				   });
 				
 			},
@@ -562,7 +562,7 @@
 		var val = $('#hEditableValue').val();
 		var name = el.getAttribute('name');
 		var mode = '';
-
+		
 		if(el.parentNode.getAttribute('id') == 'activeEditable' && (input=='INPUT' || input=='SELECT' )) {return;}
 		else if(el.parentNode.parentNode.getAttribute('id') == 'activeEditable' && input=='OPTION') {return;}
 

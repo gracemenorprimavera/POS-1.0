@@ -6,20 +6,19 @@
 <div id="cashout_form" class="forms">
 	<span><?php echo $msg; ?></span>
 	<?php 
-		echo form_open('expenses/add_cashout/'.$user, array('onsubmit'=>"return confirm('Finalize Record?') "));
-		$options = array(
-				'' => 'Please Select',
-				'DELIVERY' => "Delivery Payment",
-				'SUPPLIES' => "Supplies",
-				'SALARY' => "Salary",
-				'RENT'=>"Rent",
-				'EMPLOYEE_ALLOWANCE'=>"Employee Fare Allowance",
-				'COMMUNICATION_ALLOWANCE'=>"Store Communication Allowance",
-				'FOOD_ALLOWANCE'=>"Store Food Allowance",
-				'MAINTENANCE'=>"Store Maintenance/Repairs",
-				'CASH_OUT'=>"Cash Remitted",
-				'other' => 'Others'
-			);
+		echo form_open('expenses/add_cashout', array('onsubmit'=>"return confirm('Finalize Record?') "));
+		
+		$cashout = $this->pos_model->getAll_cashout_cat();
+		$options = array();
+		$options[''] = 'Select one';
+		if(isset($cashout)){
+			foreach($cashout as $row){
+				$options[$row->cashout] = $row->cashout;
+			}
+		}
+		if($this->session->userdata('role')=='admin')
+			$options['add'] = "Add Cash Out...";
+
 		if($user=='admin') {
 			$data1 = array(
 	              'name'        => 'cashoutDate',

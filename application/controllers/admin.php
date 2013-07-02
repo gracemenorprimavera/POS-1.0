@@ -99,7 +99,7 @@ class Admin extends CI_Controller {
 	}
 
 	function reports() {
-
+		$data['detail_flag'] = false; 
 		if($this->pos_model->getAll_reports()) {
 			$data['report'] = $this->pos_model->getAll_reports();
 			$data['message'] = '';
@@ -114,7 +114,7 @@ class Admin extends CI_Controller {
 	}
 
 	function view_daily_report($report_id, $report_date) {
-
+		$data['detail_flag'] = true; 
 		$data['report'] = $this->pos_model->get_dailyReport($report_id);
 		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
 		$data['message'] = '';
@@ -286,9 +286,10 @@ class Admin extends CI_Controller {
 	}
 
 	function view_sales() {
+		$this->load->model('sales_model');
 		$data['detail_flag'] = false; 
-		if($this->pos_model->getAll_sales()) {
-			$data['sales'] = $this->pos_model->getAll_sales();
+		if($this->sales_model->getAll_sales()) {
+			$data['sales'] = $this->sales_model->getAll_sales();
 			$data['message'] ='';
 		}
 		else
@@ -301,10 +302,11 @@ class Admin extends CI_Controller {
 	}
 
 	function view_salesDetails($date) {
+		$this->load->model('sales_model');
 		$data['detail_flag'] = true; 
-		$data['sales'] = $this->pos_model->getAll_sales();
+		$data['sales'] = $this->sales_model->getAll_sales();
 		$data['date'] = $date;
-		$data['daily'] = $this->pos_model->getAll_sales_byDate($date);
+		$data['daily'] = $this->sales_model->getAll_sales_byDate($date);
 		$data['message'] = '';
 		$data['header'] = 'Sales Record';
 		$data['flag'] = 1;

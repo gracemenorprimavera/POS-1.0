@@ -60,6 +60,14 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+	function add_item($item_id, $qty) {	
+		$query = "UPDATE item set quantity=quantity+$qty WHERE item_id=$item_id";
+		$this->db->query($query);
+		//$this->db->where('item_code',$item_code);
+			
+		//$this->db->update('item', array('quantity'=>'quantity'-$qty));
+	}
+
 	function getAll_items() {
 
 		$this->db->where('active', 1);
@@ -147,10 +155,46 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+	function get_credit_byDate($date) {
+		
+		$this->db->from('credit');
+		$this->db->where('date', $date);
+		$this->db->join('customers', 'credit.customer_id = customers.customer_id');
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
 	function get_creditDetails_byDate($date) {
 		
 		$this->db->from('credit_details');
-		$this->db->where('credit_details.date', $date);
+		$this->db->where('date', $date);
+		$this->db->join('item', 'credit_details.item_id = item.item_id');
+		//$this->db->join('credit', 'credit_details.credit_id = credit.credit_id');
+		//$this->db->join('customers', 'credit.customer_id = customers.customer_id');
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function get_creditDetails_byId($id) {
+		
+		$this->db->from('credit_details');
+		$this->db->where('credit_id', $id);
 		$this->db->join('item', 'credit_details.item_id = item.item_id');
 		$result = $this->db->get();
 
@@ -381,27 +425,40 @@ class Pos_model extends CI_Model {
 
 	function store_transDetails($trans_id, $item_id, $qty, $subtotal) {
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
-			'item_code'=>$item_id,
+			'item_id'=>$item_id,
 			'division'=>NULL,
 			'quantity'=>$qty,
 			'price'=>$subtotal,
 			'date'=>date('y-m-d')
 			));
 		$id = $this->db->insert_id();
-		$query_str = "UPDATE trans_details set division=(select division from item where item_id=$item_id) where trans_id=$trans_id and item_code=$item_id";
+		$query_str = "UPDATE trans_details set division=(select division from item where item_id=$item_id) where trans_id=$trans_id and item_id=$item_id";
 		$this->db->query($query_str);
 
 	}
 
 	function store_creditDetails($trans_id, $item_id, $qty, $subtotal) {
 		$this->db->insert('credit_details', array('credit_id'=> $trans_id,
-			'item_code'=>$item_id,
+			'item_id'=>$item_id,
+			'division'=>NULL,
+			'credit_quantity'=>$qty,
+			'price'=>$subtotal,
+			'date'=>date('y-m-d')
+			));
+		$query_str = "UPDATE credit_details set division=(select division from item where item_id='$item_id') where credit_id=$trans_id and item_id=$item_id";
+		$this->db->query($query_str);
+
+	}
+
+	function store_checkDetails($trans_id, $item_id, $qty, $subtotal) {
+		$this->db->insert('check_details', array('check_id'=> $trans_id,
+			'item_id'=>$item_id,
 			'division'=>NULL,
 			'quantity'=>$qty,
 			'price'=>$subtotal,
 			'date'=>date('y-m-d')
 			));
-		$query_str = "UPDATE credit_details set division=(select division from item where item_id='$item_id') where trans_id=$trans_id and item_code=$item_id";
+		$query_str = "UPDATE check_details set division=(select division from item where item_id='$item_id') where check_id=$trans_id and item_id=$item_id";
 		$this->db->query($query_str);
 
 	}
@@ -642,7 +699,8 @@ class Pos_model extends CI_Model {
 					'opening_total'=>$amount,
 					'closing_bills'=>0,
 					'closing_coins'=>0,
-					'closing_total'=>0
+					'closing_total'=>0,
+					'personnel'=>$this->session->userdata('name')
 				));
 			$this->session->set_userdata('open', true);
 		}
@@ -743,6 +801,7 @@ class Pos_model extends CI_Model {
 
 	function getAll_sales() {
 		$this->db->select('*');
+		
 		$this->db->group_by('trans_date');
 		$result = $this->db->get('transactions');
 
@@ -1129,6 +1188,41 @@ class Pos_model extends CI_Model {
 			$balance = 0;
 
 		return $balance;
+	}
+
+	/* Returned */
+	function getAll_incoming() {
+		$this->db->select('*');
+		$this->db->group_by('date_delivered');
+		$result = $this->db->get('delivery');
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function getAll_incoming_byDate($date) {
+		/*$this->db->select('*');
+		$this->db->where('date_delivered', $date);
+		$result = $this->db->get('delivery');*/
+		$this->db->from('delivery');
+		$this->db->where('date_delivered', $date);
+		$this->db->join('supplier', 'supplier.supplier_id = delivery.supplier_id');
+		$result = $this->db->get();		
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
 	}
 
 	/* Nicole */

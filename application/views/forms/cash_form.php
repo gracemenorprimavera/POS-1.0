@@ -1,4 +1,4 @@
-<?php echo form_open('sales/enter_cash'); ?>
+<?php echo form_open('sales/do_purchase', array('onsubmit'=>"return confirm('Save Transaction?') ")); ?>
 
 
 <?php
@@ -13,7 +13,7 @@
 
 		echo form_checkbox($data);
 		echo '<span>Cash</span>';
-		echo "<div style='display:inline-box' id='hcustomerCash'><input style='height:50px;width:170px;font-size:45px;' type='number' name='cash' value='0.00' required /></div>";
+		echo "<div style='display:inline-box' id='hcustomerCash'><input style='height:50px;width:170px;font-size:45px;' type='text' name='cash' value='0.00' required /></div>";
 ?>
 
 <span>Other mode of payment</span><br>
@@ -52,7 +52,7 @@ echo '<br>';
 //invisible divs for other mode of payments
 
 //for CHECK payment
-echo "<div style='display:none' id='hcustomerCheck'><table style='text-align:right;'><tr><td>Check # <input type='text' required /></td></tr><tr><td>Date <input type='date' required /></td></tr><tr><td>Amount <input type='text' required /></td></tr></table></div>";
+echo "<div style='display:none' id='hcustomerCheck'><table style='text-align:right;'><tr><td>Check # <input type='text' name='check_num' required /></td></tr><tr><td>Date <input type='date' name='check_date' required /></td></tr><tr><td>Amount <input type='text' name='check_amount' required /></td></tr></table></div>";
 
 //for CREDIT payment	
 	$customer = $this->pos_model->getAll_customers();

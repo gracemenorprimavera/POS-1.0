@@ -12,8 +12,8 @@ class Incoming_model extends CI_Model {
 		$this->db->update('item', array('cost'=>$price));
 	}
 
-	function add_item($item_code, $qty) {	
-		$query = "UPDATE item set quantity=quantity+$qty WHERE item_code='$item_code'";
+	function add_item($item_id, $qty) {	
+		$query = "UPDATE item set quantity=quantity+$qty WHERE item_id=$item_id";
 		$this->db->query($query);
 		//$this->db->where('item_code',$item_code);
 			

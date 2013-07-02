@@ -12,7 +12,7 @@ if($this->session->userdata('role')=='admin')
 
 		foreach ($sales as $r) {
 			echo '<tr>';
-				echo '<td>'.anchor('admin/view_salesDetails/'.$r->trans_date, date('F d, Y', strtoTime($r->trans_date))).'</td>';
+				echo '<td>'.anchor('admin/view_salesDetails/'.$r->date, date('F d, Y', strtoTime($r->date))).'</td>';
 			echo '</tr>';
 		}
 		echo '</table>';
@@ -35,7 +35,7 @@ if($this->session->userdata('role')=='admin')
 			
 		<tr>
 			<td><?php echo $d->trans_id; ?> </td>
-			<td><?php echo $d->total_amount; ?> </td>
+			<td><?php echo $d->amount; ?> </td>
 		</tr>			
 <?php				
 		} // end foreach

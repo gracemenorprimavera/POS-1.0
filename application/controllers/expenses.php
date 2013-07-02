@@ -9,8 +9,7 @@ class Expenses extends CI_Controller {
 
     private function check_isvalidated(){
         $is_logged_in = $this->session->userdata('validated');
-        $user= $this->session->userdata('role');
-        $user= $this->session->userdata('role');
+        $user = $this->session->userdata('role');
 		if(!isset($is_logged_in) || $is_logged_in != true || ($user!='cashier' && $user!='admin')) {
 			echo 'You don\'t have permission to access this page. '.anchor('pos', 'Login as '.$user);	
 			die();
@@ -87,7 +86,7 @@ class Expenses extends CI_Controller {
 		$user= $this->session->userdata('role');
 		$is_open = $this->session->userdata('open');
 		if($user=='cashier' && (!isset($is_open) || $is_open != true)) {
-			$data['message']='Cashier is not yet open. You won\'t be able to record expenses. <br>To open cashier, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
+			$data['message']='Cashier is not yet open. You won\'t be able to record cashout. <br>To open cashier, <span>'.anchor('cashier/open_amount', 'Record Opening Amount').'</span>';	
 			//die();
 			$data['header'] = 'Cash Out';
 			$data['page'] = 'dummy';
@@ -97,13 +96,16 @@ class Expenses extends CI_Controller {
 		else {
 
 	        $data['header'] = 'Cash Out';   
-	        if($user=='manager')
-				$data['flag'] = 3;
-			else if($user=='admin') 
+	        if($user=='cashier') {
+				$data['flag'] = 2;
+				redirect('cashier/new_cashier');
+			}
+			else if($user=='admin') {
 				$data['flag'] = 1;
 
-	        $data['page'] = 'forms/cashout_form';
-	        $this->load->view('template2', $data);
+	        	$data['page'] = 'forms/cashout_form';
+	        }	$this->load->view('template3', $data);
+
 	    }
     }
 
@@ -123,7 +125,7 @@ class Expenses extends CI_Controller {
        	if($user=='admin') // return to form
         	redirect('expenses/goto_cashoutForm/'.$msg);
         else 	// return to form
-        	redirect('manager/goto_cashoutForm/'.$msg);
+        	redirect('expenses/goto_cashoutForm/'.$msg);
 		
     }
 

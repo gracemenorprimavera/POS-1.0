@@ -52,7 +52,7 @@ class Sales extends CI_Controller {
 
 		if($this->form_validation->run() == FALSE) {
 			$data['message'] = 'All fields are required!';
-
+			$data['searchMode'] = $searchMode;
 			$data['header'] = 'New Transaction';
 			//$data['page'] = 'cashier/purchase_main';
 			$data['page'] = 'forms/sales_form';
@@ -84,7 +84,7 @@ class Sales extends CI_Controller {
 			               'id'      => $r->item_id,
 			               'qty'     => $qty,
 			               'price'   => $r->retail_price,
-			               'name'    => str_replace("'", "",$r->desc1.$r->desc2.$r->desc3.$r->desc4)
+			               'name'    => str_replace("'", "",$r->desc1.' '.$r->desc2.' '.$r->desc3.' '.$r->desc4)
 			            );
 			            $this->cart->insert($data);
 			        }
@@ -127,20 +127,36 @@ class Sales extends CI_Controller {
 	function do_purchase() {
 
 		$mode = $this->input->post('paymentChoice');
+		$data['mode'] = $mode;
+			
+		//echo $mode;
 
 		$total = $this->cart->total();
 		$date = date('y-m-d'); //'2013-06-20';
+
 		if($mode=='cash') {	
-				// insert transactions 
-			$this->db->insert('transactions', array('trans_id'=>NULL,  
+				 
+			$data['cash'] = $this->input->post('cash');
+			$data['name'] = 'Walk-in';
+
+			$this->db->insert('transactions', array('trans_id'=>NULL, 
+				'payment'=>'cash',
+				'date'=>$date,
+				'time'=>'',
+				'amount'=>$total
+				)); 
+			$id = $this->db->insert_id();	// take last id of the transaction
+
+				// insert cash transactions
+			$this->db->insert('cash', array('trans_id'=>$id,
+				'cash_id'=>NULL,  
 				'trans_date'=>$date, //date('y-m-d'),
 				'total_amount'=>$total
 				));
 						
-			$trans_id = $this->db->insert_id();	/* get last transaction id */
+			$trans_id = $this->db->insert_id();	// get last transaction id 
 
-				// insert trans_details 
-			$i = 1;
+			$i = 1;	// insert trans_details 
 			foreach ($this->cart->contents() as $items):
 				$this->pos_model->store_transDetails($trans_id, $items['id'], $items['qty'], $items['subtotal']);
 					// decrease item in the stocks 
@@ -148,11 +164,22 @@ class Sales extends CI_Controller {
 				$i++;
 			endforeach;
 		}
-		else {
+		else if($mode=='credit') {
 			$customer_id = $this->input->post('customerName');
-				// insert credits 
-			
-			$this->db->insert('credit', array('credit_id'=>NULL,  
+			$name = $this->pos_model->get_customerName($customer_id);
+			$data['name'] = $name;
+
+			$this->db->insert('transactions', array('trans_id'=>NULL, 
+				'payment'=>'credit',
+				'date'=>$date,
+				'time'=>'',
+				'amount'=>$total
+				)); 
+			$id = $this->db->insert_id();
+				
+				// insert credits 			
+			$this->db->insert('credit', array('trans_id'=>$id,
+				'credit_id'=>NULL,  
 				'customer_id'=>$customer_id,
 				'date'=>$date, //date('y-m-d'),
 				'status'=>'credit',
@@ -162,9 +189,8 @@ class Sales extends CI_Controller {
 				));
 
 			$credit_id = $this->db->insert_id();	// get last credit id
-
-				// insert credit_details 
-			$i = 1;
+	
+			$i = 1;		// insert credit_details 
 			foreach ($this->cart->contents() as $items):
 				$this->pos_model->store_creditDetails($credit_id, $items['id'], $items['qty'], $items['subtotal']);
 					// decrease item in the stocks 
@@ -175,10 +201,53 @@ class Sales extends CI_Controller {
 				// update balance 
 			$this->pos_model->update_balance($customer_id, $total, $credit_id);
 
+		} 
+		else if(($mode=='check')) {
+			$data['name'] = 'Walk-in';
+			$check_num = $this->input->post('check_num');
+			$check_date = $this->input->post('check_date');
+			$check_amount = $this->input->post('check_amount');
+			$data['check_num'] = $check_num;
+			$data['check_date'] = $check_date;
+			$data['check_amount'] = $check_amount;
+
+			$this->db->insert('transactions', array('trans_id'=>NULL, 
+				'payment'=>'check',
+				'date'=>$date,
+				'time'=>'',
+				'amount'=>$total
+				)); 
+			$id = $this->db->insert_id();	// take last id of the transaction
+
+			$this->db->insert('check_trans', array('trans_id'=>$id,
+				'check_id'=>NULL,  
+				'check_num'=>$check_num,
+				'date'=>$check_date,
+				'check_amount'=>$check_amount,
+				'amount'=>$total
+				));
+			$check_id = $this->db->insert_id();
+
+			$i = 1;		// insert check_details 
+			foreach ($this->cart->contents() as $items):
+				$this->pos_model->store_checkDetails($check_id, $items['id'], $items['qty'], $items['subtotal']);
+					// decrease item in the stocks 
+				$this->pos_model->subtract_item($items['id'], $items['qty']);
+				$i++;
+			endforeach;
+		
 		}
-			
-		$this->cart->destroy();
-		redirect('cashier');
+
+		$data['message'] = 'TRANSACTION SAVED!';
+
+		$data['customer'] = $this->pos_model->getAll_customers();
+		$data['header'] = 'New Transaction';
+		$data['page'] = 'forms/receipt_form';
+		$data['flag'] = 4;
+		
+		$this->load->view('template3', $data);	
+		//$this->cart->destroy();
+		//redirect('cashier/new_cashier', $data);
 	}
 
 	function cancel_trans() {

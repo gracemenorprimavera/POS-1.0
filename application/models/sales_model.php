@@ -36,7 +36,7 @@ class Sales_model extends CI_Model {
 
 	function getAll_sales() {
 		$this->db->select('*');
-		$this->db->group_by('trans_date');
+		$this->db->group_by('date');
 		$result = $this->db->get('transactions');
 
 		if($result->num_rows() > 0) {
@@ -51,7 +51,7 @@ class Sales_model extends CI_Model {
 
 	function getAll_sales_byDate($date) {
 		$this->db->select('*');
-		$this->db->where('trans_date', $date);
+		$this->db->where('date', $date);
 		$result = $this->db->get('transactions');
 
 

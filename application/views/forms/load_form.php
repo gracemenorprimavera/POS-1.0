@@ -44,6 +44,7 @@ $load = array();
 		<td><input type="text" name="load_balance" required/></td></tr>
 	-->
 		
-		<td colspan="2" style="text-align:right"><?php echo form_submit(array('name'=>'addload', 'class'=>'button'), 'Record'); ?></td></tr>
+		<td colspan="2" style="text-align:right">
+		<?php echo form_submit(array('name'=>'addload', 'class'=>'button'), 'Record'); ?></td></tr>
 	<?php echo form_close(); ?>
 	</table>
