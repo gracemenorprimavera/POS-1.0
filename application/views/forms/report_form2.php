@@ -3,10 +3,11 @@
 	 foreach($report as $d) { ?>
 	<table border="0px solid black" style='margin-left:auto; margin-right:auto;'>
 	<tr> <th colspan="2"> Daily Sales Summary </th></tr>
-	<tr> <td colspan="2"><h4 style='text-align:center;'><?php echo $report_date; ?></h4></td></tr>
+	<tr> <td colspan="2" style="text-align:center">
+		<?php echo 'Date: '.date('F d, Y', strtoTime($report_date)); ?></td></tr>
 	
 	<tr>
-		<td>Starting Bills and Coins: </td><td><?php echo $d->open_amt ?></td>
+		<td><br>Starting Bills and Coins: </td><td><?php echo $d->open_amt ?></td>
 	</tr>
 
 	<tr>
@@ -34,26 +35,45 @@
 	</tr>
 
 	<tr>
-		<td>
-			<?php 
-			$credit = $this->pos_model->get_creditDetails_byDate($this->uri->segment(4)); 
+		<td style="text-align:left;">
+					
+			<?php
+			$credit = $this->pos_model->get_credit_byDate($this->uri->segment(4));  
+			//$credit = $this->pos_model->get_creditDetails_byDate($this->uri->segment(4)); 
 			if($credit) {
 			?>
+
 			<table border="1px solid black">
-				<tr>
-					<th> Credit ID </th>
-					<th> Item </th>
-					<th> Price </th>
-				</tr>
-				<?php
-			
+					
+					<tr>
+						<th> Quantity </th>
+						<th> Item </th>
+						<th> Price </th>
+						<th> Subtotal </th>
+					</tr>
+					
+
+			<?php
 				foreach($credit as $r) {
-					echo '<tr>';
-					echo '<td>'.$r->credit_id.'</td><td>'.$r->item_code.'</td><td>'.$r->price.'</td>';
-					echo '</tr>';
-				}
-			
-				?>
+					echo '<tr><td colspan="4" style="text-align:left;"><span>'.$r->customer_name.'</span></td></tr>';
+									
+				$credit_details = $this->pos_model->get_creditDetails_byId($r->credit_id); 
+			?>
+
+
+					<?php
+				
+					foreach($credit_details as $t) {
+						echo '<tr>';
+						echo '<td>'.$t->credit_quantity.'</td><td>'.$t->desc1.'</td><td>'.$t->retail_price.'</td><td>'.$t->price.'</td>';
+						echo '</tr>';
+					}
+					?>
+					<tr>
+						<td style="text-align:right;" colspan="4"><?php echo 'Total Amount: <b>'.$r->amount_credit.'</b>'; ?></td>
+					</tr>
+				
+			<?php } //end foreach($credit as $r) ?>
 			</table>
 			<?php } //end if($credit) ?>
 		</td>

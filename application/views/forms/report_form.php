@@ -3,9 +3,11 @@
 	 foreach($report as $d) { ?>
 	<table border="0px solid black" >
 	<tr> <th colspan="2"> Daily Sales Summary </th></tr>
-
+	<tr> <td colspan="2" style="text-align:center">
+		<?php echo 'Date: '.date('F d, Y', strtoTime($report_date)); ?></td>
+	</tr>
 	<tr>
-		<td>Starting Bills and Coins: <input type="text" value="<?php echo $d->open_amt ?>"></td>
+		<td><br>Starting Bills and Coins: <input type="text" value="<?php echo $d->open_amt ?>"></td>
 	</tr>
 	<tr>	
 		<td>Ending Bills and Coints: <input type="text" value="<?php echo $d->close_amt ?>" ></td>
@@ -24,23 +26,31 @@
 	</tr>
 	<tr>
 		<td style="text-align:left;">
+					
 			<?php
 			$credit = $this->pos_model->get_credit_byDate($this->uri->segment(4));  
 			//$credit = $this->pos_model->get_creditDetails_byDate($this->uri->segment(4)); 
 			if($credit) {
-				foreach($credit as $r) {
-					echo '<br>Credit ID: <b>'.$r->credit_id.'</b> Customer: <b>'.$r->customer_name.'</b>';
-									
-				$credit_details = $this->pos_model->get_creditDetails_byId($r->credit_id); 
 			?>
 
-				<table border="1px solid black">
+			<table border="1px solid black">
+					
 					<tr>
 						<th> Quantity </th>
 						<th> Item </th>
 						<th> Price </th>
 						<th> Subtotal </th>
 					</tr>
+					
+
+			<?php
+				foreach($credit as $r) {
+					echo '<tr><td colspan="4" style="text-align:left;"><span>'.$r->customer_name.'</span></td></tr>';
+									
+				$credit_details = $this->pos_model->get_creditDetails_byId($r->credit_id); 
+			?>
+
+
 					<?php
 				
 					foreach($credit_details as $t) {
@@ -52,8 +62,9 @@
 					<tr>
 						<td style="text-align:right;" colspan="4"><?php echo 'Total Amount: <b>'.$r->amount_credit.'</b>'; ?></td>
 					</tr>
-				</table>
+				
 			<?php } //end foreach($credit as $r) ?>
+			</table>
 			<?php } //end if($credit) ?>
 		</td>
 	</tr>
@@ -137,7 +148,7 @@
 	<tr>
 		<td colspan="2" style="text-align:right">
 			<?php $user=$this->session->userdata('role'); ?>
-			<?php echo form_open($user.'/pdf/'.$report_id."/".$report_date); ?>
+			<?php echo form_open($user.'/pdf/'.$report_id."/".$report_date, array('onsubmit'=>"return confirm('Save Report?') ")); ?>
 			<input class="button" type="submit" value="Export PDF" name="exportPDF"></input>
 			</form> 
 		</td> 

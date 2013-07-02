@@ -99,7 +99,7 @@ else if($flag==2 || $flag==4){
 		echo '<li>'.anchor('#', 'Employee Time-in/out','class="dialogThis2" id="dtrDialog"').'</li>';
 		echo '<li>'.anchor('#', 'Cash Out', 'class="dialogThis2" id="cashoutDialog"').'</li>';
 		echo '<li>'.anchor('#', 'Returns', 'class="dialogThis2" id="returnDialog"').'</li>';
-		echo '<li>'.anchor('#', 'Generate Daily Report', 'class="dialogThis2" id="returnDialog"').'</li>';
+		echo '<li>'.anchor('cashier/record_report', 'Generate Daily Report', array('onclick' => "return confirm (' Are you sure you want to generate report for the day?')")).'</li>';
 		echo '<li>'.anchor('cashier/reports', 'View Reports').'</li>';
 		echo '<li>'.anchor('pos/do_logout', 'Log out').'</li>';
 	

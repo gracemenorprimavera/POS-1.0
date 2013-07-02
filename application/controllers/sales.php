@@ -146,6 +146,8 @@ class Sales extends CI_Controller {
 				'amount'=>$total
 				)); 
 			$id = $this->db->insert_id();	// take last id of the transaction
+			$qtr = "UPDATE transactions SET time=(select curtime()) where trans_id=$id";
+			$this->db->query($qtr);
 
 				// insert cash transactions
 			$this->db->insert('cash', array('trans_id'=>$id,
@@ -176,6 +178,8 @@ class Sales extends CI_Controller {
 				'amount'=>$total
 				)); 
 			$id = $this->db->insert_id();
+			$qtr = "UPDATE transactions SET time=(select curtime()) where trans_id=$id";
+			$this->db->query($qtr);
 				
 				// insert credits 			
 			$this->db->insert('credit', array('trans_id'=>$id,
@@ -218,6 +222,8 @@ class Sales extends CI_Controller {
 				'amount'=>$total
 				)); 
 			$id = $this->db->insert_id();	// take last id of the transaction
+			$qtr = "UPDATE transactions SET time=(select curtime()) where trans_id=$id";
+			$this->db->query($qtr);
 
 			$this->db->insert('check_trans', array('trans_id'=>$id,
 				'check_id'=>NULL,  
