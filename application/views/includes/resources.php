@@ -125,12 +125,12 @@
 		var row = $(this).parent().parent();
 		$(this).parent().parent().find(":input[type='text'],:input[type='number']").val('');
 		$.ajax({
-        url: '<?php echo base_url().'index.php/admin/goto_view_items_byCode';?>',
-        data: {item_code: $(this).val()},
+        url: '<?php echo base_url().'index.php/admin/goto_view_items_byId';?>',
+        data: {item_id: $(this).val()},
         type: "post",
         success: function(data){
 		var temp = JSON.parse(data);
-		$("td:nth-child(3) input.invoicePrice", row).val(temp['cost']);
+		$("td:nth-child(3) input.invoicePrice", row).val(temp['retail_price']);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 

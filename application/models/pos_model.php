@@ -14,6 +14,7 @@ class Pos_model extends CI_Model {
             $data = array(
                     'userid' => $row->account_id,
                     'role' => $row->role,
+                    'name' => $row->name,
                     'validated' => true
                     );
             $this->session->set_userdata($data);
@@ -146,15 +147,11 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
-
-
-	function get_customerDetails($customer_id) {
+	function get_creditDetails_byDate($date) {
 		
-		$this->db->from('customers');
-		$this->db->where('customers.customer_id', $customer_id);
-		$this->db->join('credit', 'customers.customer_id = credit.customer_id');
-		//$this->db->join('trans_details', 'transactions.trans_id = trans_details.trans_id');
-		
+		$this->db->from('credit_details');
+		$this->db->where('credit_details.date', $date);
+		$this->db->join('item', 'credit_details.item_id = item.item_id');
 		$result = $this->db->get();
 
 		if($result->num_rows() > 0) {
@@ -167,12 +164,14 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
-	function get_customerDetails2($customer_id) {
-		
-		$this->db->from('credit');
-		$this->db->where('customer_id', $customer_id);
-		$this->db->order_by('date', 'desc');
 
+	function get_customerDetails($customer_id) {
+		
+		$this->db->from('customers');
+		$this->db->where('customers.customer_id', $customer_id);
+		$this->db->join('credit', 'customers.customer_id = credit.customer_id');
+		//$this->db->join('trans_details', 'transactions.trans_id = trans_details.trans_id');
+		
 		$result = $this->db->get();
 
 		if($result->num_rows() > 0) {
@@ -274,10 +273,11 @@ class Pos_model extends CI_Model {
 							
 	}
 
-	function get_item_byCode($item_code){
+/* AJAX */
+	function get_item_byCode($item_id){
 		$this->db->select('*');
 		$this->db->from('item');
-		$this->db->where('item_code',$item_code);
+		$this->db->where('item_code',$item_id);
 		$result = $this->db->get();
 		 if($result->num_rows() > 0) {
 				foreach ($result->result() as $row) {
@@ -318,6 +318,7 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+/* for incoming */
 	function getAll_supplier() {
 
 		$result = $this->db->get('supplier');
@@ -406,16 +407,6 @@ class Pos_model extends CI_Model {
 	}
 
 
-	function store_deliveredItem($delivery_id, $item_id, $qty, $amount, $price ) {
-		$this->db->insert('delivered_item', array('delivery_id'=>$delivery_id,
-			'item_code'=>$item_id,
-			'quantity'=>$qty,
-			'price'=>$amount
-			));
-		$this->db->where('item_code', $item_id);	// should be item_id
-		$this->db->update('item', array('cost'=>$price));
-	}
-
 	function store_outItem($outgoing_id, $item_id, $qty, $price ) {
 		$this->db->insert('out_item', array('outgoing_id'=>$outgoing_id,
 			'item_code'=>$item_id,
@@ -424,6 +415,7 @@ class Pos_model extends CI_Model {
 			));
 	}
 
+/*	
 	function store_expenses($status, $date, $desc, $amount) {
 		//echo $date;
 		$this->db->insert('expenses', array('expense_id'=>NULL,
@@ -434,62 +426,7 @@ class Pos_model extends CI_Model {
 			));
 
 	}
-
-	function getAll_expenses_cat(){
-		$result = $this->db->get('expenses_category');
-		
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-
-	}
-
-	function getAll_cashout_cat(){
-		$result = $this->db->get('cashout_category');
-		
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-
-	}
-
-	function getAll_division_cat(){
-		$result = $this->db->get('div_category');
-		
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-
-	}
-
-	function getAll_outgoing_cat(){
-		$result = $this->db->get('outgoing_category');
-		
-		if($result->num_rows() > 0) {
-			foreach ($result->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		else 
-			return false;
-
-	}
+*/
 
 	function subtract_item($item_code, $qty) {
 		
@@ -500,14 +437,6 @@ class Pos_model extends CI_Model {
 		//$this->db->update('item', array('quantity'=>'quantity'-$qty));
 	}
 
-	function add_item($item_code, $qty) {
-		
-		$query = "UPDATE item set quantity=quantity+$qty WHERE item_code='$item_code'";
-		$this->db->query($query);
-		//$this->db->where('item_code',$item_code);
-			
-		//$this->db->update('item', array('quantity'=>'quantity'-$qty));
-	}
 
 	function get_group() {
 
@@ -844,7 +773,7 @@ class Pos_model extends CI_Model {
 	}
 
 	
-	
+/*	
 	function getAll_incoming() {
 		$this->db->select('*');
 		$this->db->group_by('date_delivered');
@@ -861,9 +790,9 @@ class Pos_model extends CI_Model {
 	}
 
 	function getAll_incoming_byDate($date) {
-		/*$this->db->select('*');
+		$this->db->select('*');
 		$this->db->where('date_delivered', $date);
-		$result = $this->db->get('delivery');*/
+		$result = $this->db->get('delivery');
 		$this->db->from('delivery');
 		$this->db->where('date_delivered', $date);
 		$this->db->join('supplier', 'supplier.supplier_id = delivery.supplier_id');
@@ -879,6 +808,7 @@ class Pos_model extends CI_Model {
 		else 
 			return false;
 	}
+*/
 
 	function getAll_outgoing() {
 		$this->db->select('*');
@@ -1034,42 +964,6 @@ class Pos_model extends CI_Model {
 		}
 		else return false;
 	}
-
-	function add_cashout($cashout){
-		$arr = array('cashout_id'=>NULL,
-			'cashout'=>$cashout
-		);
-		$this->db->insert('cashout_category',$arr);
-		if($this->db->affected_rows() > 0)
-		{	
-		return $this->db->insert_id();
-		}
-		else return false;
-	}
-
-	function add_division($division){
-		$arr = array('div_id'=>NULL,
-			'division'=>$division
-		);
-		$this->db->insert('div_category',$arr);
-		if($this->db->affected_rows() > 0)
-		{	
-		return $this->db->insert_id();
-		}
-		else return false;
-	}
-
-	function add_outgoing($outgoing){
-		$arr = array('outgoing_id'=>NULL,
-			'outgoing'=>$outgoing
-		);
-		$this->db->insert('outgoing_category',$arr);
-		if($this->db->affected_rows() > 0)
-		{	
-		return $this->db->insert_id();
-		}
-		else return false;
-	}
 	
 	function fetch_table($table_name){
 		 return $result = $this->db->get($table_name);
@@ -1126,12 +1020,11 @@ class Pos_model extends CI_Model {
 			$this->db->from('item');
 		}
 		else if($mode == 'custDSearch'){
-			$this->db->like('customers.customer_id',$search);
-			$this->db->or_like('customers.customer_name',$search);
-			$this->db->or_like('customers.contact_number',$search);
-			$this->db->or_like('customers.address',$search);
+			$this->db->like('customer_id',$search);
+			$this->db->or_like('customer_name',$search);
+			$this->db->or_like('contact_number',$search);
+			$this->db->or_like('address',$search);
 			$this->db->from('customers');
-			//$this->db->join('credit', 'customers.customer_id = credit.customer_id','left');
 		}
 		$result = $this->db->get();
 		if($result->num_rows() > 0) {
@@ -1195,6 +1088,7 @@ class Pos_model extends CI_Model {
 
 		return $balance;
 	}
+
 	function get_customerBalance($customer) {
 		$this->db->select('balance');
 		$this->db->where('customer_id', $customer);
@@ -1237,6 +1131,120 @@ class Pos_model extends CI_Model {
 		return $balance;
 	}
 
+	/* Nicole */
+
+	function getAll_expenses_cat(){
+		$result = $this->db->get('expenses_category');
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+
+	}
+
+	function getAll_cashout_cat(){
+		$result = $this->db->get('cashout_category');
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+
+	}
+
+	function getAll_division_cat(){
+		$result = $this->db->get('div_category');
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+
+	}
+
+	function getAll_outgoing_cat(){
+		$result = $this->db->get('outgoing_category');
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+
+	}
+
+	function get_customerDetails2($customer_id) {
+		
+		$this->db->from('credit');
+		$this->db->where('customer_id', $customer_id);
+		$this->db->order_by('date', 'desc');
+
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+
+	function add_cashout($cashout){
+		$arr = array('cashout_id'=>NULL,
+			'cashout'=>$cashout
+		);
+		$this->db->insert('cashout_category',$arr);
+		if($this->db->affected_rows() > 0)
+		{	
+		return $this->db->insert_id();
+		}
+		else return false;
+	}
+
+	function add_division($division){
+		$arr = array('div_id'=>NULL,
+			'division'=>$division
+		);
+		$this->db->insert('div_category',$arr);
+		if($this->db->affected_rows() > 0)
+		{	
+		return $this->db->insert_id();
+		}
+		else return false;
+	}
+
+	function add_outgoing($outgoing){
+		$arr = array('outgoing_id'=>NULL,
+			'outgoing'=>$outgoing
+		);
+		$this->db->insert('outgoing_category',$arr);
+		if($this->db->affected_rows() > 0)
+		{	
+		return $this->db->insert_id();
+		}
+		else return false;
+	}
+
+	
 	function updateItem($id,$key,$value){
 
 			$data = array(
@@ -1249,6 +1257,7 @@ class Pos_model extends CI_Model {
 		if($this->db->affected_rows() > 0) return true;
 		else return false;
 	}
+
 	
 
 }

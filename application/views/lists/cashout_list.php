@@ -15,11 +15,11 @@
 					<tr>
 						<th> Date </th>
 					</tr>
-					<?php foreach ($expenses as $r) { ?>
+					<?php foreach ($cashout as $r) { ?>
 					<tr>
-						<td><?php echo anchor('expenses/view_expensesDetails/'.$r->date_expense, date('F d, Y', strtoTime($r->date_expense))); ?></td>
+						<td><?php echo anchor('expenses/view_cashoutDetails/'.$r->date_cashout, date('F d, Y', strtoTime($r->date_cashout))); ?></td>
 					</tr>
-					<?php } // end foreach ($expenses as $r) ?>
+					<?php } // end foreach ($cashout as $r) ?>
 				</table>
 			<?php } // end of else	?>
 	</div>
@@ -34,7 +34,7 @@
 				<table border="1px solid brown" cellpadding="6" >
 					<thead>
 					<tr>
-						<th> Expense ID </th>
+						<th> Cashout ID </th>
 						<th> Status </th>
 						<th> Description </th>
 						<th> Amount </th>
@@ -42,7 +42,7 @@
 					</thead>
 						<?php foreach ($daily as $d) { ?>	
 							<tr>
-								<td><?php echo $d->expense_id; ?> </td>
+								<td><?php echo $d->cashout_id; ?> </td>
 								<td><?php echo $d->status; ?> </td>
 								<td><?php echo $d->description; ?> </td>
 								<td><?php echo $d->amount; ?> </td>

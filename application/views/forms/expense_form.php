@@ -1,12 +1,18 @@
 <?php 
 if($this->session->userdata('role')=='admin') 
-echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
-<?php 
-	$user = $this->session->userdata('role'); 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; 
+$user = $this->session->userdata('role'); 
 ?>
 <div id="expense_form" class="forms">
+	<span><?php echo $msg; ?></span>
 	<?php 
-		echo form_open('expenses/add_expense/'.$user, array('onsubmit'=>"return confirm('Finalize Record?') "));
+		echo form_open('expenses/add_expense', array('onsubmit'=>"return confirm('Finalize Record?') "));
+		$options = array(
+				'' => 'Please Select',
+				'expense' => "Expenses",
+				
+			);
+		
 		$cashout = $this->pos_model->getAll_cashout_cat();
 		$options = array();
 		$options[''] = 'Select one';

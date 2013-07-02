@@ -2,6 +2,8 @@
 if($this->session->userdata('role')=='admin') 
 echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
 
+<span><?php echo $msg; ?></span>
+	
 <?php echo form_open('admin/add_amount', array('onsubmit'=>"return confirm('Finalize Record?') ")); ?>
 <?php
 	
@@ -26,11 +28,11 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 		</tr>
 		<tr> 
 			
-			<th colspan="2" style="text-align:right"> Opening Amount <input type="text" name="openSubTotal"> </th>
+			<th colspan="2" style="text-align:right"> Opening Amount <input type="text" name="openSubTotal" required> </th>
 		</tr>
 		<tr>
 			
-			<th colspan="2" style="text-align:right"> Closing Amount <input type="text" name="closeSubTotal"> </th>
+			<th colspan="2" style="text-align:right"> Closing Amount <input type="text" name="closeSubTotal" required> </th>
 		</tr>
 
 		<tr>

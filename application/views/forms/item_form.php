@@ -16,9 +16,8 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 			<td>Description 3 (variant, flavor): <input type="text" name="desc3"></td>
 			<td>Description 4 (size, packaging): <input type="text" name="desc4"></td>
 		</tr><tr>
-			<td>Group: <input type="text" name="group" required></td>
-			<td>Division:
-			<?php 
+			<td>Group: 
+				<?php 
 				$division = $this->pos_model->getAll_division_cat();
 				$options = array();
 				$options[''] = 'Select one';
