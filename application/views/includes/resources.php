@@ -337,35 +337,42 @@
 							var temp2;
 							for (var i = 0; i < temp.length; i++){
 								output = output + "<tr style='background-color:gray;'>";
-								$.each(temp[i], function(key, value) {
+	    						if(mode == "custDSearch"){
+	    							$.each(temp[i], function(key, value) {
 	    							output = output + '<td>' + value + '</td>';
-	    							if(key == 'customer_id'){
-	    								$.ajax({
-											url: '<?php echo base_url().'index.php/credits/view_customerDetails2';?>',
-											data: {customer_id: value},
-											type: "post",
-											async: false,
-											success: function(data2){
-												temp2 = JSON.parse(data2);
-											},
-											error: function (xhr, ajaxOptions, thrownError) {
-											}
+			    							if(key == 'customer_id'){
+			    								$.ajax({
+													url: '<?php echo base_url().'index.php/credits/view_customerDetails2';?>',
+													data: {customer_id: value},
+													type: "post",
+													async: false,
+													success: function(data2){
+														temp2 = JSON.parse(data2);
+													},
+													error: function (xhr, ajaxOptions, thrownError) {
+													}
+												});
+			    							}
 										});
-	    							}
-								});
-								output = output + "<td><input type='number' /></td><td><input type='button' value='Pay' class='button' /></td></tr>";
-								if(temp2.length>0){
-									for (var i = 0; i < temp2.length; i++){
-										output = output + '<tr>'; 
-										$.each(temp2[i], function(key, value) {
-			    							output = output + '<td>' + value + '</td>';
-			    						});
-			    						output = output + '</tr>';
-									}
+										output = output + "<td><input type='number' /></td><td><input type='button' value='Pay' class='button' /></td></tr>";
+										if(temp2.length>0){
+											for (var i = 0; i < temp2.length; i++){
+												output = output + '<tr>'; 
+												$.each(temp2[i], function(key, value) {
+					    							output = output + '<td>' + value + '</td>';
+					    						});
+					    						output = output + '</tr>';
+											}
+										}
+								}
+								else{
+									$.each(temp[i], function(key, value) {
+	    								output = output + '<td>' + value + '</td>';
+									});
+									output = output + "</tr>";
 								}
 							}
 							$("#dialog-form table").html(output);
-							//alert(output);
 						}
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
@@ -392,6 +399,7 @@
 			$("#dialog-form input").val("");
 			}
 	});
+
 
 	 $( "#dialog-form2" ).dialog({
 			autoOpen: false,

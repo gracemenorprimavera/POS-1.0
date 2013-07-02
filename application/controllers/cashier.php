@@ -102,7 +102,7 @@ class Cashier extends CI_Controller {
 		$data['flag'] = 2;	
 		$data['page'] = 'success';
 		//$this->load->view('template2', $data);
-		redirect('cashier/reports');
+		redirect('cashier/new_cashier');
 	}
 
 	function close_store() {
@@ -385,7 +385,7 @@ class Cashier extends CI_Controller {
 	function dialog_show($mode){
 		if($mode == 'cashoutDialog') {
 			$data['msg'] = '';
-			echo $this->load->view('forms/cashout_form.php', $data);
+			echo $this->load->view('forms/expense_form.php', $data);
 		}
 		else if($mode == 'loadDialog') {
 			echo $this->load->view('forms/load_form.php');
