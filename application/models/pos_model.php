@@ -1361,11 +1361,11 @@ class Pos_model extends CI_Model {
 		else return false;
 	}
 
-	function add_expense($expense){
-		$arr = array('expenses_id'=>NULL,
-			'expenses'=>$expense
+	function add_division($division){
+		$arr = array('div_id'=>NULL,
+			'division'=>$division
 		);
-		$this->db->insert('expenses_category',$arr);
+		$this->db->insert('div_category',$arr);
 		if($this->db->affected_rows() > 0)
 		{	
 		return $this->db->insert_id();
@@ -1373,11 +1373,11 @@ class Pos_model extends CI_Model {
 		else return false;
 	}
 
-	function add_division($division){
-		$arr = array('div_id'=>NULL,
-			'division'=>$division
+	function add_expense($expense){
+		$arr = array('expenses_id'=>NULL,
+			'expenses'=>$expense
 		);
-		$this->db->insert('div_category',$arr);
+		$this->db->insert('expenses_category',$arr);
 		if($this->db->affected_rows() > 0)
 		{	
 		return $this->db->insert_id();

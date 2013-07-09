@@ -109,8 +109,8 @@
 			'id' => 'addOutgoingRow',
 			'value' => '',
 			'type' => 'button',
-			'class' => 'button',
 			'content' => 'Add Row'
+			'class' => 'button'
 		);
 
 			echo form_button($data);

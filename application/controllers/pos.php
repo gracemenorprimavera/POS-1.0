@@ -176,10 +176,10 @@ function pdf() {
 			echo $this->pos_model->add_supplier($cat_name);
 		else if($mode == 'addCashout')
 			echo $this->pos_model->add_cashout($cat_name);
-		else if($mode == 'addExpense')
-			echo $this->pos_model->add_expense($cat_name);
 		else if($mode == 'addDivision')
 			echo $this->pos_model->add_division($cat_name);
+		else if($mode == 'addExpense')
+			echo $this->pos_model->add_expense($cat_name);
 		else if($mode == 'addOutgoing')
 			echo $this->pos_model->add_outgoing($cat_name);
 			
@@ -198,10 +198,6 @@ function pdf() {
 		}
 		echo $output;	 //get item by supplier
 	}
-
-	
-
-
 }
 
 /* End of file pos.php */

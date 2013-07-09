@@ -147,7 +147,12 @@ class Sales extends CI_Controller {
 		//echo $mode;
 
 		$total = $this->cart->total();
+		$discount = 1;
+		$totalAmt = $total-$discount;
 		$date = date('y-m-d'); //'2013-06-20';
+
+		$data['discount'] = 1;
+		$data['totalAmt'] = $totalAmt;
 
 		if($mode=='cash') {	
 				 
@@ -158,7 +163,9 @@ class Sales extends CI_Controller {
 				'payment'=>'cash',
 				'date'=>$date,
 				'time'=>'',
-				'amount'=>$total
+				'amount'=>$total,
+				'discount'=>$discount,
+				'total'=>$totalAmt
 				)); 
 			$id = $this->db->insert_id();	// take last id of the transaction
 			$qtr = "UPDATE transactions SET time=(select curtime()) where trans_id=$id";
@@ -168,7 +175,9 @@ class Sales extends CI_Controller {
 			$this->db->insert('cash', array('trans_id'=>$id,
 				'cash_id'=>NULL,  
 				'trans_date'=>$date, //date('y-m-d'),
-				'total_amount'=>$total
+				'total_amount'=>$total,
+				'cash_discount'=>$discount,
+				'total'=>$totalAmt
 				));
 						
 			$trans_id = $this->db->insert_id();	// get last transaction id 
@@ -286,6 +295,20 @@ class Sales extends CI_Controller {
 		$data['flag'] = 4;
 		$data['cash'] = $cash;
 		$data['cust'] = $cust;
+		
+		$this->load->view('template3', $data);	
+	}
+
+	function enter_discount() {
+		$searchMode = $this->input->post('searchMode');
+		if($searchMode == '' || !isset($searchMode)) $searchMode = 'Barcode';
+		$data['searchMode'] = $searchMode;
+		$data['message'] = '';	
+		$discount = $this->input->post('discAmount');
+		$data['customer'] = $this->pos_model->getAll_customers();
+		$data['page'] = 'forms/sales_form';
+		$data['flag'] = 4;
+		$data['discount'] = $discount;
 		
 		$this->load->view('template3', $data);	
 	}

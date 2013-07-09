@@ -10,7 +10,6 @@ class Expenses_model extends CI_Model {
 			'description'=>$desc,
 			'status'=>$status
 			));
-
 		$id = $this->db->insert_id();	// get delivery ID 
 		$qtr = "UPDATE expenses SET time=(select curtime()) where expense_id=$id";
 		$this->db->query($qtr);

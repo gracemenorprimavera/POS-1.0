@@ -8,19 +8,21 @@
 ?>
 	<input type='hidden' class='hItemPurchase' name='hItemPurchase' />	
 	<select name='searchMode'><option value="Barcode" <?php if($searchMode == 'Barcode') echo 'selected'; ?> >Barcode</option><option value="Itemcode" <?php if($searchMode == 'Itemcode') echo 'selected'; ?>>
-		Item code</option></select>	<input type="text" name="search_item" id="search_item" class="tags" tabindex="1" style="height:20px;width:150px;" autofocus />
+	Item code</option></select>	<input type="text" name="search_item" id="search_item" class="tags" tabindex="1" style="height:20px;width:150px;" autofocus />
 	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2" style="height:20px;width:50px;" >
 	<input class="button" type="submit" name="submit" value="Add Item" />
 <?php 
 	echo form_close(); 
 ?>
 
-<!--<?php echo form_open('sales/add_item') ?>	
+<!--
+<?php echo form_open('sales/add_item') ?>	
 	<label> Bar Code </label> <input type="text" name="search_item" id="search_item" class="tags" tabindex="1" autofocus>
 	<label> Quantity </label> <input type="number" name="quantity" value="1" min="1" tabindex="2">
 	<input class="button" type="submit" name="submit" value="Submit" />
 <?php echo form_close(); ?>
 -->
+
 <?php echo form_open('sales/do_purchase', array('onsubmit'=>"return confirm('Save Transaction?') ")) ?>
 	<table cellpadding="6" cellspacing="1" style="width:100%;" border="1px solid black">
 		<thead >
@@ -64,15 +66,11 @@
 	</div>
 
 <div id="currentItem">
-<table cellpadding="10" style="border:0px solid white;width:100%;">
-	<tr>
 	<?php if($this->cart->total_items() > 0) { ?>
-	<td><?php echo $items['qty'].' '; ?></td>
-	<td><?php echo $items['name'].' '; ?><td>
-	<td><?php echo $items['price'].' '; ?><td>
-	<td><?php echo $items['subtotal'].' '; }?><td>
-	</tr>
-</table>
+	<?php echo $items['qty'].' '; ?>
+	<?php echo $items['name'].' '; ?>
+	<?php echo $items['price'].' '; ?>
+	<?php echo $items['subtotal'].' '; }?>
 </div> <!-- end div id=sales -->
 
 <div class="error" style="font-size: 18px;height: 19px;padding-bottom: 5px;">
@@ -84,12 +82,14 @@
 
 <div id="purchase" style="text-align:right">
 
-<div id="inside" >
+<div id="inside" style="text-align:right">
+
+<div class="who" style="text-align:left">
 	<?php //echo date('F d, Y'); ?>	
-	<?php echo '<b>'.date("D M d, Y G:i a").'</b>'; ?> <br>
-	<?php echo '<b>Transaction No: </b>' ?>
+	<?php echo date("D M d, Y G:i a"); ?> <br>
+	<?php echo 'Transaction No:' ?>
 	<?php echo $this->pos_model->get_transID()+1; ?> <br>
-	<?php echo '<b>Personnel: </b>'.$this->session->userdata('name'); ?> 
+	<?php echo 'Personnel: '.$this->session->userdata('name'); ?> 
 	<?php 
 		$data = array();
 		$data[''] = 'Walk-in';
@@ -114,60 +114,39 @@
 					'value'=>'Walk-In',
 					'readonly'	=> 'readonly'
 				);
-			echo '<div id="hcustomerName"><b>Customer: </b>'.form_input($data)."</div>";
+			echo '<div id="hcustomerName">Customer: '.form_input($data)."</div>";
 			} 
 	?>
 
 	<br><br>
+</div> <!-- end div id=who -->
 </div> <!-- end div id=inside -->
+<br><br><br>
 
-<div class="label" style="text-align:left">
+<div class="label" style="text-align:right">
 	Amount Due:
-	<div class="total" style="text-align:right" >
+	<div id="total" style="text-align:right" >
 		<?php 
 			if($this->cart->format_number($this->cart->total()))
 				echo 'P '.$this->cart->format_number($this->cart->total());
-			else { $totalAmt = 0; echo 'P 0.00'; } 
+			else echo 'P 0.00'; 
 		?>
 	</div>
-	<button style="height:40px; width:90px;" class="dialogThis2 button" id="discountDialog"> Discount </button><br>
-	Discount:
-	<div class="total" style="text-align:right" >
-		<?php 
-			if(isset($discount))
-				echo 'P '.$this->cart->format_number($discount);
-			else { $discount = 0; echo 'P 0.00'; } 
-		?>
-	</div>
-	Total:
-	<div class="total" style="text-align:right" >
-		<?php 
-			if($discount > 0) {
-				echo 'P '.$this->cart->format_number(($this->cart->total()-$discount));
-				$totalAmt = $this->cart->total()-$discount;
-			}
-			else if(!$this->cart->format_number($this->cart->total()))
-				 echo 'P 0.00';
-			else {
-				echo $this->cart->format_number($this->cart->total()); 
-				$totalAmt = $this->cart->total();
-			}
-		?>
-	</div>
+	<br>
+	<button style="height:50px; width:70px" class="button" id="" onclick="return false"> Discount </button>
+	<!-- <button style="height:50px; width:70px" class="dialogThis2 button" id=""> Print </button> -->
 	
-	<?php echo form_hidden('discount', $discount); ?>
-	<?php echo form_hidden('totalAmt', $totalAmt); ?>
+</div>
 
-<br>
+<div id="tc" style="text-align:right">
+	<br>
 	<?php if(isset($cash) && $cash>0) { ?>
-		Tendered: <div class="total" style="text-align:right" >
-		<?php echo $this->cart->format_number($cash); ?></div>
+		[Tendered: <?php echo $this->cart->format_number($cash); ?>]<br>
 		<?php $change = $cash-$this->cart->format_number($this->cart->total()); ?>
-		Change: <div class="total" style="text-align:right" >
-		<?php echo $this->cart->format_number($change) ?></div>
+		[Change: <?php echo $this->cart->format_number($change) ?>] 
 	<?php } else { ?>
-		Tendered: <div class="total" style="text-align:right" >P 0.00</div>	
-		Change: <div class="total" style="text-align:right" >P 0.00</div> 
+		[Tendered: 0.00]	<br> 
+		[Change: 0.00] <br><br>
 	<?php } ?>
 		<?php //echo form_submit(array('name'=>'purchase_submit', 'class'=>'button', 'style'=>"height:50px; width:200px"),'Save'); ?>
 		<button style="height:50px; width:200px" class="dialogThis2 button" id="cashDialog"> Enter Cash </button>

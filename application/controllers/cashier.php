@@ -216,7 +216,8 @@ class Cashier extends CI_Controller {
 		$this->load->model('expenses_model');
 		$data['detail_flag'] = true;
 		$data['date'] = $report_date;
-		$data['report'] = $this->pos_model->getAll_reports(); //$this->pos_model->get_dailyReport($report_id);
+		$data['report'] = $this->pos_model->getAll_reports(); 
+		$data['daily_report'] = $this->pos_model->get_dailyReport($report_id);
 		$data['expenses'] = $this->expenses_model->getAll_cashout_byDate($report_date);
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
@@ -431,6 +432,8 @@ class Cashier extends CI_Controller {
 			echo $this->load->view('forms/return_form.php');
 		else if($mode == 'cashDialog') 
 			echo $this->load->view('forms/cash_form.php');
+		else if($mode == 'discountDialog') 
+			echo $this->load->view('forms/discount_form.php');
 		else if($mode == 'customerDialog') {
 			$data['customer_flag'] = false;
 			$data['trans_flag'] = false;

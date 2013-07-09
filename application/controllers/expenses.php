@@ -64,7 +64,7 @@ class Expenses extends CI_Controller {
     	$status = $this->input->post('expenses_dropdown');
         $date = $this->input->post('expenseDate');
         $desc = $this->input->post('exp_desc');
-        $amount = $this->input->post('expense_amount');        
+        $amount = $this->input->post('expense_amount');         
        
         $this->expenses_model->store_expenses($status, $date, $desc, $amount);
        	$msg = true;

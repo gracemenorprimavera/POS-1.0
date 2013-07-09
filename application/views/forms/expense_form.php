@@ -7,8 +7,8 @@ $user = $this->session->userdata('role');
 	<span><?php echo $msg; ?></span>
 	<?php 
 		echo form_open('expenses/add_expense', array('onsubmit'=>"return confirm('Finalize Record?') "));
-		
-		$expense = $this->pos_model->getAll_expense_cat();
+
+		$expense= $this->pos_model->getAll_expenses_cat();
 		$options = array();
 		$options[''] = 'Select one';
 		if(isset($expense)){

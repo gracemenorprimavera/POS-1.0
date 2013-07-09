@@ -5,14 +5,14 @@
 ?>
 
 <div id="view_record" >
-	 
-	<div id="view_left" class="view" >
-		<?php
+	 <?php
 			if($message) {
 				echo $message;
 			}
 			else {
 		?>
+	<div id="view_left" >
+		
 				<table border="0px solid brown" cellpadding="6">
 					<tr>
 						<th> Date </th>
@@ -23,11 +23,12 @@
 					</tr>
 					<?php } // end foreach ($report as $r) ?>
 				</table>
-			<?php } // end of else	?>
+			
 	</div>
 
 
-	<div id="view_right" class="view" >
+
+	<div id="view_right" >
 		<?php
 			if($detail_flag) {
 				$mydate = strtoTime($date);
@@ -36,4 +37,5 @@
 			<?php } // end if	?>
 			
 	</div>
+	<?php } // end of else	?>
 </div>
