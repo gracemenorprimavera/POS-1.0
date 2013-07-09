@@ -109,6 +109,7 @@
 			'id' => 'addOutgoingRow',
 			'value' => '',
 			'type' => 'button',
+			'class' => 'button',
 			'content' => 'Add Row'
 		);
 

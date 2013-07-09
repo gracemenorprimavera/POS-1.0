@@ -40,6 +40,7 @@
 			$data[$row->supplier_name] = $row->supplier_name;
 		}
 	}
+	$data['add'] = 'Add supplier';
 ?>	
 	<table  cellpadding="10px">
 		<tr>

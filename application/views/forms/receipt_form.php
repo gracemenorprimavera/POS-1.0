@@ -8,7 +8,7 @@
 	<?php //echo date('F d, Y'); ?>	
 	<?php echo 'Transaction No: &nbsp;&nbsp;' ?> 
 	<?php echo $this->pos_model->get_transID(); ?>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php echo date("D M d, Y G:i a"); ?>
 	<?php echo 'Personnel: &nbsp;&nbsp;'.$this->session->userdata('name').'<br>'; ?> 
 	<?php echo 'Customer: &nbsp;&nbsp;'.$name; ?>
@@ -50,7 +50,7 @@
 		</tbody>
 	</table>
 	<br><span style="margin-left:15px;">
-		===========================================</span>		
+		=====================================================</span>		
 
 <div style="text-align:left;bordermargin:auto;">
 	<table cellpadding="5" cellspacing="1" style="width:90%;margin:auto;" border="0px solid black">
@@ -73,7 +73,7 @@
 	</table>
 </div>
 	<span style="margin-left:15px;">
-		===========================================</span>
+		=====================================================</span>
 <h3  style="text-align:center;font-weight:lighter;">Thank you and come again!</h3>
 
 </div>

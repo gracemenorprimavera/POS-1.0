@@ -47,7 +47,8 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 				foreach($supplier as $row){
 					$data[$row->supplier_name] = $row->supplier_name;
 				}
-			}	
+			}
+			$data['add'] = 'Add supplier';	
 			echo '<td>Supplier: '.form_dropdown('supplierItem', $data,'','id="supplierItem" autocomplete="off" required');
 			//echo '<input type="text" id="addSupplier_input" placeholder="New supplier" /><input class="button" type="button" id="addSupplier" class="addCategory" value="Add" onclick="return false;"/></td>';
 			?>

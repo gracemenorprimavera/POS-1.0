@@ -30,11 +30,11 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li><
 			<input type="button" class="button" value="Hide" onclick="document.getElementById('table').className='';" />
 			<br>
 			<div id="view_item" class="view">
-
+<input type='hidden' id='hEditableValue' />
 				<table id="table" border="1px solid brown" cellpadding="10">
 				<thead>
 				<tr>
-					<th colspan="2"> Action </th>
+					<th> Action </th>
 					<th><?php $order=1; echo anchor('items/orderbyID/'.$order, 'Item ID') ?></th>
 					<th><?php $order=2; echo anchor('items/orderbyID/'.$order, 'Bar Code') ?></th>
 					<th><?php $order=3; echo anchor('items/orderbyID/'.$order, 'Item Code') ?></th>
@@ -61,25 +61,25 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li><
 				$edit = $r->item_id;
 				//echo $edit;
 				echo '<td>'.anchor('items/delete_item/'.$edit,'Delete', array('onclick'=>"return confirm('Are you sure you want to delete this item?') ")).'</td>';
-				echo '<td>'.anchor('items/goto_editItemForm/'.$edit, 'Edit').'</td>';
+				//echo '<td>'.anchor('items/goto_editItemForm/'.$edit, 'Edit').'</td>';
 				echo '<td>'.$r->item_id.'</td>';
-				echo '<td>'.$r->bar_code.'</td>';
-				echo '<td>'.$r->item_code.'</td>';
-				echo '<td>'.$r->desc1.' ';
-				echo $r->desc2.' ';
-				echo $r->desc3.' ';
-				echo $r->desc4.'</td>';
-				echo '<td>'.$r->division.'</td>';
-				echo '<td>'.$r->group.'</td>';
-				echo '<td>'.$r->class1.'</td>';
-				echo '<td class="moreDetail">'.$r->class2.'</td>';
-				echo '<td>'.$r->cost.'</td>';
-				echo '<td>'.$r->retail_price.'</td>';
-				echo '<td class="moreDetail">'.$r->model_quantity.'</td>';
-				echo '<td class="moreDetail">'.$r->supplier_code.'</td>';
-				echo '<td class="moreDetail">'.$r->manufacturer.'</td>';
-				echo '<td>'.$r->quantity.'</td>';
-				echo '<td class="moreDetail">'.$r->reorder_point.'</td>';
+				echo '<td name="bar_code" class="edit">'.$r->bar_code.'</td>';
+				echo '<td name="item_code" class="edit">'.$r->item_code.'</td>';
+				echo '<td name="desc1" class="edit">'.$r->desc1.'</td>';
+				echo '<td name="desc2" class="edit moreDetail">'.$r->desc2.'</td>';
+				echo '<td name="desc3" class="edit moreDetail">'.$r->desc3.'</td>';
+				echo '<td name="desc4" class="edit moreDetail">'.$r->desc4.'</td>';
+				echo '<td name="division" class="dd_edit">'.$r->division.'</td>';
+				echo '<td name="group" class="edit">'.$r->group.'</td>';
+				echo '<td name="class1" class="edit">'.$r->class1.'</td>';
+				echo '<td  name="class2" class="edit moreDetail">'.$r->class2.'</td>';
+				echo '<td  name="cost" class="edit">'.$r->cost.'</td>';
+				echo '<td  name="retail_price" class="edit">'.$r->retail_price.'</td>';
+				echo '<td  name="model_quantity" class="edit moreDetail">'.$r->model_quantity.'</td>';
+				echo '<td  name="supplier_code" class="dd_edit moreDetail">'.$r->supplier_code.'</td>';
+				echo '<td  name="manufacturer" class="edit moreDetail">'.$r->manufacturer.'</td>';
+				echo '<td  name="quantity" class="edit">'.$r->quantity.'</td>';
+				echo '<td  name="reorder_point" class="edit moreDetail">'.$r->reorder_point.'</td>';
 				echo '</tr></tbody>';
 				
 				

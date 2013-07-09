@@ -1,14 +1,11 @@
 <div id="reports_form">
-	<?php if(isset($daily_report)) {
-	 foreach($daily_report as $d) { ?>
-
-	<table style="margin-left:100px;" >
+	<?php if(isset($report)) {
+	 foreach($report as $d) { ?>
+	<table border="0px solid black" >
 	<tr> <th colspan="2"> Daily Sales Summary </th></tr>
 	<tr> <td colspan="2" style="text-align:center">
 		<?php echo 'Date: '.date('F d, Y', strtoTime($report_date)); ?></td>
 	</tr>
-	<tr><td style="padding-left:10px;">
-	<table border="0px solid black" >	
 	<tr>
 		<td><br>Starting Bills and Coins: <input type="text" value="<?php echo $d->open_amt ?>"></td>
 	</tr>
@@ -73,7 +70,7 @@
 	</tr>
 		
 	<tr>
-		<td>Incoming Stocks Amount: <input type="text" value="<?php echo $d->in_amount ?>" ></td>
+		<td>Incoming Stocks Amount:<input type="text" value="<?php echo $d->in_amount ?>" ></td>
 	</tr>
 	<tr>
 		<td>
@@ -103,12 +100,7 @@
 	<tr>
 		<td>Outgoing Stocks Amount: <input type="text" value="<?php echo $d->out_amount ?>" ></td>
 	</tr>
-
-	</table>
-</td>
-<td style="padding-left:20px;">
-	<table border="0px solid black" >
-		<tr>
+	<tr>
 		<td>Cash Out: <input type="text"value="<?php echo $d->expenses ?>" ></td>
 	</tr>
 	<tr>
@@ -137,32 +129,31 @@
 		<td>Load Balance: <input type="text" value="<?php echo $d->load_bal ?>" ></td>
 	</tr>
 	<tr>
-		<td>Load Incoming Stocks: <input type="text" value="<?php echo $d->load_in ?>" ></td>
+		<td>Load Incoming Stocks:<input type="text" value="<?php echo $d->load_in ?>" ></td>
 	</tr>
 
 	<tr><th colspan="2">Sales by Division</th></tr>
 	<tr>
-		<td>Grocery: <input type="text" value="<?php echo $d->div_grocery ?>" ></td>
+		<td>Grocery:<input type="text" value="<?php echo $d->div_grocery ?>" ></td>
 	</tr>
 	<tr>
-		<td>Poultry Supply: <input type="text" value="<?php echo $d->div_poultry ?>" ></td>
+		<td>Poultry Supply:<input type="text" value="<?php echo $d->div_poultry ?>" ></td>
 	</tr>
 	<tr> 
-		<td>Pet Supply: <input type="text" value="<?php echo $d->div_pet ?>" ></td>
+		<td>Pet Supply:<input type="text" value="<?php echo $d->div_pet ?>" ></td>
 	</tr>
 	<tr>
-		<td>Load: <input type="text" value="<?php echo $d->div_load ?>" ></td>
+		<td>Load:<input type="text" value="<?php echo $d->div_load ?>" ></td>
 	</tr>
-	</table>
-	</td></tr>
-		<tr>
-		<td colspan="2" style="text-align:center">
+	<tr>
+		<td colspan="2" style="text-align:right">
 			<?php $user=$this->session->userdata('role'); ?>
 			<?php echo form_open($user.'/pdf/'.$report_id."/".$report_date, array('onsubmit'=>"return confirm('Save Report?') ")); ?>
-			<input class="button" style="width:150px;" type="submit" value="Export PDF" name="exportPDF"></input>
+			<input class="button" type="submit" value="Export PDF" name="exportPDF"></input>
 			</form> 
 		</td> 
 	</tr>
+
 	</table>
 	<?php } }?>
 

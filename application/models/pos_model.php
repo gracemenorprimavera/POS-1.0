@@ -1274,6 +1274,20 @@ class Pos_model extends CI_Model {
 
 	}
 
+	function getAll_expense_cat(){
+		$result = $this->db->get('expenses_category');
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+
+	}
+
 	function getAll_division_cat(){
 		$result = $this->db->get('div_category');
 		
@@ -1320,7 +1334,7 @@ class Pos_model extends CI_Model {
 		
 		$this->db->from('credit');
 		$this->db->where('customer_id', $customer_id);
-		$this->db->order_by('date', 'desc');
+		$this->db->order_by('date', 'asc');
 
 		$result = $this->db->get();
 
@@ -1340,6 +1354,18 @@ class Pos_model extends CI_Model {
 			'cashout'=>$cashout
 		);
 		$this->db->insert('cashout_category',$arr);
+		if($this->db->affected_rows() > 0)
+		{	
+		return $this->db->insert_id();
+		}
+		else return false;
+	}
+
+	function add_expense($expense){
+		$arr = array('expenses_id'=>NULL,
+			'expenses'=>$expense
+		);
+		$this->db->insert('expenses_category',$arr);
 		if($this->db->affected_rows() > 0)
 		{	
 		return $this->db->insert_id();

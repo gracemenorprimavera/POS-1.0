@@ -12,12 +12,12 @@
 <fieldset>
 <label for="name" id="searchLabel">Search</label>
 <input type="hidden" id="hsearchDialog"/>
-<input type="text" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
+<input type="search" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
 </fieldset>
 </form>
 
 <?php //echo form_open('credits/pay_credit'); ?>
-<table cellpadding="10" >
+<table style="background-color:white">
 	
 </table>
 <?php //echo form_close(); ?>

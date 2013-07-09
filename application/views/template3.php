@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,12 +12,12 @@
 <fieldset>
 <label for="name" id="searchLabel">Search</label>
 <input type="hidden" id="hsearchDialog"/>
-<input type="text" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
+<input type="search" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
 </fieldset>
 </form>
 
 <?php //echo form_open('credits/pay_credit'); ?>
-<table cellpadding="10" >
+<table cellpadding="10">
 	
 </table>
 <?php //echo form_close(); ?>
@@ -92,6 +91,7 @@ echo'<div class="navbox">
 else if($flag==2 || $flag==4){
 	echo'<div class="cashbox">
 		<ul id="nav">';
+		echo '<li>'.anchor('cashier/view_help', 'Help').'</li>'; 
 		echo '<li>'.anchor('#', 'Item Search','class="dialogThis" id="itemDSearch"').'</li>';
 		echo '<li>'.anchor('#', 'Price Search','class="dialogThis" id="priceDSearch"').'</li>';
 		echo '<li>'.anchor('#', 'Customer Search','class="dialogThis" id="custDSearch"').'</li>';
