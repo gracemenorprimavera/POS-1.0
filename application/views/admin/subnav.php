@@ -123,32 +123,32 @@
 
  <li><div class="data">
       <h4><?php echo anchor('expenses/view_cashout', 'Cash Out'); ?></h4>
-      <p>Record of all expenses</p>
+      <p>View record of all Cash Out</p>
     </div></li>  
 
  <li><div class="data">
       <h4><?php echo anchor('admin/view_credits', 'Credits'); ?></h4>
-      <p>View credits recoreded</p>
+      <p>View credits recorded</p>
     </div></li>
 
     <li><div class="data">
-      <h4><?php echo anchor('credits/index', 'Customers'); ?></h4>
-      <p>Record of customers with credits</p>
+      <h4><?php echo anchor('admin/view_customers', 'Customers'); ?></h4>
+      <p>View record of customers with credits</p>
     </div></li>
 
      <li><div class="data">
       <h4><?php echo anchor('incoming/view_incoming', 'Deliveries'); ?></h4>
-      <p>Record of deliveries </p>
+      <p>View record of deliveries </p>
     </div></li>
      
 <li><div class="data">
       <h4><?php echo anchor('admin/view_eload', 'E-Load Transactions'); ?></h4>
-      <p>View credits recoreded</p>
+      <p>View record of e-load transactions</p>
     </div></li>
 
      <li><div class="data">
       <h4><?php echo anchor('admin/view_emp', 'Employee'); ?></h4>
-      <p>Record of customers with credits</p>
+      <p>View record of all employees</p>
     </div></li> 
 
    
@@ -156,28 +156,28 @@
   <div class="right_list">
      <li><div class="data">
       <h4><?php echo anchor('expenses/view_expenses', 'Expenses'); ?></h4>
-      <p>Record of all expenses</p>
+      <p>View record of all expenses</p>
     </div></li>
 
        <li><div class="data">
       <h4><?php echo anchor('items/view_items', 'Items'); ?></h4>
       <p>
-        Record of items in the stock <br>
+        View record of items in the stock <br>
       </p>
     </div></li>
     
 
     <li><div class="data">
       <h4><?php echo anchor('outgoing/view_outgoing', 'Outgoing'); ?></h4>
-      <p>Record of pull-out products</p>
+      <p>View record of incoming products</p>
     </div></li>
     <li><div class="data">
       <h4><?php echo anchor('admin/view_amounts', 'Registered Amounts'); ?></h4>
-      <p>Records of opening and closing amounts</p>
+      <p>View record of opening and closing amounts</p>
     </div></li>
      <li><div class="data">
       <h4><?php echo anchor('admin/view_sales', 'Sales'); ?></h4>
-      <p>View all transactions recorded</p>
+      <p>View record of transactions</p>
     </div></li>
    
      
@@ -192,7 +192,7 @@
 
     <li><div class="data">
       <h4><?php echo anchor('credits/goto_customerForm', 'Add New Customer'); ?></h4>
-      <p>Form to add customer</p>
+      <p>Form to add new customer</p>
      </div></li>
 
     <li><div class="data">
@@ -207,7 +207,7 @@
 
     <li><div class="data">
       <h4><?php echo anchor('incoming/goto_supplierForm', 'Add New Supplier'); ?></h4>
-      <p>Form to add supplier</p>
+      <p>Form to add new supplier</p>
      </div></li>
 
 

@@ -38,6 +38,7 @@ class Admin extends CI_Controller {
 	function change_password() {
 
 		$role = $this->input->post('role_dropdown');
+		//echo $role;
 		$old_pwd = $this->input->post('old_password');
 		$new_pwd = $this->input->post('new_password');
 
@@ -100,6 +101,7 @@ class Admin extends CI_Controller {
 
 	function reports() {
 		$data['detail_flag'] = false; 
+
 		if($this->pos_model->getAll_reports()) {
 			$data['report'] = $this->pos_model->getAll_reports();
 			$data['message'] = '';
@@ -114,7 +116,8 @@ class Admin extends CI_Controller {
 	}
 
 	function view_daily_report($report_id, $report_date) {
-		$data['detail_flag'] = true; 
+		$data['detail_flag'] = true;
+		$data['date'] = $report_date;
 		$data['report'] = $this->pos_model->get_dailyReport($report_id);
 		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
 		$data['message'] = '';
@@ -122,8 +125,10 @@ class Admin extends CI_Controller {
 		$data['flag'] = 1;
 		$data['report_id'] = $report_id;
 		$data['report_date'] = $report_date;
-		$data['page'] = 'forms/report_form';
+		$data['page'] = 'lists/report_list';
+		//$data['page'] = 'forms/genreport_form';
 		$this->load->view('template2', $data);
+		
 	}
 
 	function inventory() {
@@ -288,6 +293,7 @@ class Admin extends CI_Controller {
 	function view_sales() {
 		$this->load->model('sales_model');
 		$data['detail_flag'] = false; 
+		$data['item_flag'] = false; 
 		if($this->sales_model->getAll_sales()) {
 			$data['sales'] = $this->sales_model->getAll_sales();
 			$data['message'] ='';
@@ -304,6 +310,7 @@ class Admin extends CI_Controller {
 	function view_salesDetails($date) {
 		$this->load->model('sales_model');
 		$data['detail_flag'] = true; 
+		$data['item_flag'] = false; 
 		$data['sales'] = $this->sales_model->getAll_sales();
 		$data['date'] = $date;
 		$data['daily'] = $this->sales_model->getAll_sales_byDate($date);
@@ -314,8 +321,27 @@ class Admin extends CI_Controller {
 		$this->load->view('template2', $data);
 	}
 
+	function view_salesItem($date, $trans_id) {
+		$this->load->model('sales_model');
+		$data['detail_flag'] = true;
+		$data['item_flag'] = true;
+
+		$data['date'] = $date;
+
+		$data['sales'] = $this->sales_model->getAll_sales();
+		$data['daily'] = $this->sales_model->getAll_sales_byDate($date);
+		$data['items'] = $this->sales_model->getAll_salesItems_byId($trans_id);
+
+		$data['message'] = '';
+		$data['header'] = 'Sales Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/sales_list';
+		$this->load->view('template2', $data);
+	}
+
 	function view_credits() {
 		$data['detail_flag'] = false; 
+		$data['item_flag'] = false;
 		if($this->pos_model->getAll_credits()) {
 			$data['credits'] = $this->pos_model->getAll_credits();
 			$data['message'] ='';
@@ -330,7 +356,8 @@ class Admin extends CI_Controller {
 	}
 
 	function view_creditDetails($date) {
-		$data['detail_flag'] = true; 
+		$data['detail_flag'] = true;
+		$data['item_flag'] = false; 
 		$data['credits'] = $this->pos_model->getAll_credits();
 		$data['date'] = $date;
 		$data['daily'] = $this->pos_model->getAll_credits_byDate($date);
@@ -338,6 +365,98 @@ class Admin extends CI_Controller {
 		$data['header'] = 'Credit Record';
 		$data['flag'] = 1;
 		$data['page'] = 'lists/credit_list';
+		$this->load->view('template2', $data);
+	}
+
+	function view_creditDetailsbyId($date, $credit_id) {
+		$data['detail_flag'] = true;
+		$data['item_flag'] = true; 
+		$data['credits'] = $this->pos_model->getAll_credits();
+		$data['date'] = $date;
+		$data['daily'] = $this->pos_model->getAll_credits_byDate($date);
+		$data['credit'] = $this->pos_model->get_creditDetails_byId($credit_id);
+		$data['message'] = '';
+		$data['header'] = 'Credit Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/credit_list';
+		$this->load->view('template2', $data);
+	}
+	
+	function view_customers() {
+		$is_open = $this->session->userdata('open');
+		$user = $this->session->userdata('role');
+	
+		if($user=='cashier')
+			$data['flag'] = 2;
+		else if($user=='admin') 
+			$data['flag'] = 1;
+			
+		$data['customer_flag'] = false;
+		$data['trans_flag'] = false;
+		
+		if($this->pos_model->getAll_customers()) {
+			$data['customers'] = $this->pos_model->getAll_customers();
+			$data['message'] = '';
+		}
+		else 
+			$data['message'] = 'No Customers Found';
+	 		
+		$data['header'] = 'Customers';			
+		$data['page'] = 'lists/customer_list';
+		$this->load->view('template2', $data);		
+	}
+
+	function view_customerDetails($customer_id) {
+		$user = $this->session->userdata('role');
+
+		if($user=='admin') 
+			$data['flag'] = 1;
+		else
+			$data['flag'] = 2;
+		$data['customer_flag'] = true;
+		$data['trans_flag'] = false;
+		$data['customers'] = $this->pos_model->getAll_customers();
+		
+		if($this->pos_model->get_customerDetails($customer_id)) {
+			$data['customers_det'] = $this->pos_model->get_customerDetails($customer_id);
+			$data['message1'] = '';
+			$data['message'] = '';
+		}
+		else 
+			$data['message1'] = 'No Details Found';
+			$data['message'] = '';
+ 		
+		$data['header'] = 'Customers';
+		$data['page'] = 'lists/customer_list';
+		
+		$this->load->view('template2', $data);
+	}
+
+	function view_transDetails($trans_id, $customer_id) {
+		$user = $this->session->userdata('role');
+		if($user=='admin') 
+			$data['flag'] = 1;
+		else
+			$data['flag'] = 2;
+		$data['customer_flag'] = true;
+		$data['trans_flag'] = true;
+		$data['customers'] = $this->pos_model->getAll_customers();
+		$data['customers_det'] = $this->pos_model->get_customerDetails($customer_id);
+		
+		if($this->pos_model->get_transDetails($trans_id)) {
+			$data['transactions'] = $this->pos_model->get_transDetails($trans_id);
+			$data['message1'] = '';
+			$data['message2'] = '';
+			$data['message'] = '';
+		}
+		else 
+			$data['message2'] = 'No Transactions Found';
+			$data['message1'] = '';
+			$data['message'] = '';
+ 		
+		$data['header'] = 'Credits';
+		$data['page'] = 'lists/customer_list';
+		
 		$this->load->view('template2', $data);
 	}
 
@@ -399,7 +518,7 @@ class Admin extends CI_Controller {
 	function view_loadDetails($date) {
 		$this->load->model('load_model');
 		$data['detail_flag'] = true;
-		$data['network_flag'] = false; 
+		$data['network_flag'] = true; 
 		$data['load'] = $this->load_model->getAll_load();
 		$data['date'] = $date;
 		//$data['daily'] = $this->load_model->getAll_load_byDate($date, $network);
@@ -454,6 +573,7 @@ class Admin extends CI_Controller {
 		$data['header'] = 'Employee Form';
 		$data['flag']=1;
 		$data['page'] = 'forms/employee_form';
+		$data['message'] = '';
 
 		$this->load->view('template2', $data);
 	}
@@ -475,10 +595,24 @@ class Admin extends CI_Controller {
 
 	function add_employee() {
 
-		$this->db->insert('employee', array('emp_id'=>NULL,
-			'name'=>$this->input->post('name')
-			));
-		redirect('admin');
+		$emp_name = $this->input->post('name');
+		$position = $this->input->post('role_dropdown');		
+		$emp_pwd = $this->input->post('emp_password');
+
+		$this->form_validation->set_rules('name', 'Name', 'required');		
+		$this->form_validation->set_rules('emp_password', 'Password', 'required|md5');
+
+		if($this->form_validation->run() == FALSE) $data['message'] = "";
+		else{
+			$this->pos_model->add_employee($emp_name,$position, $emp_pwd);
+			$data['message'] = "<span>Employee $emp_name succesfully added.</span>";
+		}
+
+		$data['header'] = 'Employee Form';
+		$data['flag']=1;
+		$data['page'] = 'forms/employee_form';
+
+		$this->load->view('template2', $data);
 	}
 
 	function pdf($report_id,$report_date)	//fetch the report id and report date
@@ -508,11 +642,29 @@ class Admin extends CI_Controller {
         }
         else 
             $data['message'] = 'No Employee Found';
-        
+        $data['msg'] = '';
         $data['header'] = 'Employees';
         $data['flag'] = 1;
         $data['page'] = 'lists/emp_list';
         $this->load->view('template2', $data);
+    }
+
+    function remove_emp($emp_id, $name) {
+    	$this->db->delete('employee', array('emp_id' => $emp_id)); 
+    	if($this->pos_model->getAll_emp()) {
+            $data['emp'] = $this->pos_model->getAll_emp();
+            $data['message'] = '';
+        }
+        else 
+            $data['message'] = 'No Employee Found';
+       
+        $data['msg'] = "$name successfully removed!";
+    	$data['header'] = 'Employees';
+        $data['flag'] = 1;
+        $data['page'] = 'lists/emp_list';
+ 		
+        $this->load->view('template2', $data);
+
     }
 
     /* Nicole */

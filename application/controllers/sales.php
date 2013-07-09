@@ -40,8 +40,20 @@ class Sales extends CI_Controller {
 
 	function add_item() {
 		$item_id = $this->input->post('hItemPurchase');
+		$bar_code = $this->input->post('search_item');
 		$qty = $this->input->post('quantity');
+		if($item_id == null) {
+			$barcode_flag = true;
+		}
+		else
+			$barcode_flag = false;
 
+		/*if($bar_code==null)
+			echo 'barcode is null';
+		else
+			echo $bar_code;*/
+		
+		
 		//get search mode
 		$searchMode = $this->input->post('searchMode');
 		if($searchMode == '' || !isset($searchMode)) $searchMode = 'Barcode';
@@ -62,7 +74,10 @@ class Sales extends CI_Controller {
 		}
 		else {
 			$this->db->from('item');
-			$this->db->where('item_id', $item_id);
+			if($barcode_flag) 
+				$this->db->where('bar_code', $bar_code);
+			else
+				$this->db->where('item_id', $item_id);
 			$result = $this->db->get();
 			if($result->num_rows() == 1) {
 				foreach($result->result() as $r) {

@@ -12,11 +12,16 @@
 <fieldset>
 <label for="name" id="searchLabel">Search</label>
 <input type="hidden" id="hsearchDialog"/>
-<input type="search" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
+<input type="text" name="searchDialog" id="searchDialog" class="text ui-widget-content ui-corner-all" />
 </fieldset>
-<table border = solid 1px black>
-</table>
 </form>
+
+<?php //echo form_open('credits/pay_credit'); ?>
+<table cellpadding="10" >
+	
+</table>
+<?php //echo form_close(); ?>
+
 </div>
 
 <div id="dialog-form2" title="New Form">
@@ -89,23 +94,28 @@ else if($flag==2 || $flag==4){
 		<ul id="nav">';
 		echo '<li>'.anchor('#', 'Item Search','class="dialogThis" id="itemDSearch"').'</li>';
 		echo '<li>'.anchor('#', 'Price Search','class="dialogThis" id="priceDSearch"').'</li>';
-		echo '<li>'.anchor('#', 'Customer Payment Search','class="dialogThis" id="custDSearch"').'</li>';
-		echo '<li>'.anchor('sales/cancel_trans', 'New Transaction', array('onclick' => "return confirm ('Current transaction will be cancelled. Continue?')")).'</li>';
-		echo '<li>'.anchor('sales/cancel_trans', 'Cancel Transaction', array('onclick' => "return confirm ('Are you sure want to cancel this transaction?')")).'</li>';
-		echo '<li>'.anchor('#', 'E-Load','class="dialogThis2" id="loadDialog"');
-		echo '<li>'.anchor('#', 'Incoming Load','class="dialogThis2" id="incomingloadDialog"');
-		echo '<li>'.anchor('#', 'Start Day','class="dialogThis2" id="startDialog"').'</li>';
-		echo '<li>'.anchor('#', 'End Day','class="dialogThis2" id="endDialog"').'</li>';
-		echo '<li>'.anchor('#', 'Employee Time-in/out','class="dialogThis2" id="dtrDialog"').'</li>';
-		echo '<li>'.anchor('#', 'Cash Out', 'class="dialogThis2" id="cashoutDialog"').'</li>';
-		echo '<li>'.anchor('#', 'Returns', 'class="dialogThis2" id="returnDialog"').'</li>';
-		echo '<li>'.anchor('#', 'Generate Daily Report', 'class="dialogThis2" id="returnDialog"').'</li>';
+		echo '<li>'.anchor('#', 'Customer Search','class="dialogThis" id="custDSearch"').'</li>';
+		echo '<li>'.anchor('#', 'Customer Payment','class="dialogThis2" id="custPayDialog"').'</li>';
+
+		$is_open = $this->session->userdata('open');
+    	if($is_open != true) 
+			echo '<li>'.anchor('#', 'Start Day','class="dialogThis2" id="startDialog"').'</li>';
+		else {
+			echo '<li>'.anchor('sales/cancel_trans', 'New/Cancel Transaction', array('onclick' => "return confirm ('Current transaction will be cancelled. Continue?')")).'</li>';
+			echo '<li>'.anchor('#', 'E-Load','class="dialogThis2" id="loadDialog"');
+			echo '<li>'.anchor('#', 'Incoming Load','class="dialogThis2" id="incomingloadDialog"');
+			echo '<li>'.anchor('#', 'End Day','class="dialogThis2" id="endDialog"').'</li>';
+			echo '<li>'.anchor('#', 'Cash Out', 'class="dialogThis2" id="cashoutDialog"').'</li>';
+			echo '<li>'.anchor('#', 'Returns', 'class="dialogThis2" id="returnDialog"').'</li>';
+		}
+		echo '<li>'.anchor('cashier/record_report', 'Generate Daily Report', array('onclick' => "return confirm (' Are you sure you want to generate report for the day?')")).'</li>';			
+		//echo '<li>'.anchor('#', 'Employee Time-in/out','class="dialogThis2" id="dtrDialog"').'</li>';
 		echo '<li>'.anchor('cashier/reports', 'View Reports').'</li>';
 		echo '<li>'.anchor('pos/do_logout', 'Log out').'</li>';
 	
 	echo'</ul>
 	</div>';	
-} 
+}
 
 ?>
 

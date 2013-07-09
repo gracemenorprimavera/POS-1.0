@@ -66,9 +66,9 @@ class Expenses extends CI_Controller {
         $desc = $this->input->post('exp_desc');
         $amount = $this->input->post('expense_amount');         
        
-        if($this->expenses_model->store_expenses($status, $date, $desc, $amount))
-        	$msg = true;
-        else $msg = false;
+        $this->expenses_model->store_expenses($status, $date, $desc, $amount);
+       	$msg = true;
+       
 
        	if($user=='admin') // return to form
         	redirect('expenses/goto_expensesForm/'.$msg);
@@ -104,7 +104,7 @@ class Expenses extends CI_Controller {
 				$data['flag'] = 1;
 
 	        	$data['page'] = 'forms/cashout_form';
-	        }	$this->load->view('template3', $data);
+	        }	$this->load->view('template2', $data);
 
 	    }
     }
@@ -118,14 +118,14 @@ class Expenses extends CI_Controller {
         $amount = $this->input->post('cashout_amount');         
        	
        	//echo "$status, $date, $desc, $amount";
-        if($this->expenses_model->store_cashout($status, $date, $desc, $amount))
-        	$msg = true;
-        else $msg = false;
+        $this->expenses_model->store_cashout($status, $date, $desc, $amount);
+        $msg = true;
+       
 
        	if($user=='admin') // return to form
         	redirect('expenses/goto_cashoutForm/'.$msg);
         else 	// return to form
-        	redirect('expenses/goto_cashoutForm/'.$msg);
+        	redirect('cashier/new_cashier');
 		
     }
 

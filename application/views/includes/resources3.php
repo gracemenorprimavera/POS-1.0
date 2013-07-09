@@ -102,7 +102,7 @@
 	Add new row to outgoing table on button click
  */
    $("#addOutgoingRow").click(function () {
-			var newRow = '<tr><td><input type="hidden" name="houtgoingItem[]" class="houtgoingItem" /><input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty[]" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  /></td><td><input type="text" name="outgoingPrice[]" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt[]" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input class="button" type="button" style="margin-bottom:23px;width:120px;" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
+			var newRow = '<tr><td><input type="hidden" name="houtgoingItem[]" class="houtgoingItem" /><input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/></td><td><input type="number" name="outgoingQty[]" value="" id="" class="outgoingQty" maxlength="" size="" style="" required="required" autocomplete="off"  /></td><td><input type="text" name="outgoingPrice[]" value="" id="" class="outgoingPrice" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input type="text" name="outgoingAmt[]" value="" id="" class="outgoingAmt" maxlength="" size="" style="" autocomplete="off" required="required" readonly="readonly"  />		</td><td><input class="button" type="button" style="margin-bottom:23px;" value="Delete Row" onclick="DeleteRowFunction2(this)" /></td></tr>';
 			$('table#outgoingTable').append(newRow);
    }); 
  /*
@@ -320,10 +320,10 @@
 	});
 
 
-	 $( "#dialog-form" ).dialog({
+	$( "#dialog-form" ).dialog({
 			autoOpen: false,
-			height: 600,
-			width: 1050,
+			height: 500,
+			width: 700,
 			modal: true,
 			buttons: {
 			"Search": function() {
@@ -337,10 +337,9 @@
 					data: {tag: tag},
 					type: "post",
 					success: function(data){
-						//alert(data);
 						//check if data is null
 						if(data == null || data == ''){
-							$("#dialog-form table").html("<tr><td>No items found.</td></tr>");
+							$("#dialog-form table").html("<tr><td id='notfound'><b>No results found.</b></td></tr>");
 							return;
 						}
 						else{
@@ -348,16 +347,15 @@
 							var output = '';
 							var temp2;
 							if(mode == "itemDSearch"){
-									output = output + "<br><tr style='background-color:#C8C8C8;'><th><b> Item Code</b></th>";
-									output = output	+ "<th><b> Bar Code</b></th>";
-									output = output	+ "<th></th><th><b> Item </b></th><th><b>Description </b></th><th></th>";
+									output = output + "<br><tr style='background-color:#C8C8C8;'><th><b> Item Description</b></th> <th></th><th></th><th></th>";
 									output = output	+ "<th><b> Quantity </b></th></tr>";
 							}
 							if(mode == "priceDSearch"){
 									output = output + "<br><tr style='background-color:#C8C8C8;'><th><b> Item </b></th><th><b>Bar Code</b></th><th><b>Price</b></th></tr>";
 							}if(mode == "custDSearch"){
-									output = output + "<br><tr style='background-color:#C8C8C8;'><th><b> ID </b></th><th><b>Name</b></th><th><b>Balance</b></th></tr>";
-							}	
+									output = output + "<br><tr style='background-color:#C8C8C8;'><th><b> ID </b></th><th><b>Name</b></th><th><b>Balance</b></th>";
+									output = output	+ "<th><b> Amount </b></th><th></th></tr>";
+							}						
 							for (var i = 0; i < temp.length; i++){
 								output = output + "<tr style='background-color:#FFFFCC;'>";
 	    						if(mode == "custDSearch"){
@@ -387,7 +385,8 @@
 					    						output = output + '</tr>';
 											}
 										}
-								}else if(mode == "itemDSearch"){
+								}
+								else if(mode == "itemDSearch"){
 									$.each(temp[i], function(key, value) {
 	    								output = output + '<td>&nbsp;' + value + '&nbsp;</td>';
 									});
@@ -399,12 +398,11 @@
 									output = output + "</tr>";
 								}else{
 									$.each(temp[i], function(key, value) {
-	    								output = output + '<td>' + value + '</td>';
+	    								output = output + '<td>&nbsp;' + value + '&nbsp;</td>';
 									});
 									output = output + "</tr>";
 								}
 							}
-							//alert(output);
 							$("#dialog-form table").html(output);
 						}
 					},
@@ -432,6 +430,7 @@
 			$("#dialog-form input").val("");
 			}
 	});
+
 
 
 	 $( "#dialog-form2" ).dialog({
@@ -617,7 +616,7 @@
 		if(cl == 'edit'){
 			el.setAttribute("id","activeEditable");
 			$('#hEditableValue').val(text);
-			el.innerHTML = "<input type='text' value='"+ text +"' /><input class='button' type='button' value='Ok' id='changeEditable' />";
+			el.innerHTML = "<input type='text' value='"+ text +"' /><input type='button' value='Ok' id='changeEditable' />";
 
 		}
 		else if(cl == 'dd_edit'){
@@ -642,7 +641,7 @@
 			    					}
 			    			});
 					}
-					output = output + '</select><input class="button" type="button" value="Ok"  id="changeEditable" />';
+					output = output + '</select><input type="button" value="Ok"  id="changeEditable" />';
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 				}

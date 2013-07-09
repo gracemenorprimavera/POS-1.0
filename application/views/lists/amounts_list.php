@@ -29,8 +29,8 @@
 					<td> Coins </td>
 					<th> Total Amount </th>
 					<th> Personnel </th>
-					<th> Edit </th>
-					<th> Delete </th>	
+					<!--<th> Edit </th>
+					<th> Delete </th>	-->
 				</tr>
 			</thead>
 			
@@ -53,12 +53,12 @@
 					else 
 						echo '<th>'.$d->closing_total.'</th>';
 					echo '<td>'.$d->personnel.'</td>';
-					echo '<td>*Edit</td>'; //echo '<td>'.anchor('admin', 'Edit').'</td>';	// parang edit item lang din ito
-					echo '<td>*Delete</td>'; //echo '<td>'.anchor('admin/delete_amount/'.$d->amount_id, 'Delete', array('onclick'=>'return confirm("Delete this record?")')).'</td>';
+					//echo '<td>*Edit</td>'; //echo '<td>'.anchor('admin', 'Edit').'</td>';	// parang edit item lang din ito
+					//echo '<td>*Delete</td>'; //echo '<td>'.anchor('admin/delete_amount/'.$d->amount_id, 'Delete', array('onclick'=>'return confirm("Delete this record?")')).'</td>';
 				echo '</tr>';
 			}
 			echo '</table>';
-			echo '<small>* Not yet functional </small>';
+			//echo '<small>* Not yet functional </small>';
 		}
 ?>		
 

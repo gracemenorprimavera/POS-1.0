@@ -48,7 +48,7 @@ class Manager extends CI_Controller {
 	/* INVENTORY */
 	function inventory() {
 		$data['header'] = 'Inventory';
-		$data['flag']=2;
+		$data['flag']=3;
 
 		$data['page'] = 'inventory_main';
 	

@@ -34,7 +34,8 @@
 	<tr>
 		<td>											
 	<?php
-		echo '<input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/>';
+		echo '<input type="hidden" name="houtgoingItem[]" class="houtgoingItem" />
+		<input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/>';
 			
 	?>
 		</td>

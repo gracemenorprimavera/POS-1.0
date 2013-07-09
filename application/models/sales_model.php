@@ -36,8 +36,8 @@ class Sales_model extends CI_Model {
 
 	function getAll_sales() {
 		$this->db->select('*');
-		$this->db->group_by('date');
-		$result = $this->db->get('transactions');
+		$this->db->group_by('trans_date');
+		$result = $this->db->get('cash');
 
 		if($result->num_rows() > 0) {
 			foreach ($result->result() as $row) {
@@ -51,9 +51,25 @@ class Sales_model extends CI_Model {
 
 	function getAll_sales_byDate($date) {
 		$this->db->select('*');
-		$this->db->where('date', $date);
-		$result = $this->db->get('transactions');
+		$this->db->where('trans_date', $date);
+		$result = $this->db->get('cash');
 
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+	function getAll_salesItems_byId($id) {
+		$this->db->from('trans_details');
+		$this->db->where('trans_id', $id);
+		$this->db->join('item', 'item.item_id = trans_details.item_id');
+		$result = $this->db->get();		
 
 		if($result->num_rows() > 0) {
 			foreach ($result->result() as $row) {

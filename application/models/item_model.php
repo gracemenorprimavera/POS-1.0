@@ -85,14 +85,7 @@ class Item_model extends CI_Model {
 				return false;
 	}
 
-	function subtract_item($item_id, $qty) {
-		
-		$query = "UPDATE item set quantity=quantity-$qty WHERE item_id=$item_id";
-		$this->db->query($query);
-		//$this->db->where('item_code',$item_code);
-			
-		//$this->db->update('item', array('quantity'=>'quantity'-$qty));
-	}
+
 
 	
 	function get_group() {

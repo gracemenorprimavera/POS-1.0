@@ -1,22 +1,9 @@
-
-	<?php //echo '<ul id="otherlinks"><li>'.anchor('#', ' Log out ').'</li></ul>'; ?>
-	<ul class="listview">
-    <li>
-   <div class="data"><h4>
-    <?php echo anchor('manager', 'Home'); ?></h4>
-    <p>Return to Manager Home Page</p>
-   </div>
-  </li>
-	<li>
-   <div class="data"><h4>
-   	<?php echo anchor('incoming/goto_incomingForm', 'Incoming '); ?></h4>
-    <p>Record delivery slip</p>
-   </div>
-  </li>
-	<li>
-   <div class="data">
-    <h4><?php echo anchor('outgoing/goto_outgoingForm', ' Outgoing '); ?></h4>
-    <p>Record pull-out products</p>
-   </div>
-  </li>
-</ul>
+<div class="Home">
+	<span>Generic <br>
+		<b>P</b>oint <b>O</b>f <b>S</b>ale
+	</span>
+	<p> This system is able to record important business transaction and create daily reports.<br><br>
+		Manager are the ones who manage transaction entrusted to them by the Admin.
+	</p>
+	<img src = "<?php echo base_url();?>img/cart.png" alt = "POS" />
+</div>

@@ -19,7 +19,7 @@ class Outgoing extends CI_Controller {
 /* OUTGOING FORM */
 	function goto_outgoingForm($msg = NULL) {
 		if($msg == NULL) $data['msg'] = '';
-		else if($msg) $data['msg'] = 'Delivery successfully recorded!';
+		else if($msg) $data['msg'] = 'Outgoing successfully recorded!';
 		else $data['msg'] = 'Failed to record delivery!';
 
 		$user= $this->session->userdata('role');
@@ -63,32 +63,38 @@ class Outgoing extends CI_Controller {
 			$qty = $this->input->post('outgoingQty');
 			$price = $this->input->post('outgoingAmt');
 			$total = $this->input->post('outTotalPrice');
+
+			$hItem = $this->input->post('houtgoingItem');
 			
 				
 				// create outgoing 
 			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
 				'date_out'=>$date,
+				'time'=>'',
 				'description'=>$desc,
 				'amount'=>$total,
 				'status'=>$status
 				));
 				 
 			$outgoing_id = $this->db->insert_id();	// get outgoing ID
+			$qtr = "UPDATE outgoing SET time=(select curtime()) where outgoing_id=$outgoing_id";
+			$this->db->query($qtr);
 
-				// insert out_items 
+				// insert out_items
+
 			$i = 0;
 			foreach($item as $d):
-				echo "$outgoing_id, $item[$i], $qty[$i], $price[$i]"; 
-				//$this->outgoing_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
-				//$this->outgoing_model->subtract_item($items['id'], $items['qty']);
+				//echo "$outgoing_id, $hItem[$i], $item[$i], $qty[$i], $price[$i]"; 
+				$this->outgoing_model->store_outItem($outgoing_id, $hItem[$i], $qty[$i], $price[$i]);
+				$this->outgoing_model->subtract_item($hItem[$i], $qty[$i]);
 				$i++;
 			endforeach;
-			/*
+			
 			$msg = true;
 			if($user=='admin') // return to admin home
         		redirect('outgoing/goto_outgoingForm/'.$msg);
        	 	else 	// return to manager home
-        		redirect('manager');*/
+        		redirect('manager');
 		}
 	}
 
@@ -110,6 +116,7 @@ class Outgoing extends CI_Controller {
 /* VIEW OUTGOING */
 	function view_outgoing() {
 		$data['detail_flag'] = false;
+		$data['item_flag'] = false;
 		if($this->pos_model->getAll_outgoing()) {
 			$data['outgoing'] = $this->pos_model->getAll_outgoing();
 			$data['message'] = '';
@@ -125,6 +132,7 @@ class Outgoing extends CI_Controller {
 
 	function view_outgoingDetails($date) {
 		$data['detail_flag'] = true; 
+		$data['item_flag'] = false;
 		$data['outgoing'] = $this->pos_model->getAll_outgoing();
 		$data['date'] = $date;
 		$data['daily'] = $this->pos_model->getAll_outgoing_byDate($date);
@@ -134,6 +142,25 @@ class Outgoing extends CI_Controller {
 		$data['page'] = 'lists/outgoing_list';
 		$this->load->view('template2', $data);
 	}
+
+	function view_outgoingItems($date, $outgoing_id) {
+		$this->load->model('outgoing_model');
+		$data['detail_flag'] = true;
+		$data['item_flag'] = true;
+
+		$data['date'] = $date;
+
+		$data['outgoing'] = $this->outgoing_model->getAll_outgoing();
+		$data['daily'] = $this->outgoing_model->getAll_outgoing_byDate($date);
+		$data['items'] = $this->outgoing_model->getAll_outgoingItems_byId($outgoing_id);
+
+		$data['message'] = '';
+		$data['header'] = 'Outgoing Record';
+		$data['flag'] = 1;
+		$data['page'] = 'lists/outgoing_list';
+		$this->load->view('template2', $data);
+	}
+
 
 
 

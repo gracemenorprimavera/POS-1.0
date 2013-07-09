@@ -1,13 +1,14 @@
 <?php 
 if($this->session->userdata('role')=='admin') 
-echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; ?>
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></ul>'; 
+?>
 
 <div id="item_form" class="forms">
 	
 	<?php echo form_open('items/add_item', array('onsubmit'=>"return confirm('Finalize Add Item?') ")); ?>
 	<table>
 		<tr>
-			<td>Bar Code: <input type="text" name="barcode" id="barcode_itemform"></td>
+			<td>Bar Code: <input type="text" name="barcode" id="barcode_itemform" ></td>
 			<td>Item Code: <input type="text" name="itemcode" ></td>
 		</tr><tr>
 			<td>Description 1 (brandm sub-brand) : <input type="text" name="desc1" required></td>
@@ -16,7 +17,8 @@ echo '<ul id="otherlinks"><li>'.anchor('admin/goto_formsPAge', 'Back').'</li></u
 			<td>Description 3 (variant, flavor): <input type="text" name="desc3"></td>
 			<td>Description 4 (size, packaging): <input type="text" name="desc4"></td>
 		</tr><tr>
-			<td>Group: 
+			<td>Group: <input type="text" name="desc4"></td>
+			<td>Division:
 				<?php 
 				$division = $this->pos_model->getAll_division_cat();
 				$options = array();

@@ -3,12 +3,16 @@ class Expenses_model extends CI_Model {
 
 	function store_expenses($status, $date, $desc, $amount) {
 		//echo $date;
-		return $this->db->insert('expenses', array('expense_id'=>NULL,
+		$this->db->insert('expenses', array('expense_id'=>NULL,
 			'date_expense'=>$date,
+			'time'=>'',
 			'amount' =>$amount,
 			'description'=>$desc,
 			'status'=>$status
 			));
+		$id = $this->db->insert_id();	// get delivery ID 
+		$qtr = "UPDATE expenses SET time=(select curtime()) where expense_id=$id";
+		$this->db->query($qtr);
 	}
 
 	function getAll_expenses() {
@@ -43,12 +47,15 @@ class Expenses_model extends CI_Model {
 /* CASH OUT*/	
 	function store_cashout($status, $date, $desc, $amount) {
 		//echo $date;
-		return $this->db->insert('cashout', array('cashout_id'=>NULL,
+		$this->db->insert('cashout', array('cashout_id'=>NULL,
 			'date_cashout'=>$date,
 			'status'=>$status,			
 			'description'=>$desc,
 			'amount' =>$amount
 			));
+		$id = $this->db->insert_id();	// get delivery ID 
+		$qtr = "UPDATE cashout SET time=(select curtime()) where cashout_id=$id";
+		$this->db->query($qtr);
 	}
 
 	function getAll_cashout() {

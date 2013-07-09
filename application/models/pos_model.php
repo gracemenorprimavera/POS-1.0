@@ -50,7 +50,7 @@ class Pos_model extends CI_Model {
 
 	function change_password($role, $old_pwd, $new_pwd) {
 
-		$this->db->where('role', $role);
+		$this->db->where('name', $role);
 		$this->db->where('password', md5($old_pwd));
 		$this->db->update('accounts', array('password'=>md5($new_pwd))); 
 
@@ -159,6 +159,7 @@ class Pos_model extends CI_Model {
 		
 		$this->db->from('credit');
 		$this->db->where('date', $date);
+		$this->db->where('status', 'credit');
 		$this->db->join('customers', 'credit.customer_id = customers.customer_id');
 		$result = $this->db->get();
 
@@ -234,6 +235,7 @@ class Pos_model extends CI_Model {
 		
 		$this->db->join('credit', 'customers.customer_id = credit.customer_id');
 		$this->db->join('credit_details', 'credit.credit_id = credit_details.credit_id');
+		$this->db->join('item', 'item.item_id = credit_details.item_id');
 		$this->db->where('credit.credit_id', $trans_id);
 		
 		$result = $this->db->get();
@@ -427,8 +429,8 @@ class Pos_model extends CI_Model {
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
 			'item_id'=>$item_id,
 			'division'=>NULL,
-			'quantity'=>$qty,
-			'price'=>$subtotal,
+			'cash_quantity'=>$qty,
+			'cash_price'=>$subtotal,
 			'date'=>date('y-m-d')
 			));
 		$id = $this->db->insert_id();
@@ -485,9 +487,9 @@ class Pos_model extends CI_Model {
 	}
 */
 
-	function subtract_item($item_code, $qty) {
+	function subtract_item($item_id, $qty) {
 		
-		$query = "UPDATE item set quantity=quantity-$qty WHERE item_code='$item_code'";
+		$query = "UPDATE item set quantity=quantity-$qty WHERE item_id=$item_id";
 		$this->db->query($query);
 		//$this->db->where('item_code',$item_code);
 			
@@ -714,6 +716,7 @@ class Pos_model extends CI_Model {
 					'closing_coins'=>$coins,
 					'closing_total'=>$amount
 				));
+			$this->session->unset_userdata('open');
 		}
 	}
 
@@ -736,13 +739,13 @@ class Pos_model extends CI_Model {
 		$q = "UPDATE daily_report set cash_box=close_amt-open_amt where report_id=$id";
 		$this->db->query($q);
 		
-		$q = "UPDATE daily_report set pos_sales=(SELECT SUM(total_amount) from transactions where trans_date='$date' group by trans_date) where report_id=$id";
+		$q = "UPDATE daily_report set pos_sales=(SELECT SUM(amount) from transactions where date='$date' group by date) where report_id=$id";
 		$this->db->query($q);
 
 		$q = "UPDATE daily_report set discrepancy=cash_box-pos_sales where report_id=$id";
 		$this->db->query($q);
 		
-		$q = "UPDATE daily_report set expenses=(SELECT SUM(amount) from expenses where date_expense='$date' group by date_expense) where report_id=$id";
+		$q = "UPDATE daily_report set expenses=(SELECT SUM(amount) from cashout where date_cashout='$date' group by date_cashout) where report_id=$id";
 		$this->db->query($q);
 
 		$q = "UPDATE daily_report set in_amount=(SELECT SUM(total_amount) from delivery where date_delivered='$date' group by date_delivered) where report_id=$id";
@@ -754,22 +757,22 @@ class Pos_model extends CI_Model {
 		$q = "UPDATE daily_report set credit=(SELECT SUM(amount_credit) from credit where date='$date' and status='credit' group by date) where report_id=$id";
 		$this->db->query($q);
 
-		$q = "UPDATE daily_report set load_bal=0 where report_id=$id";
+		$q = "UPDATE daily_report set load_bal=(SELECT SUM(amount) from eload where date='$date' and status='sales' group by date) where report_id=$id";
 		$this->db->query($q);
 
 		$q = "UPDATE daily_report set load_in=0 where report_id=$id";
 		$this->db->query($q);
 
-		$q = "UPDATE daily_report set div_grocery=(SELECT SUM(price) from trans_details where date='$date' and division ='grocery' group by date) where report_id=$id";
+		$q = "UPDATE daily_report set div_grocery=(SELECT SUM(cash_price) from trans_details where date='$date' and division ='grocery' group by date)+(SELECT SUM(price) from credit_details where date='$date' and division ='grocery' group by date) where report_id=$id";
 		$this->db->query($q);
 
-		$q = "UPDATE daily_report set div_poultry=(SELECT SUM(price) from trans_details where date='$date' and division ='poultry' group by date)  where report_id=$id";
+		$q = "UPDATE daily_report set div_poultry=(SELECT SUM(cash_price) from trans_details where date='$date' and division ='poultry' group by date)  where report_id=$id";
 		$this->db->query($q);
 
-		$q = "UPDATE daily_report set div_pet=(SELECT SUM(price) from trans_details where date='$date' and division ='pet' group by date) where report_id=$id";
+		$q = "UPDATE daily_report set div_pet=(SELECT SUM(cash_price) from trans_details where date='$date' and division ='pet' group by date) where report_id=$id";
 		$this->db->query($q);
 
-		$q = "UPDATE daily_report set div_load=(SELECT SUM(price) from trans_details where date='$date' and division ='load' group by date) where report_id=$id";
+		$q = "UPDATE daily_report set div_load=(SELECT SUM(cash_price) from trans_details where date='$date' and division ='load' group by date) where report_id=$id";
 		$this->db->query($q);
 	}
 
@@ -957,7 +960,8 @@ class Pos_model extends CI_Model {
 
 	function record_payment($id, $amount) {
 
-		$this->db->insert('credit', array('credit_id'=>NULL,  
+		$this->db->insert('credit', array('trans_id'=>NULL,
+				'credit_id'=>NULL,  
 				'customer_id'=>$id,
 				'date'=>date('y-m-d'),
 				'status'=>'payment',
@@ -996,7 +1000,7 @@ class Pos_model extends CI_Model {
 	}
 
 	function get_itemsInventory() {
-		$this->db->select('desc1, cost, retail_price, quantity');
+		$this->db->select('item_code, bar_code, desc1, desc2, desc3, desc4, cost, retail_price, quantity');
 		$this->db->from('item');
 
 		$result=$this->db->get();
@@ -1053,7 +1057,7 @@ class Pos_model extends CI_Model {
 	function get_search2($search,$mode)
 	{
 		if ($mode == 'itemDSearch'){
-			$this->db->select('desc1,desc2,desc3,desc4, quantity');
+			$this->db->select('item_code, bar_code, desc1,desc2,desc3,desc4, quantity');
 			$this->db->like('item_code',$search);
 			$this->db->or_like('bar_code',$search);
 			$this->db->or_like('desc1',$search);
@@ -1081,8 +1085,6 @@ class Pos_model extends CI_Model {
 		else if($mode == 'custDSearch'){
 			$this->db->like('customer_id',$search);
 			$this->db->or_like('customer_name',$search);
-			$this->db->or_like('contact_number',$search);
-			$this->db->or_like('address',$search);
 			$this->db->from('customers');
 		}
 		$result = $this->db->get();
@@ -1112,9 +1114,26 @@ class Pos_model extends CI_Model {
 			return false;
 	}
 
+	function getAll_load_byDate($date, $network) {
+		$this->db->select('*');
+		$this->db->where('date', $date);
+		$this->db->where('network', $network);
+		$result = $this->db->get('eload');
+
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+	}
+
+
 	function getAll_emp() {
 
-		$this->db->select('name');
+		$this->db->select('*');
 		$result = $this->db->get('employee');
 		
 		if($result->num_rows() > 0) {
@@ -1283,6 +1302,20 @@ class Pos_model extends CI_Model {
 
 	}
 
+	function getAll_accounts(){
+		$result = $this->db->get('accounts');
+		
+		if($result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		else 
+			return false;
+
+	}
+
 	function get_customerDetails2($customer_id) {
 		
 		$this->db->from('credit');
@@ -1352,6 +1385,28 @@ class Pos_model extends CI_Model {
 		else return false;
 	}
 
+	/* Graycie */
+	function add_employee($emp_name,$position, $emp_pwd) {
+
+		$this->db->insert('employee', array('emp_id'=>NULL,
+			'name'=>$emp_name,
+			'position'=>$position,
+			'password'=>md5($emp_pwd)
+			));
+
+		if($position=='cashier'){
+			$this->db->insert('accounts', array('account_id'=>NULL,
+			'name'=>$emp_name,
+			'role'=>$position,
+			'password'=>md5($emp_pwd)
+			));
+		}
+
+		if($this->db->affected_rows() == 1)
+			return true;
+		else
+			return false;
+	}
 	
 
 }

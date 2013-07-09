@@ -1,4 +1,8 @@
 <?php 
+if($this->session->userdata('role')=='admin') 
+echo '<ul id="otherlinks"><li>'.anchor('admin/goto_recordsPAge', 'Back').'</li></ul>'; 
+?>
+<?php 
 		echo '<div class="links">';
 		echo form_open('items/get_view');
 		$options = array(

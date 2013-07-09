@@ -24,6 +24,7 @@
 			<?php } // end of else	?>
 	</div>
 
+<!--
 	<div style="width:15%;float:left;height:90%" id="view_center" class="view" >
 		<?php if($detail_flag) { 
 			$mydate = strtoTime($date);
@@ -35,32 +36,38 @@
 			<?php echo anchor('admin/view_loadnetwork/'.$date.'/sun', 'Sun'); ?><br>
 		<?php } ?>
 	</div>
+-->
 
-	<div style="width:69%;float:left;height:90%" id="view_right" class="view" >
+	<div style="width:25%;float:left;height:90%" id="view_right" class="view" >
+			<?php if($detail_flag) { ?>
 			<?php 
-				if($message1) {
-					echo $message1;
+				if(!$this->pos_model->getAll_load_byDate($date, 'globe')) {
+					//echo $message1;
+					echo 'Globe <br>';
+					echo 'No Details Found';
 				} 
 				else {
 			?>
+				<?php $daily = $this->pos_model->getAll_load_byDate($date, 'globe'); ?>
 				<?php
 					if($network_flag) {
 						$mydate = strtoTime($date);
 				?>
-					<div style="text-align:left;font-size:20px;margin-bottom:10px;"><?php echo date('F d, Y', $mydate); ?></div>
+					<div style="text-align:left;font-size:20px;margin-bottom:10px;"><?php echo 'Globe<br>'.date('F d, Y', $mydate); ?></div>
 					<table border="1px solid brown" cellpadding="6" >
 						<thead>
 						<tr>
 							<th> Load ID </th>
-							<th> Network </th>
+							
 							<th> Status </th>
 							<th> Amount </th>
 						</tr>
 						</thead>
+
 							<?php foreach ($daily as $d) { ?>	
 								<tr>
 									<td><?php echo $d->load_id; ?> </td>
-									<td><?php echo $d->network; ?> </td>
+									
 									<td><?php echo $d->status; ?> </td>
 									<td><?php echo $d->amount; ?> </td>
 								</tr>			
@@ -68,6 +75,85 @@
 					</table>
 				<?php } // end if	?>
 				<?php } // end else ?>
-				
+		<?php } ?>
+	</div>
+
+	<div style="width:25%;float:left;height:90%" id="view_right" class="view" >
+			<?php if($detail_flag) { ?>
+			<?php 
+				if(!$this->pos_model->getAll_load_byDate($date, 'smart')) {
+					//echo $message1;
+					echo 'Smart <br>';
+					echo 'No Details Found';
+				} 
+				else {
+			?>
+				<?php $daily = $this->pos_model->getAll_load_byDate($date, 'smart'); ?>
+				<?php
+					if($network_flag) {
+						$mydate = strtoTime($date);
+				?>
+					<div style="text-align:left;font-size:20px;margin-bottom:10px;"><?php echo 'Smart<br>'.date('F d, Y', $mydate); ?></div>
+					<table border="1px solid brown" cellpadding="6" >
+						<thead>
+						<tr>
+							<th> Load ID </th>
+							
+							<th> Status </th>
+							<th> Amount </th>
+						</tr>
+						</thead>
+
+							<?php foreach ($daily as $d) { ?>	
+								<tr>
+									<td><?php echo $d->load_id; ?> </td>
+									
+									<td><?php echo $d->status; ?> </td>
+									<td><?php echo $d->amount; ?> </td>
+								</tr>			
+							<?php } // end foreach ?>
+					</table>
+				<?php } // end if	?>
+				<?php } // end else ?>
+		<?php } // end if	?>		
+	</div>
+	<div style="width:25%;float:left;height:90%" id="view_right" class="view" >
+			<?php if($detail_flag) { ?>
+			<?php 
+				if(!$this->pos_model->getAll_load_byDate($date, 'sun')) {
+					//echo $message1;
+					echo 'Sun <br>';
+					echo 'No Details Found';
+				} 
+				else {
+			?>
+				<?php $daily = $this->pos_model->getAll_load_byDate($date, 'sun'); ?>
+				<?php
+					if($network_flag) {
+						$mydate = strtoTime($date);
+				?>
+					<div style="text-align:left;font-size:20px;margin-bottom:10px;"><?php echo 'Sun'.date('F d, Y', $mydate); ?></div>
+					<table border="1px solid brown" cellpadding="6" >
+						<thead>
+						<tr>
+							<th> Load ID </th>
+							
+							<th> Status </th>
+							<th> Amount </th>
+						</tr>
+						</thead>
+
+							<?php foreach ($daily as $d) { ?>	
+								<tr>
+									<td><?php echo $d->load_id; ?> </td>
+									
+									<td><?php echo $d->status; ?> </td>
+									<td><?php echo $d->amount; ?> </td>
+								</tr>			
+							<?php } // end foreach ?>
+					</table>
+				<?php } // end if	?>
+				<?php } // end else ?>
+		<?php } // end if	?>		
 	</div>
 </div>

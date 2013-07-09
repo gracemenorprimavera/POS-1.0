@@ -67,10 +67,13 @@ class Incoming extends CI_Controller {
 			$this->db->insert('delivery', array('supplier_id'=>$id, 
 				'delivery_id'=>NULL, 
 				'date_delivered'=>$date,
+				'time'=>'',
 				'description'=>$desc,
 				'total_amount'=>$total
 				));
 			$delivery_id = $this->db->insert_id();	// get delivery ID 
+			$qtr = "UPDATE delivery SET time=(select curtime()) where delivery_id=$delivery_id";
+			$this->db->query($qtr);
 			
 				// insert delivered_items 
 			$i = 0;

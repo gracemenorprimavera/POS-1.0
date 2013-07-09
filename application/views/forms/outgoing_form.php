@@ -36,7 +36,7 @@
 	$options[''] = 'Select one';
 		if(isset($outgoing)){
 			foreach($outgoing as $row){
-				$options[$row->outgoing_id] = $row->outgoing;
+				$options[$row->outgoing] = $row->outgoing;
 			}
 		}
 	$options['add'] = "Add outgoing...";
@@ -69,7 +69,8 @@
 		<td>											
 			<?php 
 				// ITEM
-				echo '<input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/>'; 
+				echo '<input type="hidden" name="houtgoingItem[]" class="houtgoingItem" />
+				<input name="outgoingItem[]" id="outgoingItem" class="tags outgoingItem" autocomplete="off" required/>'; 
 			?>
 		</td>
 		<td>

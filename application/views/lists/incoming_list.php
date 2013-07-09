@@ -24,7 +24,7 @@
 		<?php } // end of else ?>	
 	</div>
 
-	<div style="width:39%;float:left;height:90%" id="view_center" class="view" >
+	<div style="width:36%;float:left;height:90%" id="view_center" class="view" >
 		<?php
 			if($detail_flag) {
 				$mydate = strtoTime($date);

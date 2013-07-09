@@ -72,10 +72,19 @@ class Credits extends CI_Controller {
 	function pay_credit() {
 		
 		$amount = $this->input->post('customerCash');
-		$customer_id = $this->input->post('customer_id');
+		$customer_id = $this->input->post('customerName');
 		$this->pos_model->record_payment($customer_id, $amount);	// record payment_details
 		//$this->pos_model->update_credit($customer_id, $amount);
-		redirect('credits/view_customerDetails/'.$customer_id);
+		//redirect('credits/view_customerDetails/'.$customer_id);
+		if($this->session->userdata('role')=='admin') {
+			$uri1= $this->uri->segment(1);
+			$uri2= $this->uri->segment(2);
+			$uri3= $this->uri->segment(3);
+			redirect('admin/view_customers');
+		}
+
+		else 	
+			redirect('cashier/new_cashier');
 	}
 
 	function view_customers() {

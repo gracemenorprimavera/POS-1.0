@@ -13,7 +13,7 @@
 
 		echo form_checkbox($data);
 		echo '<span>Cash</span>';
-		echo "<div style='display:inline-box' id='hcustomerCash'><input style='height:50px;width:170px;font-size:45px;' type='text' name='cash' value='0.00' required /></div>";
+		echo "<div style='display:inline-box' id='hcustomerCash'><input style='height:50px;width:170px;font-size:45px;' type='text' name='cash' value='0.00' required autofocus/></div>";
 ?>
 
 <span>Other mode of payment</span><br>
@@ -57,8 +57,8 @@ echo "<div style='display:none' id='hcustomerCheck'><table style='text-align:rig
 //for CREDIT payment	
 	$customer = $this->pos_model->getAll_customers();
 	$data = array();
-	$data[''] = 'Walk-in';
-	if(isset($customer)){
+	$data[''] = 'Select Customer';
+	if($customer){
 		foreach($customer as $row){
 			$data[$row->customer_id] = $row->customer_name;
 		}
@@ -67,5 +67,5 @@ echo '<div style="display:none" id="hcustomerName">Customer:'.form_dropdown('cus
 echo '<br>';
 ?>
 
-<?php echo form_submit(array('name'=>'cash_button', 'class'=>'button'), 'Continue'); ?>
+<?php echo form_submit(array('name'=>'cash_button', 'class'=>'button','style'=>'width:190px;'), 'Save Transaction'); ?>
 <?php echo form_close(); ?>

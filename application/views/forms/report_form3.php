@@ -1,6 +1,6 @@
 <div id="reports_form">
-	<?php if(isset($daily_report)) {
-	 foreach($daily_report as $d) { ?>
+	<?php if(isset($report)) {
+	 foreach($report as $d) { ?>
 
 	<table style="margin-left:100px;" >
 	<tr> <th colspan="2"> Daily Sales Summary </th></tr>

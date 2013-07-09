@@ -13,12 +13,12 @@ $user = $this->session->userdata('role');
 				
 			);
 		
-		$cashout = $this->pos_model->getAll_cashout_cat();
+		$cashout = $this->pos_model->getAll_expenses_cat();
 		$options = array();
 		$options[''] = 'Select one';
 		if(isset($cashout)){
 			foreach($cashout as $row){
-				$options[$row->cashout_id] = $row->cashout;
+				$options[$row->expenses] = $row->expenses;
 			}
 		}
 		$options['add'] = "Add expense...";
@@ -48,7 +48,7 @@ $user = $this->session->userdata('role');
 	    	);
 	    }
 		echo '<table  cellpadding="10px" border="0px solid black">';
-		echo '<tr><th>Cash Out <br>'.form_dropdown('expenses_dropdown', $options,'','id="expense" autocomplete="off" required').'</th>';
+		echo '<tr><th>Expenses <br>'.form_dropdown('expenses_dropdown', $options,'','id="expense" autocomplete="off" required').'</th>';
 		echo '<th>Description <br>'.form_textarea(array('rows' => '5', 'cols'=>'20', 'name' => 'exp_desc')).'</th>';
 
 		echo '<th><label for="expenseDate">Date </label><br>';	//delivery date

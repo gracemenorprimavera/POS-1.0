@@ -15,15 +15,36 @@ class Cashier extends CI_Controller {
 			die();
 		}		
     }
+    function view_help() {
+    	$data['message'] = " ";
+			$data['header'] = 'Cashier';
+			$data['customer'] = $this->pos_model->getAll_customers();
+			$data['page'] = 'help';
+			$data['searchMode'] = 'Barcode';
+			$data['flag'] = 4;
+			$this->load->view('template3', $data);
+    }
 
-    function new_cashier($password) {
-		$data['message'] = " ";
-		$data['pass'] = $password;
-		$data['header'] = 'Cashier:';
-		$data['customer'] = $this->pos_model->getAll_customers();
-		$data['page'] = 'forms/sales_form';
-		$data['flag'] = 4;
-		$this->load->view('template3', $data);
+    function new_cashier() {
+    	$is_open = $this->session->userdata('open');
+    	if($is_open != true) {
+			$data['message']='Cashier is not yet open.<br> To open, <span>'.anchor('#', 'Register Opening Amount','class="dialogThis2" id="startDialog"').'</span>';	
+			//die();
+			$data['header'] = 'Cashier Close';
+			$data['page'] = 'dummy';
+			$data['flag'] = 2;
+			//$data['customer'] = $this->pos_model->getAll_customers();
+			$this->load->view('template3', $data);
+		}
+		else {
+			$data['message'] = " ";
+			$data['header'] = 'Cashier';
+			$data['customer'] = $this->pos_model->getAll_customers();
+			$data['page'] = 'forms/sales_form';
+			$data['searchMode'] = 'Barcode';
+			$data['flag'] = 4;
+			$this->load->view('template3', $data);
+		}
 	}
 
 /* CASHIER */
@@ -87,12 +108,11 @@ class Cashier extends CI_Controller {
 		//echo $date;
 		if($mode == 'opening'){
 			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins, $date);
-			redirect('cashier');
+			redirect('cashier/new_cashier');
 		}
 		else if($mode == 'closing'){
 			$this->pos_model->register_amount($mode,$bills + $coins,$bills,$coins, $date);
-			
-			redirect('cashier/record_report');
+			redirect('cashier/new_cashier');
 		}	
 	}
 
@@ -103,7 +123,7 @@ class Cashier extends CI_Controller {
 		$data['flag'] = 2;	
 		$data['page'] = 'success';
 		//$this->load->view('template2', $data);
-		redirect('cashier');
+		redirect('cashier/reports');
 	}
 
 	function close_store() {
@@ -177,6 +197,7 @@ class Cashier extends CI_Controller {
 
 /*REPORTS */
 	function reports() {
+		$data['detail_flag'] = false; 
 
 		if($this->pos_model->getAll_reports()) {
 			$data['report'] = $this->pos_model->getAll_reports();
@@ -192,25 +213,30 @@ class Cashier extends CI_Controller {
 	}
 
 	function view_daily_report($report_id, $report_date) {
-
-		$data['report'] = $this->pos_model->get_dailyReport($report_id);
-		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
+		$this->load->model('expenses_model');
+		$data['detail_flag'] = true;
+		$data['date'] = $report_date;
+		$data['report'] = $this->pos_model->getAll_reports(); 
+		$data['daily_report'] = $this->pos_model->get_dailyReport($report_id);
+		$data['expenses'] = $this->expenses_model->getAll_cashout_byDate($report_date);
 		$data['message'] = '';
 		$data['header'] = 'Daily Report';
 		$data['flag'] = 2;
 		$data['report_id'] = $report_id;
 		$data['report_date'] = $report_date;
-		$data['page'] = 'forms/report_form';
+		$data['page'] = 'lists/report_list';
+		//$data['page'] = 'forms/genreport_form';
 		$this->load->view('template2', $data);
+		
 	}
 	
 	function pdf($report_id,$report_date)	//fetch the report id and report date
 	{
-
+		$this->load->model('expenses_model');
 	    $this->load->helper(array('dompdf', 'file')); 		//load the pdf conversion helper
 	    $this->load->helper('download');					//load download helper
 	    $data['report'] = $this->pos_model->get_dailyReport($report_id);	//get report data
-		$data['expenses'] = $this->pos_model->getAll_expenses_byDate($report_date);
+		$data['expenses'] = $this->expenses_model->getAll_cashout_byDate($report_date);
 		$data['report_date'] = $report_date;
 		//$this->load->view('forms/report_form2',$data);
 	   	$html =  $this->load->view('forms/report_form2',$data,true);	//put to html
@@ -265,18 +291,30 @@ class Cashier extends CI_Controller {
 		$this->db->query($query);
 		*/
 
-		$this->db->insert('transactions', array('trans_id'=>NULL,  
-				'trans_date'=>$date,
-				'total_amount'=>$amount
+		$this->db->insert('transactions', array('trans_id'=>NULL, 
+				'payment'=>'cash',
+				'date'=>$date,
+				'time'=>'',
+				'amount'=>$amount
+				)); 
+		$id = $this->db->insert_id();	// take last id of the transaction
+		$qtr = "UPDATE transactions SET time=(select curtime()) where trans_id=$id";
+		$this->db->query($qtr);
+
+			// insert cash transactions
+		$this->db->insert('cash', array('trans_id'=>$id,
+			'cash_id'=>NULL,  
+			'trans_date'=>$date, //date('y-m-d'),
+			'total_amount'=>$amount
 				));
 
 		$trans_id = $this->db->insert_id();
 		
 		$this->db->insert('trans_details', array('trans_id'=> $trans_id,
-			'item_code'=>'load',
+			'item_id'=>null,
 			'division'=>'load',
-			'quantity'=>0,
-			'price'=>$amount,
+			'cash_quantity'=>0,
+			'cash_price'=>$amount,
 			'date'=>$date
 			));
 
@@ -370,12 +408,15 @@ class Cashier extends CI_Controller {
 				
 	}
 	function dialog_show($mode){
-		if($mode == 'expenseDialog') {
+		if($mode == 'custPayDialog') {
+			echo $this->load->view('forms/payment_form.php');
+		}
+		if($mode == 'cashoutDialog') {
 			$data['msg'] = '';
 			echo $this->load->view('forms/cashout_form.php', $data);
 		}
 		else if($mode == 'loadDialog') {
-			echo $this->load->view('forms/load_form.php', $data);
+			echo $this->load->view('forms/load_form.php');
 		}
 		else if($mode == 'incomingloadDialog') {
 			$data['msg'] = '';
@@ -409,12 +450,13 @@ class Cashier extends CI_Controller {
 	}
 
 	function add_return(){
+		$this->load->model('outgoing_model');
 		$user = $this->session->userdata('role');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('outgoingDate', 'Date', 'required');				//require date
-		$this->form_validation->set_rules('outgoing' ,'Status', 'required');					//require supplier
+							
 		$this->form_validation->set_rules('outgoingItem', 'Item code' , 'required');					//require item code
 		$this->form_validation->set_rules('outgoingQty', 'Item quantity' , 'required');				//require item quantity
 		$this->form_validation->set_rules('outgoingPrice', 'Item price' , 'required');				//require	item price
@@ -426,7 +468,7 @@ class Cashier extends CI_Controller {
 			$data['flag'] = 2;
 			$data['page'] = 'forms/return_form';
 			//$data['supplier'] = $this->pos_model->getAll_supplier();
-			$this->load->view('template2', $data);
+			$this->load->view('template3', $data);
 		}
 		else
 		{	
@@ -437,33 +479,38 @@ class Cashier extends CI_Controller {
 			$price = $this->input->post('outgoingAmt');
 			$total = $this->input->post('outTotalPrice');
 			$date = $this->input->post('outgoingDate');
+			$hItem = $this->input->post('houtgoingItem');
 				
 				// create outgoing 
 			$this->db->insert('outgoing', array('outgoing_id'=>NULL, 
 				'date_out'=>$date,
 				'description'=>$desc,
 				'amount'=>$total,
-				'status'=>'return'
+				'status'=>'Return'
 				));
 				 
 			$outgoing_id = $this->db->insert_id();	// get outgoing ID
+			$qtr = "UPDATE outgoing SET time=(select curtime()) where outgoing_id=$outgoing_id";
+			$this->db->query($qtr);
 
 				// insert out_items 
 			$i = 0;
 			foreach($item as $d): 
-				$this->pos_model->store_outItem($outgoing_id, $item[$i], $qty[$i], $price[$i]);
-				$this->pos_model->add_item($items['id'], $items['qty']);
-				$this->pos_model->subtract_cash();
+				echo "$outgoing_id, $hItem[$i], $item[$i], $qty[$i], $price[$i]"; 
+				$this->outgoing_model->store_outItem($outgoing_id, $hItem[$i], $qty[$i], $price[$i]);
+				$this->outgoing_model->add_item($hItem[$i], $qty[$i]);
+				//$this->pos_model->subtract_cash();
 				$i++;
 
 			endforeach;
 
-			if($user=='admin') // return to admin home
+		if($user=='admin') // return to admin home
         		redirect('outgoing/goto_outgoingPage');
        	 	else 	// return to manager home
-        		redirect('manager');
+        		redirect('cashier/new_cashier');
 		}
 	}
+
 }
 
 /* End of file cashier.php */
